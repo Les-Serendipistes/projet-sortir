@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\UserRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Security\Core\User\UserInterface;
 
@@ -68,6 +70,28 @@ class User implements UserInterface
      * @ORM\Column(type="boolean")
      */
     private $is_verified;
+
+    /**
+     * @ORM\OneToMany(targetEntity=Outing::class, mappedBy="organizerUser")
+     */
+    private $organizedOutings;
+
+    /**
+     * @ORM\ManyToMany(targetEntity=Outing::class, mappedBy="registeredUsers")
+     */
+    private $outings;
+
+    /**
+     * @ORM\ManyToOne(targetEntity=Campus::class, inversedBy="users")
+     * @ORM\JoinColumn(nullable=false)
+     */
+    private $campus;
+
+    public function __construct()
+    {
+        $this->organizedOutings = new ArrayCollection();
+        $this->outings = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -230,6 +254,75 @@ class User implements UserInterface
     public function setIsVerified(bool $is_verified): self
     {
         $this->is_verified = $is_verified;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Outing[]
+     */
+    public function getOrganizedOutings(): Collection
+    {
+        return $this->organizedOutings;
+    }
+
+    public function addOrganizedOuting(Outing $organizedOuting): self
+    {
+        if (!$this->organizedOutings->contains($organizedOuting)) {
+            $this->organizedOutings[] = $organizedOuting;
+            $organizedOuting->setOrganizerUser($this);
+        }
+
+        return $this;
+    }
+
+    public function removeOrganizedOuting(Outing $organizedOuting): self
+    {
+        if ($this->organizedOutings->removeElement($organizedOuting)) {
+            // set the owning side to null (unless already changed)
+            if ($organizedOuting->getOrganizerUser() === $this) {
+                $organizedOuting->setOrganizerUser(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Outing[]
+     */
+    public function getOutings(): Collection
+    {
+        return $this->outings;
+    }
+
+    public function addOuting(Outing $outing): self
+    {
+        if (!$this->outings->contains($outing)) {
+            $this->outings[] = $outing;
+            $outing->addRegisteredUser($this);
+        }
+
+        return $this;
+    }
+
+    public function removeOuting(Outing $outing): self
+    {
+        if ($this->outings->removeElement($outing)) {
+            $outing->removeRegisteredUser($this);
+        }
+
+        return $this;
+    }
+
+    public function getCampus(): ?Campus
+    {
+        return $this->campus;
+    }
+
+    public function setCampus(?Campus $campus): self
+    {
+        $this->campus = $campus;
 
         return $this;
     }
