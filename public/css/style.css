@@ -1,0 +1,70 @@
+label
+{
+    display: block;
+    width: 210px;
+    float: left;
+}
+legend {
+    width: auto;
+    margin-left: auto;
+    margin-right: auto;
+    text-align : center ;
+}
+
+fieldset {
+    margin: 0 auto;
+    width: 30%;
+}
+/*
+mise en forme ossature template ajout sortie
+ */
+
+.containersortie
+{
+    text-align: center;
+    padding: 2px;
+}
+.left-div
+{
+    display: inline-block;
+    max-width: 540px;
+    text-align: left;
+    padding: 10px;
+    /* background-color: #ddd;*/
+    border-radius: 3px;
+    margin: 15px;
+    vertical-align: top;
+}
+.right-div
+{
+    display: inline-block;
+    max-width: 500px;
+    text-align: left;
+    padding: 10px;
+    border-radius: 3px;
+    margin: 15px;
+}
+@media screen and (max-width: 600px)
+{
+    .left-div, .right-div
+    {
+        max-width: 100%;
+    }
+}
+.div_sortie_top{
+    width: 600px;
+    margin:0 auto;
+    text-align: center;
+    color: #B0413E;
+    font-size: 18px;
+    font-weight: bold;
+}
+.div_button
+{
+    width: 600px;
+    border-radius: 3px;
+    margin:0 auto;
+}
+/*
+mise en forme ossature template ajout sortie
+ */
