@@ -68,3 +68,16 @@ mise en forme ossature template ajout sortie
 /*
 mise en forme ossature template ajout sortie
  */
+
+header{
+
+}
+
+footer{
+    position:absolute;
+    bottom:0;
+}
+
+.form{
+
+}
