@@ -23,10 +23,10 @@ class RegistrationFormType extends AbstractType
             ->add('Pseudo', TextType::class,[
                 'label'=>'Pseudo :'
             ])
-            ->add('Surname', TextType::class,[
+            ->add('firstname', TextType::class,[
                 'label'=>'Prenom :'
             ])
-            ->add('Name', TextType::class, [
+            ->add('lastname', TextType::class, [
                 'label'=>'Nom: '
             ])
             ->add('Phone', TextType::class ,[

@@ -30,7 +30,7 @@ class OutingController extends AbstractController
 
 
     }
-    #[Route('/outgoingCreate', name: 'outgoing_create')]
+    #[Route('/outingCreate', name: 'outing_create')]
     public function create(Request $request,  EntityManagerInterface $entityManager,
                            OutingRepository $outingRepository
     ): Response
