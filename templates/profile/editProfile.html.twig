@@ -5,16 +5,30 @@
 {% endblock %}
 
 {%  block body %}
-    <div> <h2>{{ user.pseudo }}</h2></div>
-    <div>
-        <img src="{{ asset('img/profil/'~ user.picture) }}"  >
-    </div>
-    <div>
+    {# affiche les éventuels messages flash #}
+    {% for label, messages in app.flashes %}
+        {% for message in messages %}
+            <div class="alert alert-{{ label }}">
+                {{ message }}
+            </div>
+        {% endfor %}
+    {% endfor %}
 
-        <div>Nom : {{ user.firstname}}</div>
-        <div>Téléphone : {{ user.phone }}</div>
-        <div>Email : {{ user.email }}</div>
-        <div>Campus : {{ user.campus.name}}</div>
+    <div>
+        {% if user  is  null %}
+
+            <img src="{{ asset('img/profil/'~ default.png) }}"  >
+        {% else %}
+            <img src="{{ asset('img/profil/'~ user.picture) }}"  >
+        {% endif %}
     </div>
-    <div><a href="{{ path('outing_list') }}" ><button>Retour</button></a></div>
+    {% if app.user() %}{% endif %}
+    <h2>Edition de profil</h2>
+    {{ form_errors(userForm) }}
+    {{form_start(userForm)  }}
+    {{form_widget(userForm)  }}
+    {% if app.user %} {% endif %}
+    <button>Valider</button>
+
+    {{ form_end(userForm) }}
 {% endblock %}

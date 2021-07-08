@@ -48,7 +48,7 @@ class ProfileController extends AbstractController
             ]);
         }
         else{
-            return $this->render('editProfile.html.twig', [
+            return $this->render('profile/editProfile.html.twig', [
                 'userForm'=>$userForm->createView(),
                 'user'=>$user
             ]);
