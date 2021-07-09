@@ -1,10 +1,55 @@
 {% extends 'base.html.twig' %}
 
+{% block title %}
+ {{ parent() }} | Liste des sorties
+{% endblock %}
+
 {% block body %}
 
+    <div class="container">
+        <h1>Lists des sorties</h1>
+        <div>
+            <h3>Outil de recherche</h3>
+            <div class="fluid container">
+                {{ form(outingForm) }}
+
+            </div>
+            {% if ( currentPage  > 1) %}
+                <a class="buttonOuting" href="{{ path('outing_list', {'page': currentPage - 1}) }}">Page précédente</a>
+            {% endif %}
+            {% if ( maxPage  > currentPage) %}
+                <a class="buttonOuting" href="{{ path('outing_list', {'page': currentPage + 1}) }}">Page suivante</a>
+            {% endif %}
+
+            <div>
+                <table class="ui celled table">
+                    <tbody>
+                    <thead>
+                    <th>nom</th>
+                    <th>Date de début</th>
+                    <th>Date limite d'inscription</th>
+                    <th>Organisateur.trice</th>
+                    <th>Part. déjà inscrit.e.s / nombre max.</th>
+                    </thead>
+                    {% for outing in outings %}
+                        <tr>
+                            <td>{{ outing.name }}</td>
+                            <td>{{ outing.dateTimeStart | date('d/m/Y à h\\H') }}</td>
+                            <td>{{ outing.limitDateInscription | date('d/m/Y à h\\H') }}</td>
+                            <td>{{ outing.organizerUser.firstname }} {{ outing.organizerUser.lastname }}</td>
+                            <td>{{ outing.registeredUsers.count }} / {{ outing.maxNbPart }}</td>
+                        </tr>
+                    {% endfor %}
+                    <thead>
+                    <th>nom</th>
+                    <th>Date de début</th>
+                    <th>Date limite d'inscription</th>
+                    <th>Organisateur.trice</th>
+                    <th>Part. déjà inscrit.e.s / nombre max.</th>
+                    </thead>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
 {% endblock %}
-
-{% block title %}
-
-{% endblock %}
-

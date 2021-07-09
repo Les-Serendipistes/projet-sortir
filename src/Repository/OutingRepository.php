@@ -4,6 +4,7 @@ namespace App\Repository;
 
 use App\Entity\Outing;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\ORM\Tools\Pagination\Paginator;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
@@ -19,32 +20,19 @@ class OutingRepository extends ServiceEntityRepository
         parent::__construct($registry, Outing::class);
     }
 
-    // /**
-    //  * @return Outing[] Returns an array of Outing objects
-    //  */
-    /*
-    public function findByExampleField($value)
+    public function findByDateTimeStart(int $page): Paginator
     {
-        return $this->createQueryBuilder('o')
-            ->andWhere('o.exampleField = :val')
-            ->setParameter('val', $value)
-            ->orderBy('o.id', 'ASC')
-            ->setMaxResults(10)
-            ->getQuery()
-            ->getResult()
-        ;
-    }
-    */
 
-    /*
-    public function findOneBySomeField($value): ?Outing
-    {
-        return $this->createQueryBuilder('o')
-            ->andWhere('o.exampleField = :val')
-            ->setParameter('val', $value)
-            ->getQuery()
-            ->getOneOrNullResult()
-        ;
+        $queryBuilder = $this->createQueryBuilder('outing');
+        $queryBuilder ->orderBy('outing.dateTimeStart', 'DESC');
+        $queryBuilder->leftJoin('outing.organizerUser', 'org');
+        $queryBuilder->addSelect('org');
+
+        $query = $queryBuilder->getQuery();
+        $limit = 20;
+        $offset = ($page -1) * $limit;
+        $query->setFirstResult($offset);
+        $query->setMaxResults($limit);
+        return new Paginator($query);
     }
-    */
 }

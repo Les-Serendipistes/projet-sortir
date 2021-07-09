@@ -14,29 +14,43 @@ use Symfony\Component\Routing\Annotation\Route;
 class OutingController extends AbstractController
 {
     #[Route('/outingList/{page}', name: 'outing_list', requirements: [ 'page' => '\d+'])]
-    public function list(OutingRepository $outingRepository, int $page = 1): Response
+    public function list(OutingRepository $outingRepository, Request $request, int $page = 1): Response
     {
+        $outingForm = $this->createForm(OutingFilterSearchType::class);
         $nbOutings = $outingRepository->count([]);
-        $maxPage = ceil($nbOutings / 10);
+        $maxPage = ceil($nbOutings / 20);
+
+        $outingForm->handleRequest($request);
 
         if ($page < 1 || $page > $maxPage) {
             $page = 1;
-            //$outings = $outingRepository->findAll()
+            $outings = $outingRepository->findByDateTimeStart($page);
+            return $this->render('outing/outingList.html.twig', [
+               'outings' => $outings,
+               'currentPage' => $page,
+               'maxPage' => $maxPage,
+                'outingForm' => $outingForm->createView()
+            ]);
+        } else {
+            $outings = $outingRepository->findByDateTimeStart($page);
+            return $this->render('outing/outingList.html.twig', [
+                'outings' => $outings,
+                'currentPage' => $page,
+                'maxPage' => $maxPage,
+                'outingForm' => $outingForm->createView()
+            ]);
         }
-
-        return $this->render('outing/outingList.html.twig', [
-            'controller_name' => 'OutingController',
-        ]);
-
-
     }
+
+
+
     #[Route('/outingCreate', name: 'outing_create')]
     public function create(Request $request,  EntityManagerInterface $entityManager,
                            OutingRepository $outingRepository
     ): Response
     {
-        $outing=New Outing();
-        $outingForm=$this->createForm(OutingType::class,$outing);
+        $outing = New Outing();
+        $outingForm = $this->createForm(OutingType::class,$outing);
         $outingForm->handleRequest($request);
         $typeSubmit=$request->request->get('submitAction');
         //$request->get('submitAction')
