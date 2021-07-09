@@ -63,3 +63,21 @@
     </div>
 
 {% endblock %}
+{% block extrajs %}
+        <script type="text/javascript">
+            window.onload = init;
+            function init(){
+                let selectedTown=  document.getElementById("outing_state");
+                selectedTown.addEventListener('change',function(){
+                    let valeur=selectedTown.value;
+                    console.log(valeur);
+                     fetch('{{ path('list_places') }}', {method:'POST', body:valeur} )
+                    .then(function (response){
+                        return response;
+                    }).then(function (valeur){
+                        console.log(valeur);
+                     })
+                })
+            }
+        </script>
+{% endblock %}

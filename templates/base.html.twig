@@ -7,7 +7,10 @@
         <title>{% block title %}Sortir !{% endblock %}</title>
     </head>
     <body>
-    <header>{% include 'menu/nav.html.twig' %}</header>
+    <header>{% include 'menu/nav.html.twig' %}
+        {% block extrajs %}{% endblock %}
+    </header>
+    <span style="text-align:center">
     {# affiche les éventuels messages flash #}
             {% for label, messages in app.flashes %}
                 {% for message in messages %}
@@ -16,6 +19,8 @@
                     </div>
                 {% endfor %}
             {% endfor %}
+    </span>
+
     <main>{% block body %}{% endblock %}</main>
      <footer>© Les Serendipistes</footer>
     </body>

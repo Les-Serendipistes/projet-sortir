@@ -4,6 +4,7 @@ namespace App\Repository;
 
 use App\Entity\City;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
@@ -19,6 +20,11 @@ class CityRepository extends ServiceEntityRepository
         parent::__construct($registry, City::class);
     }
 
+     public function findCityLocation($id, EntityManagerInterface $entityManager)
+     {
+          $dql="SELECT l FROM App\Entity\Location left 
+                    WHERE  l =$id  ";
+     }
     // /**
     //  * @return City[] Returns an array of City objects
     //  */

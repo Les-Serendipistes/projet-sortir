@@ -59,7 +59,8 @@ class OutingType extends AbstractType
             ] )
             ->add('state',EntityType::class, [
                 'class'=>City::class,
-                'choice_label'=>'name'
+                'placeholder' => ' ',
+                'choice_label'=>'name',
             ])
             ->add('location', ChoiceType::class,[
                 'mapped'=>false,

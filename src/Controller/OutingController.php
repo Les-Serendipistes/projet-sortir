@@ -4,6 +4,9 @@ namespace App\Controller;
 
 use App\Entity\Outing;
 use App\Form\OutingType;
+use App\Form\OutingFilterSearchType;
+use App\Repository\CityRepository;
+use App\Repository\LocationRepository;
 use App\Repository\OutingRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -74,7 +77,16 @@ class OutingController extends AbstractController
         ]);
     }
 
+    #[Route('/listPlaces', name: 'list_places')]
+    public function listPlaces(Request $request,  LocationRepository $locationRepository ): Response
+    {
+            $id=$request->getContent();
+        $outings =  $locationRepository->findBy(
+            ['city'=>$id]
+        );
 
-
+     return $this->json($outings);
+            //dd($outings);
+    }
 
 }
