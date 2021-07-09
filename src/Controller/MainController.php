@@ -9,16 +9,19 @@ use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
 
 class MainController extends AbstractController
 {
-    #[Route('/app_login', name: 'main_home')]
+    #[Route('/', name: 'main_home')]
     public function home(AuthenticationUtils $authenticationUtils): Response
     {
         // get the login error if there is one
         $error = $authenticationUtils->getLastAuthenticationError();
         // last username entered by the user
         $lastUsername = $authenticationUtils->getLastUsername();
-
-        return $this->render('security/login.html.twig', ['last_username' => $lastUsername, 'error' => $error]);
-
+        //dd($this->getUser());
+        if($this->getUser()){
+            return $this->redirectToRoute('outing_list' );
+        }else{
+            return $this->render('security/login.html.twig', ['last_username' => $lastUsername, 'error' => $error]);
+        }
     }
 
     #[Route('/cities', name: 'main_cities')]

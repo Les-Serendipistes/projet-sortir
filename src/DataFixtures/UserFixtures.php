@@ -40,7 +40,7 @@ class UserFixtures extends Fixture implements DependentFixtureInterface
                 ->setPseudo($faker->unique()->userName.$i)
                 ->setPhone($faker->phoneNumber)
                 ->setActif($faker->boolean(75))
-                ->setPicture('img/profil/default.png')
+                ->setPicture('default.png')
                 ->setIsVerified($faker->boolean(75))
                 ->setCampus($this->getReference(CampusFixtures::CAMPUS_REFERENCE.'_'.mt_rand(1,4)));
 

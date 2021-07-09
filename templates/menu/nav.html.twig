@@ -1,11 +1,12 @@
 <nav>
-    <ul>
+    <ul class="main-nav">
         {%  if app.user %}
-                 <li><a href="{{ path('main_home') }}" title="">Accueil</a></li>
+                 <li><a href="{{ path('outing_list') }}" title="">Accueil</a></li>
                 {%  if is_granted('ROLE-ADMIN') %}
                 <li><a href="{{ path('main_cities') }}" title="">Villes</a></li>
                 <li><a href="{{ path('main_campus') }}" title="">Campus</a></li>
                 {% endif %}
+                <li><a href="{{ path('profile') }}" title="">Profile</a>
                 <li><a href="{{ path('app_logout') }}" title="">Se déconnecter</a></li>
         {% endif %}
     </ul>

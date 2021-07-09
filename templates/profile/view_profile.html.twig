@@ -5,16 +5,17 @@
 {% endblock %}
 
 {%  block body %}
-    <div> <h2>{{ user.pseudo }}</h2></div>
-    <div>
-        <img src="{{ asset('img/profil/'~ user.picture) }}"  >
-    </div>
-    <div>
+    <h2 style="text-align:center">{{ user.pseudo }}</h2>
 
-        <div>Nom : {{ user.firstname}}</div>
-        <div>Téléphone : {{ user.phone }}</div>
-        <div>Email : {{ user.email }}</div>
-        <div>Campus : {{ user.campus.name}}</div>
+    <div class="card">
+        <img src="{{ asset('img/profile/'~ user.picture) }}"  >
+        <h4>Nom : {{ user.firstname}}</h4>
+        <p>Téléphone : {{ user.phone }}</p>
+        <p>Email : {{ user.email }}</p>
+        <p class="title">Campus : {{ user.campus.name}}</p>
+
     </div>
-    <div><a href="{{ path('outing_list') }}" ><button>Retour</button></a></div>
+    <div style="text-align:center"><a href="{{ path('outing_list') }}" ><button>Retour</button></a></div>
+
+
 {% endblock %}

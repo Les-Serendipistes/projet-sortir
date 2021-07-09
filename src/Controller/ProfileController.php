@@ -13,15 +13,23 @@ use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 
 class ProfileController extends AbstractController
 {
-    #[Route('/profile/{id}', name: 'profile')]
-    public function edit($id, Request $request,
+    #[Route('/profile', name: 'profile')]
+    public function edit( Request $request,
                          EntityManagerInterface $entityManager,
                          UserRepository $userRepository,
                          UserPasswordEncoderInterface $passwordEncoder,
                          UploadProfilePic $uploadProfilePic
     )
     {
-        $user=$userRepository->find($id);
+        //$this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
+        $typeSubmit=$request->request->get('submitAction');
+        if ($typeSubmit === 'Retour')
+        {
+            return $this->redirectToRoute('outing_list' );
+        }
+         $userConnected=$this->getUser();
+         $userConnectedId=$userConnected->getId();
+        $user=$userRepository->find($userConnectedId);
         $userForm=$this->createForm(RegistrationFormType::class, $user);
         $userForm->handleRequest($request);
         /**
@@ -30,11 +38,9 @@ class ProfileController extends AbstractController
         if($userForm->isSubmitted() && $userForm->isValid()){
             $file=$userForm->get('picture')->getData();
             $firstPasswordField=$userForm->get('plainPassword')->getData();
-            $user->setPassword(
-                $passwordEncoder->encodePassword(
-                    $user,
-                    $firstPasswordField
-                ));
+            if($firstPasswordField){
+                $user->setPassword( $passwordEncoder->encodePassword( $user,  $firstPasswordField ));}
+
             if($file){
                 $imageDirectory=$this->getParameter('upload_profile_picture');
                 $imageName=$user->getPseudo();
@@ -42,8 +48,8 @@ class ProfileController extends AbstractController
             }
             $entityManager->persist($user);
             $entityManager->flush();
-            $this->addFlash("Edition","Profil édité avec succès");
-            return $this->redirectToRoute('profile',['id'=>$user->getId(),
+            $this->addFlash("Edition","Profile édité avec succès");
+            return $this->redirectToRoute('outing_list',[
                 'user'=>$user
             ]);
         }

@@ -1,10 +1,65 @@
 {% extends 'base.html.twig' %}
 
-{% block body %}
-
-{% endblock %}
-
 {% block title %}
-
+    {{ parent() }} | Créer une sortie
 {% endblock %}
 
+{%  block body %}
+    {# affiche les éventuels messages flash #}
+    {% for label, messages in app.flashes %}
+        {% for message in messages %}
+            <div class="alert alert-{{ label }}">
+                {{ message }}
+            </div>
+        {% endfor %}
+    {% endfor %}
+    <div class="div_sortie_top">Créer une sortie  {{ submitType }}</div>
+
+
+    <div class="containersortie">
+        {{ form_start(outingForm) }}
+        {{ form_errors(outingForm) }}
+        <div class="left-div1 left-text">
+            {{ form_label(outingForm.name, 'Nom de la sortie: ') }}
+            {{ form_widget(outingForm.name) }}
+            {{ form_label(outingForm.dateTimeStart, 'Date et heure de la sortie:') }}
+            {{ form_widget(outingForm.dateTimeStart) }}
+            {{ form_label(outingForm.limitDateInscription, "Date limte d'inscription:") }}
+            {{ form_widget(outingForm.limitDateInscription) }}
+            {{ form_label(outingForm.maxNbPart, 'Nombre de places : ') }}
+            {{ form_widget(outingForm.maxNbPart) }}
+            {{ form_label(outingForm.duration, 'Durée:') }}
+            {{ form_widget(outingForm.duration) }}  minutes<br>
+            {{ form_label(outingForm.outingReport, 'Description et infos: ') }}
+            {{ form_widget(outingForm.outingReport) }}
+        </div>
+
+        <div class="right-div1 right-text">
+            {{ form_label(outingForm.campus, 'Campus :') }}
+            {{ form_widget(outingForm.campus) }}<br>
+            {{ form_label(outingForm.state, 'Ville :') }}
+            {{ form_widget(outingForm.state) }}
+            <span>&nbsp;<button>+</button></span><br>
+            {{ form_label(outingForm.location, 'Lieu :') }}
+            {{ form_widget(outingForm.location) }}<br>
+            {{ form_label(outingForm.street, 'Rue :') }}
+            {{ form_widget(outingForm.street) }}
+            {{ form_label(outingForm.zipcode, 'Code postal :') }}
+            {{ form_widget(outingForm.zipcode) }}
+            {{ form_label(outingForm.latitude, 'Latitude :') }}
+            {{ form_widget(outingForm.latitude) }}
+            {{ form_label(outingForm.longitude, 'Longitude :') }}
+            {{ form_widget(outingForm.longitude) }}
+
+        </div>
+        <div class="div_button">
+
+            <button type="submit" name="submitAction"  value="enregistrer"  class="btn btn-primary">Enregistrer</button>
+            <button type="submit" name="submitAction"  value="publier" class="btn btn-primary">Publier la sortie</button>
+            <button type="submit" name="submitAction"  value="annuler" class="btn btn-primary">Annuler</button>
+
+        </div>
+        {{ form_end(outingForm) }}
+    </div>
+
+{% endblock %}
