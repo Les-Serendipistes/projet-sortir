@@ -1,0 +1,27 @@
+{% extends 'base.html.twig' %}
+{% block title %}
+    {{ parent() }} | Modifier une sortie
+{% endblock %}
+
+{% block body %}
+    <h1>Modifier une sortie</h1>
+
+    <section>
+        <div>
+            {{ form_start(outingForm) }}
+            {{ form_errors(outingForm) }}
+            <div class="div_button">
+
+                <button type="submit" name="submitAction"  value="enregistrer"  class="btn btn-primary">Enregistrer</button>
+                <button type="submit" name="submitAction"  value="publier" class="btn btn-primary">Publier la sortie</button>
+                <button type="submit" name="submitAction"  value="publier" class="btn btn-primary">Supprimer la sortie</button>
+                <button type="submit" name="submitAction"  value="annuler" class="btn btn-primary">Annuler</button>
+
+            </div>
+            {{ form_end(outingForm) }}
+        </div>
+    </section>
+{% endblock %}
+
+
+

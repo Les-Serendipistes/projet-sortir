@@ -105,12 +105,42 @@ class OutingController extends AbstractController
     public function campus($id, Request $request, OutingRepository $outingRepository, EntityManagerInterface $entityManager): Response
     {
         $outing = $outingRepository->find($id);
-        if (!$outing){
-            throw $this->createNotFoundException("Cette sortie n'existe pas... pourquoi ne pas en créer une ?");
-        }
+
+        // TODO: Message flash "Cette sortie n'existe pas... pourquoi ne pas en créer une ?" et renvoyer vers accueil
 
         return $this->render('outing/detail.html.twig', ['outing' => $outing]);
     }
 
+    #[Route('/outingModify/{id}', name: 'outing_modify')]
+public function modify($id, request $request,  EntityManagerInterface $entityManager,
+                       OutingRepository $outingRepository) : Response
+    {
+        $outing = $outingRepository->find($id);
+        $outingForm = $this->createForm(OutingType::class,$outing);
+        $outingForm->handleRequest($request);
+
+        if ($typeSubmit === 'enregistrer' && $outingForm->isValid())
+        {
+            $outing->setState(1);
+            //redirection vers la page d'accueil
+            dd("bouton enregistrer"  );
+        }
+        elseif ($typeSubmit=== 'publier')
+        { $outing->setState(2);
+            //redirection vers la page d'accueil
+            dd("bouton publier".$typeSubmit);
+        }
+
+        elseif ($typeSubmit === 'supprimer sortie')
+        {   //redirection vers la page d'annulation de la sortie
+            dd("bouton annuler".$typeSubmit);
+        }
+
+        elseif ($typeSubmit === 'annuler')
+        {   //redirection vers la page d'accueil
+            dd("bouton annuler".$typeSubmit);
+        }
+        return $this->render('outing/modify.html.twig', ['outingForm'=>$outingForm->createView(),]);
+    }
 
 }
