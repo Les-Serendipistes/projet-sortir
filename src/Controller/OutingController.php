@@ -73,7 +73,7 @@ class OutingController extends AbstractController
         // $outingDateTimeStart=$outingForm->get('')->getData();
         if ($typeSubmit === 'enregistrer' && $outingForm->isValid())
         {
-            $outing->setState($stateRepository->find(1));
+            $outing->setState($stateRepository->getClassName());
             $entityManager->persist($outing);
             $entityManager->flush();
             $this->addFlash("Sortie","Sortie créée avec succès.");
