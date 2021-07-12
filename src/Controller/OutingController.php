@@ -6,8 +6,10 @@ use App\Data\SearchData;
 use App\Entity\Outing;
 use App\Form\OutingType;
 use App\Form\SearchOutingFormType;
+use App\Repository\CityRepository;
 use App\Repository\LocationRepository;
 use App\Repository\OutingRepository;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -76,5 +78,14 @@ class OutingController extends AbstractController
      return $this->json($outings);
             //dd($outings);
     }
+    #[Route('/outingDetail/{id}', name: 'outing_detail')]
+    public function campus($id, Request $request, OutingRepository $outingRepository, CityRepository $cityRepository, EntityManagerInterface $entityManager): Response
+    {
+        $outing = $outingRepository->find($id);
+        if (!$outing){
+            throw $this->createNotFoundException("Cette sortie n'existe pas... pourquoi ne pas en créer une ?");
+        }
 
+        return $this->render('outing/detail.html.twig', ['outing' => $outing]);
+    }
 }
