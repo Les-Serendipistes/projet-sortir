@@ -31,12 +31,16 @@ class UserFixtures extends Fixture implements DependentFixtureInterface
 
             $faker = Factory::create('fr_FR');
 
+            $lastName = $faker->lastName;
+            $firstNane = $faker->firstName;
+
             $user = new User();
-            $user->setEmail(strtolower($faker->unique()->email))
+            $user
                 ->setRoles(['ROLE_USER'])
                 ->setPassword($this->hash->encodePassword($user, 'ultracrepidarianisme'))
-                ->setFirstname($faker->firstName)
-                ->setLastname($faker->lastName)
+                ->setFirstname($firstNane)
+                ->setLastname($lastName)
+                ->setEmail(strtolower($firstNane . '.' . $lastName . $i .'@sortir.org'))
                 ->setPseudo($faker->unique()->userName.$i)
                 ->setPhone($faker->phoneNumber)
                 ->setActif($faker->boolean(75))

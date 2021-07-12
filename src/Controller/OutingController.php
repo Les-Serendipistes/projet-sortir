@@ -6,7 +6,6 @@ use App\Data\SearchData;
 use App\Entity\Outing;
 use App\Form\OutingType;
 use App\Form\SearchOutingFormType;
-use App\Repository\CityRepository;
 use App\Repository\LocationRepository;
 use App\Repository\OutingRepository;
 use Doctrine\ORM\EntityManagerInterface;

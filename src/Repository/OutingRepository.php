@@ -40,9 +40,17 @@ class OutingRepository extends ServiceEntityRepository
         $user = $this->security->getUser();
 
         $query = $this->createQueryBuilder('o');
-        $query = $query
-            ->select('o');
 
+        $userQuery = $this->createQueryBuilder('out')
+            ->select('out.id')
+            ->innerJoin('out.registeredUsers', 'registeredUsers')
+            ->andWhere('registeredUsers.id = :user')
+            ->setParameter('user', $user);
+
+        $excludedOutings = implode(",", array_map(function ($exclude) {
+            return $exclude['o.id'];
+        },
+            $userQuery->getQuery()->getResult()));
 
         if (!empty($search->campus)) {
             $query
@@ -57,25 +65,26 @@ class OutingRepository extends ServiceEntityRepository
         }
         if (!empty($search->startDate) && !empty($search->endDate)) {
             $query
-                ->where('o.dateTimeStart BETWEEN :startDate AND :endDate')
+                ->andWhere('o.dateTimeStart BETWEEN :startDate AND :endDate')
                 ->setParameter('startDate', $search->startDate)
                 ->setParameter('endDate', $search->endDate);
         }
         if(!empty($search->organizer)) {
             $query
-                ->andWhere('o.organizerUser = :user')
-                ->setParameter('user', $user);
+                ->andWhere('o.organizerUser = :org')
+                ->setParameter('org', $user);
         }
         if(!empty($search->registered)) {
-            $query->andWhere('o.registeredUsers = :userId')
+            $query
                 ->leftJoin('c.users', 'u')
-                ->where('u.id = :userId ')
+                ->leftJoin('o.registeredUsers', 'reg')
+                ->andWhere('u.outings = reg.outings')
+                ->andWhere('reg.outings = :userId')
                 ->setParameter('userId', $user);
         }
-        if(!empty($search->unregistered)) {
-            $query->leftJoin('o.registeredUsers', 'reg')
-                ->andWhere(':userId', 'NOT IN', 'o.registeredUsers')
-                ->setParameter('userId', $user);
+        if(!empty($search->unregistered)  && $excludedOutings) {
+            $query
+                ->andWhere($query->expr()->notIn('o.id', $excludedOutings ));
         }
         if(!empty($search->olds)) {
             $query->andWhere('o.dateTimeStart < :now')
