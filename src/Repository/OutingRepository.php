@@ -8,6 +8,8 @@ use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 use DateTime;
 use Symfony\Component\Security\Core\Security;
+use Symfony\Component\Security\Core\User\UserInterface;
+use function Doctrine\ORM\QueryBuilder;
 
 /**
  * @method Outing|null find($id, $lockMode = null, $lockVersion = null)
@@ -32,69 +34,60 @@ class OutingRepository extends ServiceEntityRepository
      * @param SearchData $search
      * @return array
      */
-    public function findSearch(SearchData $search): array
+    public function findSearch(SearchData $search, UserInterface $user): array
     {
 
         $now = new DateTime();
 
         $user = $this->security->getUser();
 
-        $queryBuilder  = $this->createQueryBuilder('o');
-        $query  = $this->createQueryBuilder('o');
-
-
-        $userQuery = $this->createQueryBuilder('out')
-            ->select('out.id')
-            ->innerJoin('out.registeredUsers', 'rg')
-            ->andWhere('rg.id = :userId')
-            ->setParameter('userId', $user);
-
-        $excludedOutings = implode(",", array_map(function ($exclude) {
-            return $exclude['userId'];
-        }, $userQuery->getQuery()->getResult()));
+        $queryBuilder  = $this->createQueryBuilder('outing');
+        $query  = $this->createQueryBuilder('outing')
+            ->select('outing', 'campus', 'registered_users')
+        ->join('outing.campus', 'campus')
+        ->join('outing.registeredUsers', 'registered_users');
 
         if ($search->campus) {
             $query
-                ->join('o.campus', 'c')
-                ->andWhere('o.campus = :campusId')
+                ->join('outing.campus', 'c')
+                ->andWhere('outing.campus = :campusId')
                 ->setParameter('campusId', $search->campus);
         }
         if ($search->q) {
             $query
-                ->andWhere('o.name LIKE :q')
+                ->andWhere('outing.name LIKE :q')
                 ->setParameter('q', '%'.$search->q.'%');
         }
         if (($search->dateStart) || ($search->dateEnd)) {
             $query
-                ->andWhere('o.dateTimeStart >= :dateStart')
-                ->andWhere('o.dateTimeStart <= :dateEnd')
+                ->andWhere('outing.dateTimeStart >= :dateStart')
+                ->andWhere('outing.dateTimeStart <= :dateEnd')
                 ->setParameter('dateStart', $search->dateStart)
                 ->setParameter('dateEnd', $search->dateEnd);
         }
         if ($search->organizer) {
             $query
-                ->andWhere('o.organizerUser = :org')
+                ->andWhere('outing.organizerUser = :org')
                 ->setParameter('org', $user);
         }
         if ($search->registered) {
             $query
-                ->select('o', 'ou', 'us')
-                ->join('o.registeredUsers', 'us')
-                ->leftJoin('us.outings', 'ou')
-                ->andWhere('us.outings = ou.registeredUsers')
-                ->andWhere('ou.id = :userId')
-                ->setParameter('userId', $user);
+                ->andWhere(':user MEMBER OF outing.registeredUsers')
+                ->setParameter('user', $user);
         }
-        if ($search->unregistered && $excludedOutings) {
+        if ($search->unregistered ) {
             $query
-                ->andWhere($queryBuilder->expr()->notIn('o.id', $excludedOutings));
+                ->leftJoin('registered_users.outings', 'ot')
+                ->leftJoin('outing.registeredUsers', 'reg')
+                ->andWhere(':user NOT MEMBER OF outing.registeredUsers')
+                ->setParameter('user', $user);
         }
         if ($search->olds) {
-            $query->andWhere('o.dateTimeStart < :now')
+            $query->andWhere('outing.dateTimeStart < :now')
                 ->setParameter('now', $now);
         }
         return $query
-            ->orderBy('o.dateTimeStart', 'DESC')
+            ->orderBy('outing.dateTimeStart', 'DESC')
             ->getQuery()
             ->getResult();
     }

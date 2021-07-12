@@ -23,19 +23,14 @@ class SearchData
     public $campus;
 
     /**
-     * @var State[]
-     */
-    public $states = [];
-
-    /**
      * @var User
      */
     public $organizer;
 
     /**
-     * @var boolean
+     * @var User
      */
-    public $registered = false;
+    public $registered;
 
     /**
      * @var boolean

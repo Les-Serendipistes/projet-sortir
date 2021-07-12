@@ -33,7 +33,7 @@ class OutingController extends AbstractController
 
         $form->handleRequest($request);
 
-        $page = $outingRepository->findSearch($data);
+        $page = $outingRepository->findSearch($data, $this->getUser());
         $outings = $paginator->paginate(
             $page,
             $request->query->getInt('page', 1),
