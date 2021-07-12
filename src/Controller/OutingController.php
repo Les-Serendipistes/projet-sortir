@@ -4,10 +4,12 @@ namespace App\Controller;
 
 use App\Data\SearchData;
 use App\Entity\Outing;
+use App\Entity\State;
 use App\Form\OutingType;
 use App\Form\SearchOutingFormType;
 use App\Repository\LocationRepository;
 use App\Repository\OutingRepository;
+use App\Repository\StateRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -39,30 +41,37 @@ class OutingController extends AbstractController
 
     #[Route('/outingCreate', name: 'outing_create')]
     public function create(Request $request,  EntityManagerInterface $entityManager,
-                           OutingRepository $outingRepository
+                           OutingRepository $outingRepository, StateRepository $stateRepository
     ): Response
     {
-        $userConnectedCampus=$this->getUser()->getCampus()->getName();
-        $outing = New Outing();
 
+       $userConnectedCampus=$this->getUser()->getCampus()->getName();
+        $outing = New Outing();
         $outingForm = $this->createForm(OutingType::class,$outing);
         $outingForm->handleRequest($request);
         $typeSubmit=$request->request->get('submitAction');
         //Recuperation des données pour l'insertion
-        $userCampusId=$this->getUser()->getCampus();
+       $userCampusId=$this->getUser()->getCampus();
         $outingStateId=$request->request->get('location');
         $outingOrganizerId=$this->getUser();
         $outingLocationId1=$request->request->get('location');
         $outing->setCampus($userCampusId);
-        //$outing->setOrganizerUser($outingOrganizerId->getId());  $outing->setLocation($outingLocationId1);
+         $outing->setOrganizerUser($outing->getOrganizerUser());
+         $outing->setLocation($outingLocationId1);
+        $outingForm->get('campus')->setData($userConnectedCampus);
 
 
         // $outingDateTimeStart=$outingForm->get('')->getData();
         if ($typeSubmit === 'enregistrer' && $outingForm->isValid())
         {
-            $outing->setState(1);
-
-            dd("bouton enregistrer"  );
+            $outing->setState($stateRepository->find(1));
+            $entityManager->persist($outing);
+            $entityManager->flush();
+            $this->addFlash("Sortie","Sortie créée avec succès.");
+            return $this->redirectToRoute('outing_create',[
+               // 'user'=>$user
+            ]);
+            //dd("bouton enregistrer"  );
         }
         elseif ($typeSubmit=== 'publier')
         { $outing->setState(2);
@@ -77,7 +86,7 @@ class OutingController extends AbstractController
             'submitType' => $typeSubmit,
             'outingForm'=>$outingForm->createView(),
             // 'campusName'=>$user->getCampus()->getName()
-            'campusName'=>$userConnectedCampus
+             'campusName'=>$userConnectedCampus
         ]);
     }
 

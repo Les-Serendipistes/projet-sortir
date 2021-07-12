@@ -37,22 +37,26 @@ class OutingType extends AbstractType
             ])
             ->add('limitDateInscription',DateType::class, [
                 'label'=>"Date limite d'inscription :",
+                'widget' => 'single_text',
+                // this is actually the default format for single_text
+                'format' => 'yyyy-MM-dd',
+                'html5' => true,
             ])
             ->add('maxNbPart', NumberType::class,[
                 'label'=>'Nombre de places : ',
             ])
             ->add('duration',NumberType::class,[
-                'label'=>'Durée : ',
+                'label'=>'Durée (minutes): ',
             ])
             ->add('outingReport', TextareaType::class, [
-                'label'=>'Description : ',
+                'label'=>'Description et infos : ',
                 'attr' => array(
                     'placeholder' => 'Faites une description de la sortie'
                 )
             ])
             ->add('campus',TextType::class,[
                 'mapped'=>'false',
-                'label'=>'Campus',
+                'label'=>'Campus :',
                 'attr' => array(
                     'disabled' => 'disabled'
                 ),
@@ -60,10 +64,12 @@ class OutingType extends AbstractType
             ->add('state',EntityType::class, [
                 'class'=>City::class,
                 'placeholder' => ' ',
+                'label'=>'Ville :',
                 'choice_label'=>'name',
             ])
             ->add('location', ChoiceType::class,[
                 'mapped'=>false,
+                'label'=>'Lieu :',
                 'choices'=>[
                     ''=>''
                 ]
@@ -97,9 +103,17 @@ class OutingType extends AbstractType
             */
             ->add('longitude',NumberType::class,[
                 'mapped'=>false,
+                'label'=>'Longitude : ',
+                'attr' => array(
+                    'disabled' => 'disabled'
+                ),
             ])
             ->add('latitude',NumberType::class,[
                 'mapped'=>false,
+                'label'=>'Latitude :',
+                'attr' => array(
+                    'disabled' => 'disabled'
+                ),
             ])
         ;
     }
@@ -121,3 +135,4 @@ class OutingType extends AbstractType
         return '';
     }
 }
+

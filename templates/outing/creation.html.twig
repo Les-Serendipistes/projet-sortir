@@ -20,36 +20,27 @@
         {{ form_start(outingForm) }}
         {{ form_errors(outingForm) }}
         <div class="left-div1 left-text">
-            {{ form_label(outingForm.name, 'Nom de la sortie: ') }}
-            {{ form_widget(outingForm.name) }}
-            {{ form_label(outingForm.dateTimeStart, 'Date et heure de la sortie:') }}
-            {{ form_widget(outingForm.dateTimeStart) }}
-            {{ form_label(outingForm.limitDateInscription, "Date limte d'inscription:") }}
-            {{ form_widget(outingForm.limitDateInscription) }}
-            {{ form_label(outingForm.maxNbPart, 'Nombre de places : ') }}
-            {{ form_widget(outingForm.maxNbPart) }}
-            {{ form_label(outingForm.duration, 'Durée (minutes):') }}
-            {{ form_widget(outingForm.duration) }}
-            {{ form_label(outingForm.outingReport, 'Description et infos: ') }}
-            {{ form_widget(outingForm.outingReport) }}
+            {{ form_row(outingForm.name) }}
+            {{ form_row(outingForm.dateTimeStart) }}
+            {{ form_row(outingForm.limitDateInscription) }}
+            {{ form_row(outingForm.maxNbPart) }}
+            {{ form_row(outingForm.duration) }}
+            {{ form_row(outingForm.outingReport) }}
         </div>
 
         <div class="right-div1 right-text">
-            {{ form_label(outingForm.campus, 'Campus :') }}
-            {{ form_widget(outingForm.campus) }}
-            {{ form_label(outingForm.state, 'Ville :') }}
-            {{ form_widget(outingForm.state) }}
+            {{ form_row(outingForm.campus) }}
+            {{ form_row(outingForm.state) }}
             <span>&nbsp;<button>+</button></span>
-            {{ form_label(outingForm.location, 'Lieu :') }}
-            {{ form_widget(outingForm.location) }}
-            {{ form_label(outingForm.street, 'Rue :') }}
-            {{ form_widget(outingForm.street) }}
-            {{ form_label(outingForm.zipcode, 'Code postal :') }}
-            {{ form_widget(outingForm.zipcode) }}
-            {{ form_label(outingForm.latitude, 'Latitude :') }}
-            {{ form_widget(outingForm.latitude) }}
-            {{ form_label(outingForm.longitude, 'Longitude :') }}
-            {{ form_widget(outingForm.longitude) }}
+            {{ form_row(outingForm.location) }}
+
+            {{ form_row(outingForm.street) }}
+
+
+            {{ form_row(outingForm.zipcode) }}
+
+            {{ form_row(outingForm.latitude) }}
+            {{ form_row(outingForm.longitude) }}
 
         </div>
         <div class="div_button">
