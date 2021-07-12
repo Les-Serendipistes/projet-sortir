@@ -102,7 +102,7 @@ class OutingController extends AbstractController
     }
 
     #[Route('/outingDetail/{id}', name: 'outing_detail')]
-    public function campus($id, Request $request, OutingRepository $outingRepository, CityRepository $cityRepository, EntityManagerInterface $entityManager): Response
+    public function campus($id, Request $request, OutingRepository $outingRepository, EntityManagerInterface $entityManager): Response
     {
         $outing = $outingRepository->find($id);
         if (!$outing){
