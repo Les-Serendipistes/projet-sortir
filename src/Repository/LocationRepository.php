@@ -19,6 +19,29 @@ class LocationRepository extends ServiceEntityRepository
         parent::__construct($registry, Location::class);
     }
 
+
+
+
+
+         public function findLocation($id)
+         {
+             $entityManager = $this->getEntityManager();
+             $query = $entityManager->createQuery(
+                 'SELECT p
+                  FROM App\Entity\Location l
+                  WHERE l.city > :id '
+                  )->setParameter('id', $id);
+
+             // returns an array of Product objects
+             return $query->getArrayResult();
+         }
+
+
+
+
+
+
+
     // /**
     //  * @return Location[] Returns an array of Location objects
     //  */

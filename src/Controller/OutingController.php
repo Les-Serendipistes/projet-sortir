@@ -55,7 +55,7 @@ class OutingController extends AbstractController
         $outingOrganizerId=$this->getUser();
         $outingLocationId1=$request->request->get('location');
         $outing->setCampus($userCampusId);
-        $outing->setOrganizerUser($outingOrganizerId->getId());  $outing->setLocation($outingLocationId1);
+        //$outing->setOrganizerUser($outingOrganizerId->getId());  $outing->setLocation($outingLocationId1);
 
 
         // $outingDateTimeStart=$outingForm->get('')->getData();
@@ -87,7 +87,8 @@ class OutingController extends AbstractController
                                LocationRepository $locationRepository ): Response
     {
         $id=json_decode($request->getContent());
-        $outings =  $locationRepository->findCityLocation($id);
+        //$outings =  $locationRepository->findCityLocation($id);
+        $outings =  $locationRepository->findLocation($id);
         return  $this->json($outings) ;
     }
 
