@@ -30,11 +30,13 @@
             <td>Pseudo</td>
             <td>Nom</td>
             </thead>
-            {# TODO: Récupérer et afficher pseudo et nom des participants inscrits #}
+            {# On affiche le pseudo et le prénom/nom pour chaque registeredUser dans la collection RegisteredUsers #}
+            {% for registeredUser in outing.registeredUsers %}
             <tr>
-                <td>Essai</td>
-                <td>Essai 2</td>
+                <td>{{ registeredUser.pseudo }}</td>
+                <td>{{ registeredUser.firstname }} {{ registeredUser.lastname }}</td>
             </tr>
+            {% endfor %}
         </table>
     </section>
 
