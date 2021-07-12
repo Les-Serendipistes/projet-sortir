@@ -102,6 +102,16 @@ class OutingController extends AbstractController
 
     }
 
+    #[Route('/outingDetail/{id}', name: 'outing_detail')]
+    public function campus($id, Request $request, OutingRepository $outingRepository, CityRepository $cityRepository, EntityManagerInterface $entityManager): Response
+    {
+        $outing = $outingRepository->find($id);
+        if (!$outing){
+            throw $this->createNotFoundException("Cette sortie n'existe pas... pourquoi ne pas en créer une ?");
+        }
+
+        return $this->render('outing/detail.html.twig', ['outing' => $outing]);
+    }
 
 
 }
