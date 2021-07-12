@@ -39,53 +39,68 @@ class OutingController extends AbstractController
 
 
     #[Route('/outingCreate', name: 'outing_create')]
-    public function create(Request $request,
+    public function create(Request $request,  EntityManagerInterface $entityManager,
+                           OutingRepository $outingRepository
     ): Response
     {
+        $userConnectedCampus=$this->getUser()->getCampus()->getName();
         $outing = New Outing();
+
         $outingForm = $this->createForm(OutingType::class,$outing);
         $outingForm->handleRequest($request);
         $typeSubmit=$request->request->get('submitAction');
-        //$request->get('submitAction')
-        $outingName=$outingForm->get('name')->getData();
+        //Recuperation des données pour l'insertion
+        $userCampusId=$this->getUser()->getCampus();
+        $outingStateId=$request->request->get('location');
+        $outingOrganizerId=$this->getUser();
+        $outingLocationId1=$request->request->get('location');
+        $outing->setCampus($userCampusId);
+        $outing->setOrganizerUser($outingOrganizerId->getId());  $outing->setLocation($outingLocationId1);
 
-        if ($typeSubmit === 'enregistrer')
+
+        // $outingDateTimeStart=$outingForm->get('')->getData();
+        if ($typeSubmit === 'enregistrer' && $outingForm->isValid())
         {
-            dd("bouton enregistrer".$typeSubmit."---".$outingName);
+            $outing->setState(1);
+
+            dd("bouton enregistrer"  );
         }
         elseif ($typeSubmit=== 'publier')
-        {
+        { $outing->setState(2);
             dd("bouton publier".$typeSubmit);
         }
-        elseif ($typeSubmit === 'annuler'){
+        elseif ($typeSubmit === 'annuler')
+        {   //redirection vers la page de sortie
             dd("bouton annuler".$typeSubmit);
         }
 
         return $this->render('outing/creation.html.twig', [
             'submitType' => $typeSubmit,
             'outingForm'=>$outingForm->createView(),
+            // 'campusName'=>$user->getCampus()->getName()
+            'campusName'=>$userConnectedCampus
         ]);
     }
 
     #[Route('/listPlaces', name: 'list_places')]
-    public function listPlaces(Request $request,  LocationRepository $locationRepository ): Response
+    public function listPlaces(Request $request,
+                               LocationRepository $locationRepository ): Response
     {
-            $id=$request->getContent();
-        $outings =  $locationRepository->findBy(
-            ['city'=>$id]
-        );
-
-     return $this->json($outings);
-            //dd($outings);
+        $id=json_decode($request->getContent());
+        $outings =  $locationRepository->findCityLocation($id);
+        return  $this->json($outings) ;
     }
-    #[Route('/outingDetail/{id}', name: 'outing_detail')]
-    public function campus($id, Request $request, OutingRepository $outingRepository, CityRepository $cityRepository, EntityManagerInterface $entityManager): Response
+
+    #[Route('/detailLieu', name: 'detail_lieu')]
+    public function detailLieu(Request $request,
+                               LocationRepository $locationRepository ): Response
     {
-        $outing = $outingRepository->find($id);
-        if (!$outing){
-            throw $this->createNotFoundException("Cette sortie n'existe pas... pourquoi ne pas en créer une ?");
-        }
+        $data=json_decode($request->getContent());
+        $detailLieu=$locationRepository->findLocationDetail($data->townId, $data->placeId);
+        return $this->json($detailLieu);
 
-        return $this->render('outing/detail.html.twig', ['outing' => $outing]);
     }
+
+
+
 }
