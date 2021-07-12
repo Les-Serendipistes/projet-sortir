@@ -28,20 +28,20 @@
             {{ form_widget(outingForm.limitDateInscription) }}
             {{ form_label(outingForm.maxNbPart, 'Nombre de places : ') }}
             {{ form_widget(outingForm.maxNbPart) }}
-            {{ form_label(outingForm.duration, 'Durée:') }}
-            {{ form_widget(outingForm.duration) }}  minutes<br>
+            {{ form_label(outingForm.duration, 'Durée (minutes):') }}
+            {{ form_widget(outingForm.duration) }}
             {{ form_label(outingForm.outingReport, 'Description et infos: ') }}
             {{ form_widget(outingForm.outingReport) }}
         </div>
 
         <div class="right-div1 right-text">
             {{ form_label(outingForm.campus, 'Campus :') }}
-            {{ form_widget(outingForm.campus) }}<br>
+            {{ form_widget(outingForm.campus) }}
             {{ form_label(outingForm.state, 'Ville :') }}
             {{ form_widget(outingForm.state) }}
-            <span>&nbsp;<button>+</button></span><br>
+            <span>&nbsp;<button>+</button></span>
             {{ form_label(outingForm.location, 'Lieu :') }}
-            {{ form_widget(outingForm.location) }}<br>
+            {{ form_widget(outingForm.location) }}
             {{ form_label(outingForm.street, 'Rue :') }}
             {{ form_widget(outingForm.street) }}
             {{ form_label(outingForm.zipcode, 'Code postal :') }}
@@ -67,21 +67,23 @@
         <script type="text/javascript">
             window.onload = init;
             function init(){
-                let selectedTown=  document.getElementById("outing_state");
+                let selectedTown=  document.getElementById("state");
+                let selectedCity = document.getElementById("location");
                 selectedTown.addEventListener('change',function(){
                     let valeur=selectedTown.value;
                     console.log(valeur);
                      fetch('{{ path('list_places') }}', {method:'POST', body:valeur} )
                     .then(function (response){
                         return response.json();
-                    }).then(function (valeur){
-                        //console.log(valeur);
-                         for (let i = 0; i < valeur.length; i++) {
-                             let opt = options[i];
+                    }).then(function (datas){
+                        //console.log(datas);
+                        console.log(selectedCity);
+                         for (let i = 0; i < datas.length; i++) {
+                             console.log(datas[i].name+ "le nom");
                              let el = document.createElement("option");
-                             el.textContent = valeur[i].name;
-                             el.value = valeur[i].id;
-                             select.appendChild(el);
+                             el.textContent = datas[i].name;
+                             el.value = datas[i].id;
+                             selectedCity.appendChild(el);
                          }
                      })
                 })

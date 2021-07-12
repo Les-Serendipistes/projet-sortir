@@ -110,4 +110,14 @@ class OutingType extends AbstractType
             'data_class' => Outing::class,
         ]);
     }
+/*
+    public function getBlockPrefix()
+    {
+        return null;
+    }
+    */
+    public function getBlockPrefix()
+    {
+        return '';
+    }
 }
