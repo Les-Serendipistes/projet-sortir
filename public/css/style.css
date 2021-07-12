@@ -115,3 +115,8 @@ mise en forme ossature template ajout sortie
 .pagination {
     display: inline-block;
 }
+.pagination-event {
+    margin-top: 3rem;
+    text-align: center;
+
+}

@@ -50,11 +50,11 @@ class SearchData
     /**
      * @var DateTime
      */
-    public $startDate;
+    public $dateStart;
 
     /**
      * @var DateTime
      */
-    public $endDate;
+    public $dateEnd;
 
 }

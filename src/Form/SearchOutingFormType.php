@@ -32,13 +32,11 @@ class SearchOutingFormType extends AbstractType
                 'label'             => false,
                 'required'          => false,
                 'widget'            => 'single_text',
-                'mapped'            => false
             ])
             ->add('dateEnd', DateType::class, [
                 'label'             => false,
                 'required'          => false,
                 'widget'            => 'single_text',
-                'mapped'            => false
             ])
             ->add('organizer', CheckboxType::class, [
                 'label'             => false,

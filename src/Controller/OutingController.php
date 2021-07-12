@@ -11,6 +11,7 @@ use App\Repository\LocationRepository;
 use App\Repository\OutingRepository;
 use App\Repository\StateRepository;
 use Doctrine\ORM\EntityManagerInterface;
+use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -20,7 +21,11 @@ use Symfony\Component\Security\Core\Security;
 class OutingController extends AbstractController
 {
     #[Route('/outingList', name: 'outing_list')]
-    public function list(OutingRepository $outingRepository,  Request $request, Security $security): Response
+    public function list(OutingRepository $outingRepository,
+                         Request $request,
+                         Security $security,
+                         PaginatorInterface $paginator
+    ): Response
     {
         $user = $security->getToken()->getUser();
         $data = new SearchData();
@@ -28,8 +33,12 @@ class OutingController extends AbstractController
 
         $form->handleRequest($request);
 
-        $outings = $outingRepository->findSearch($data);
-        dump($request);
+        $page = $outingRepository->findSearch($data);
+        $outings = $paginator->paginate(
+            $page,
+            $request->query->getInt('page', 1),
+            6
+        );
         return $this->render('outing/outingList.html.twig', [
             'outings'   => $outings,
             'user'      => $user,

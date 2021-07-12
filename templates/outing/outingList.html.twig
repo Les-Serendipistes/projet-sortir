@@ -34,16 +34,12 @@
                     {% for outing in outings %}
                         {% include 'outing/_outingTable.html.twig' with {outing: outing} only %}
                     {% endfor %}
-                    <thead>
-                    <th>nom</th>
-                    <th>Date de début</th>
-                    <th>Date limite d'inscription</th>
-                    <th>Organisateur.trice</th>
-                    <th>Campus</th>
-                    <th>Inscrit.e.s</th>
-                    </thead>
                     </tbody>
                 </table>
+                <div class="pagination-event">
+                    {% do outings.setPageRange(2) %}
+                    {{ knp_pagination_render(outings, 'pagination/pagination.html.twig') }}
+                </div>
             </div>
         </div>
         </div>
