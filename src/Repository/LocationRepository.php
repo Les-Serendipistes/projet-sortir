@@ -35,6 +35,19 @@ class LocationRepository extends ServiceEntityRepository
              // returns an array of Product objects
              return  $query->getArrayResult();
          }
+           public function findLocationDetail($id)
+         {
+             $entityManager = $this->getEntityManager();
+             $query = $entityManager->createQuery(
+                 'SELECT l.address, c.postCode,l.latitude , l.longitude
+                  FROM App\Entity\City c
+                  JOIN App\Entity\Location l
+                  WHERE  c.id=l.city and l.id=:id '
+                  )->setParameter('id', $id);
+
+             // returns an array of Product objects
+             return  $query->getArrayResult();
+         }
 
 
 

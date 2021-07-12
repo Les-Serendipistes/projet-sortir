@@ -20,7 +20,8 @@
         {{ form_start(outingForm) }}
         {{ form_errors(outingForm) }}
         <div class="left-div1 left-text">
-            {{ form_row(outingForm.name) }}
+
+            {{ form_row(outingForm.name)}}
             {{ form_row(outingForm.dateTimeStart) }}
             {{ form_row(outingForm.limitDateInscription) }}
             {{ form_row(outingForm.maxNbPart) }}
@@ -29,7 +30,7 @@
         </div>
 
         <div class="right-div1 right-text">
-            {{ form_row(outingForm.campus) }}
+            {{ form_row(outingForm.campus, {'value': campusName}) }}
             {{ form_row(outingForm.state) }}
             <span>&nbsp;<button>+</button></span>
             {{ form_row(outingForm.location) }}
@@ -61,11 +62,14 @@
                 let selectedTown=  document.getElementById("state");
                 let selectedCity = document.getElementById("location");
                 selectedTown.addEventListener('change',function(){
+                    selectedCity.length = 1;
+                    resetfield();
                     let valeur=selectedTown.value;
                     console.log(valeur);
                      fetch('{{ path('list_places') }}', {method:'POST', body:valeur} )
                     .then(function (response){   return response.json();
                     }).then(function (datas){
+                         console.log(datas );
                          for (let i = 0; i < datas.length; i++) {
                              let el = document.createElement("option");
                              el.textContent = datas[i].name;
@@ -77,21 +81,25 @@
 
 
                 selectedCity.addEventListener('change',function(){
-                    let valeur=selectedCity.value;
-                    console.log(valeur);
-                    fetch('{{ path('list_places') }}', {method:'POST', body:valeur} )
+                    let data=selectedCity.value;
+                    resetfield();
+                    fetch('{{ path('detail_place') }}', {method:'POST', body:JSON.stringify(data)} )
                         .then(function (response){   return response.json();
-                        }).then(function (datas){
-                        for (let i = 0; i < datas.length; i++) {
-                            let el = document.createElement("option");
-                            el.textContent = datas[i].name;
-                            el.value = datas[i].id;
-                            selectedCity.appendChild(el);
-                        }
+                        }).then(function (detailsData){
+                        document.getElementById('street').value=detailsData[0].address;
+                        document.getElementById('zipcode').value=detailsData[0].postCode;
+                        document.getElementById('latitude').value= detailsData[0].latitude;
+                        document.getElementById('longitude').value= detailsData[0].longitude;
+
                     })
                 })
 
-
+            function resetfield(){
+                document.getElementById('street').value="";
+                document.getElementById('zipcode').value="";
+                document.getElementById('latitude').value= "";
+                document.getElementById('longitude').value= "";
+            }
 
 
 

@@ -10,8 +10,10 @@ use App\Form\SearchOutingFormType;
 use App\Repository\LocationRepository;
 use App\Repository\OutingRepository;
 use App\Repository\StateRepository;
+use App\Repository\UserRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Knp\Component\Pager\PaginatorInterface;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -49,38 +51,45 @@ class OutingController extends AbstractController
 
 
     #[Route('/outingCreate', name: 'outing_create')]
+    /**
+     * @ParamConverter ("State", options={"mapping":{"id": "id"}})
+     * @ParamConverter ("Location", options={"mapping":{"id": "id"}})
+     * @ParamConverter ("User", options={"mapping":{"id": "id"}})
+     */
     public function create(Request $request,  EntityManagerInterface $entityManager,
-                           OutingRepository $outingRepository, StateRepository $stateRepository
+                       StateRepository $stateRepository, LocationRepository $locationRepository,
+                       UserRepository $userRepository
+
     ): Response
     {
+          if($this->getUser()){
+              $userConnectedCampus=$this->getUser()->getCampus()->getName();
+              $userId=$this->getUser()->getId();
+              $outing = New Outing();
+              $outingForm = $this->createForm(OutingType::class,$outing);
+              $outingForm->handleRequest($request);
+              $typeSubmit=$request->request->get('submitAction');
+              //Recuperation des données pour l'insertion
+              if( $outingForm->isSubmitted()){
+                  $userCampusId=$this->getUser()->getCampus();
+                  $outingLocationId1=$request->request->get('location');
+                  $outing->setCampus($userCampusId);
+                  $outing->setOrganizerUser($outing->getOrganizerUser());
+                  $outing->setLocation($locationRepository->find($outingLocationId1));
+                  $outing->setOrganizerUser($userRepository->find($userId));
+              }
 
-       $userConnectedCampus=$this->getUser()->getCampus()->getName();
-        $outing = New Outing();
-        $outingForm = $this->createForm(OutingType::class,$outing);
-        $outingForm->handleRequest($request);
-        $typeSubmit=$request->request->get('submitAction');
-        //Recuperation des données pour l'insertion
-       $userCampusId=$this->getUser()->getCampus();
-        $outingStateId=$request->request->get('location');
-        $outingOrganizerId=$this->getUser();
-        $outingLocationId1=$request->request->get('location');
-        $outing->setCampus($userCampusId);
-         $outing->setOrganizerUser($outing->getOrganizerUser());
-         $outing->setLocation($outingLocationId1);
-        $outingForm->get('campus')->setData($userConnectedCampus);
-
-
-        // $outingDateTimeStart=$outingForm->get('')->getData();
-        if ($typeSubmit === 'enregistrer' && $outingForm->isValid())
+          }else{
+              $this->addFlash("Connexion","Veuillez vous connecter.");
+              return $this->redirectToRoute('outing_list' );
+          }
+        if ($typeSubmit === 'enregistrer' )
         {
-            $outing->setState($stateRepository->getClassName());
+            $outing->setState($stateRepository->find(1));
             $entityManager->persist($outing);
             $entityManager->flush();
             $this->addFlash("Sortie","Sortie créée avec succès.");
-            return $this->redirectToRoute('outing_create',[
-               // 'user'=>$user
-            ]);
-            //dd("bouton enregistrer"  );
+            return $this->redirectToRoute('outing_list' );
         }
         elseif ($typeSubmit=== 'publier')
         { $outing->setState(2);
@@ -109,12 +118,12 @@ class OutingController extends AbstractController
         return  $this->json($outings) ;
     }
 
-    #[Route('/detailLieu', name: 'detail_lieu')]
+    #[Route('/detailLieu', name: 'detail_place')]
     public function detailLieu(Request $request,
                                LocationRepository $locationRepository ): Response
     {
-        $data=json_decode($request->getContent());
-        $detailLieu=$locationRepository->findLocationDetail($data->townId, $data->placeId);
+        $id=json_decode($request->getContent());
+        $detailLieu=$locationRepository->findLocationDetail($id);
         return $this->json($detailLieu);
 
     }

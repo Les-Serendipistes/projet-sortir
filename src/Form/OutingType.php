@@ -20,7 +20,8 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class OutingType extends AbstractType
 {
-    public function buildForm(FormBuilderInterface $builder, array $options)
+    public function buildForm(FormBuilderInterface $builder, array $options
+    )
     {
         $builder
             ->add('name', TextType::class, [
@@ -63,6 +64,7 @@ class OutingType extends AbstractType
             ] )
             ->add('state',EntityType::class, [
                 'class'=>City::class,
+                'mapped'=>false,
                 'placeholder' => ' ',
                 'label'=>'Ville :',
                 'choice_label'=>'name',
@@ -122,6 +124,7 @@ class OutingType extends AbstractType
     {
         $resolver->setDefaults([
             'data_class' => Outing::class,
+            'allow_extra_fields' => true
         ]);
     }
 /*
