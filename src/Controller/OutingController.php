@@ -2,54 +2,42 @@
 
 namespace App\Controller;
 
+use App\Data\SearchData;
 use App\Entity\Outing;
 use App\Form\OutingType;
-use App\Form\OutingFilterSearchType;
-use App\Repository\CityRepository;
+use App\Form\SearchOutingFormType;
 use App\Repository\LocationRepository;
 use App\Repository\OutingRepository;
-use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Security\Core\Security;
 
 class OutingController extends AbstractController
 {
-    #[Route('/outingList/{page}', name: 'outing_list', requirements: [ 'page' => '\d+'])]
-    public function list(OutingRepository $outingRepository, Request $request, int $page = 1): Response
+    #[Route('/outingList', name: 'outing_list')]
+    public function list(OutingRepository $outingRepository,  Request $request, Security $security): Response
     {
-        $outingForm = $this->createForm(OutingFilterSearchType::class);
-        $nbOutings = $outingRepository->count([]);
-        $maxPage = ceil($nbOutings / 20);
+        $user = $security->getToken()->getUser();
+        $data = new SearchData();
+        $form = $this->createForm(SearchOutingFormType::class, $data);
 
-        $outingForm->handleRequest($request);
+        $form->handleRequest($request);
 
-        if ($page < 1 || $page > $maxPage) {
-            $page = 1;
-            $outings = $outingRepository->findByDateTimeStart($page);
-            return $this->render('outing/outingList.html.twig', [
-               'outings' => $outings,
-               'currentPage' => $page,
-               'maxPage' => $maxPage,
-                'outingForm' => $outingForm->createView()
-            ]);
-        } else {
-            $outings = $outingRepository->findByDateTimeStart($page);
-            return $this->render('outing/outingList.html.twig', [
-                'outings' => $outings,
-                'currentPage' => $page,
-                'maxPage' => $maxPage,
-                'outingForm' => $outingForm->createView()
-            ]);
-        }
+        $outings = $outingRepository->findSearch($data);
+        dump($request);
+        return $this->render('outing/outingList.html.twig', [
+            'outings'   => $outings,
+            'user'      => $user,
+            'form'      => $form->createView()
+        ]);
     }
 
 
 
     #[Route('/outingCreate', name: 'outing_create')]
-    public function create(Request $request,  EntityManagerInterface $entityManager,
-                           OutingRepository $outingRepository
+    public function create(Request $request,
     ): Response
     {
         $outing = New Outing();

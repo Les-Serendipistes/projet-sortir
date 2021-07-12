@@ -33,7 +33,7 @@ class LocationFixtures extends Fixture implements DependentFixtureInterface
 
         $location = new Location();
         $location->setName('Cinéma')
-            ->setAddress($faker->address)
+            ->setAddress($faker->streetAddress)
             ->setCity($this->getReference(CityFixtures::CITY_REFERENCE.'_'.mt_rand(1,20)))
             ->setLongitude($faker->longitude)
             ->setLatitude($faker->latitude);
@@ -42,7 +42,7 @@ class LocationFixtures extends Fixture implements DependentFixtureInterface
 
         $location = new Location();
         $location->setName('Theatre')
-            ->setAddress($faker->address)
+            ->setAddress($faker->streetAddress)
             ->setCity($this->getReference(CityFixtures::CITY_REFERENCE.'_'.mt_rand(1,20)))
             ->setLongitude($faker->longitude)
             ->setLatitude($faker->latitude);
@@ -51,7 +51,7 @@ class LocationFixtures extends Fixture implements DependentFixtureInterface
 
         $location = new Location();
         $location->setName('Concert')
-            ->setAddress($faker->address)
+            ->setAddress($faker->streetAddress)
             ->setCity($this->getReference(CityFixtures::CITY_REFERENCE.'_'.mt_rand(1,20)))
             ->setLongitude($faker->longitude)
             ->setLatitude($faker->latitude);
@@ -60,7 +60,7 @@ class LocationFixtures extends Fixture implements DependentFixtureInterface
 
         $location = new Location();
         $location->setName("Bowling")
-            ->setAddress($faker->address)
+            ->setAddress($faker->streetAddress)
             ->setCity($this->getReference(CityFixtures::CITY_REFERENCE.'_'.mt_rand(1,20)))
             ->setLongitude($faker->longitude)
             ->setLatitude($faker->latitude);
@@ -69,7 +69,7 @@ class LocationFixtures extends Fixture implements DependentFixtureInterface
 
         $location = new Location();
         $location->setName("Bar")
-            ->setAddress($faker->address)
+            ->setAddress($faker->streetAddress)
             ->setCity($this->getReference(CityFixtures::CITY_REFERENCE.'_'.mt_rand(1,20)))
             ->setLongitude($faker->longitude)
             ->setLatitude($faker->latitude);

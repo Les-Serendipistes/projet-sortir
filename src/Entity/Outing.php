@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\OutingRepository;
+use DateTime;
+use DateTimeInterface;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
@@ -103,24 +105,24 @@ class Outing
         return $this;
     }
 
-    public function getDateTimeStart(): ?\DateTimeInterface
+    public function getDateTimeStart(): ?DateTime
     {
         return $this->dateTimeStart;
     }
 
-    public function setDateTimeStart(\DateTimeInterface $dateTimeStart): self
+    public function setDateTimeStart(DateTime $dateTimeStart): self
     {
         $this->dateTimeStart = $dateTimeStart;
 
         return $this;
     }
 
-    public function getLimitDateInscription(): ?\DateTimeInterface
+    public function getLimitDateInscription(): ?DateTime
     {
         return $this->limitDateInscription;
     }
 
-    public function setLimitDateInscription(\DateTimeInterface $limitDateInscription): self
+    public function setLimitDateInscription(DateTime $limitDateInscription): self
     {
         $this->limitDateInscription = $limitDateInscription;
 
@@ -201,7 +203,7 @@ class Outing
     }
 
     /**
-     * @return Collection|User[]
+     * @return Collection
      */
     public function getRegisteredUsers(): Collection
     {

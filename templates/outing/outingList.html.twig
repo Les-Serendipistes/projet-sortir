@@ -1,25 +1,24 @@
 {% extends 'base.html.twig' %}
 
 {% block title %}
- {{ parent() }} | Liste des sorties
+    {{ parent() }} | Liste des sorties
 {% endblock %}
 
 {% block body %}
-
-    <div class="container">
-        <h1>Lists des sorties</h1>
-        <div>
-            <h3>Outil de recherche</h3>
-            <div class="fluid container">
-                {{ form(outingForm) }}
-
+    <article class="grid-container">
+        <h2>Lists des sorties</h2>
+        <div class="grid-x grid-margin-x">
+            <div class="grid-x grid-margin-x">
+                <div class="medium-12 cell small-order-4 medium-order-1">
+                    {% include 'outing/_filter.html.twig' with {form: form} only %}
+                </div>
             </div>
-            {% if ( currentPage  > 1) %}
-                <a class="buttonOuting" href="{{ path('outing_list', {'page': currentPage - 1}) }}">Page précédente</a>
-            {% endif %}
-            {% if ( maxPage  > currentPage) %}
-                <a class="buttonOuting" href="{{ path('outing_list', {'page': currentPage + 1}) }}">Page suivante</a>
-            {% endif %}
+        </div>
+        <div class="medium-12 cell small-order-2 medium-order-1">
+            <nav aria-label="Pagination">
+                {# {{ knp_pagination_render(pagination) }} #}
+
+            </nav>
 
             <div>
                 <table class="ui celled table">
@@ -29,27 +28,24 @@
                     <th>Date de début</th>
                     <th>Date limite d'inscription</th>
                     <th>Organisateur.trice</th>
-                    <th>Part. déjà inscrit.e.s / nombre max.</th>
+                    <th>Campus</th>
+                    <th>Inscrit.e.s</th>
                     </thead>
                     {% for outing in outings %}
-                        <tr>
-                            <td>{{ outing.name }}</td>
-                            <td>{{ outing.dateTimeStart | date('d/m/Y à h\\H') }}</td>
-                            <td>{{ outing.limitDateInscription | date('d/m/Y à h\\H') }}</td>
-                            <td>{{ outing.organizerUser.firstname }} {{ outing.organizerUser.lastname }}</td>
-                            <td>{{ outing.registeredUsers.count }} / {{ outing.maxNbPart }}</td>
-                        </tr>
+                        {% include 'outing/_outingTable.html.twig' with {outing: outing} only %}
                     {% endfor %}
                     <thead>
                     <th>nom</th>
                     <th>Date de début</th>
                     <th>Date limite d'inscription</th>
                     <th>Organisateur.trice</th>
-                    <th>Part. déjà inscrit.e.s / nombre max.</th>
+                    <th>Campus</th>
+                    <th>Inscrit.e.s</th>
                     </thead>
                     </tbody>
                 </table>
             </div>
         </div>
-    </div>
+        </div>
+    </article>
 {% endblock %}
