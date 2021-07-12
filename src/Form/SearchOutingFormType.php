@@ -27,21 +27,18 @@ class SearchOutingFormType extends AbstractType
             ->add('q', TextType::class, [
                 'label'             => false,
                 'required'          => false,
-                'attr'              => [
-                    'placeholder'   => 'Recherche'
-                ]
             ])
             ->add('dateStart', DateType::class, [
                 'label'             => false,
                 'required'          => false,
                 'widget'            => 'single_text',
-
+                'mapped'            => false
             ])
             ->add('dateEnd', DateType::class, [
                 'label'             => false,
                 'required'          => false,
                 'widget'            => 'single_text',
-
+                'mapped'            => false
             ])
             ->add('organizer', CheckboxType::class, [
                 'label'             => false,

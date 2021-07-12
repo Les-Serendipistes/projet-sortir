@@ -20,7 +20,7 @@ class SearchData
     /**
      * @var Campus[]
      */
-    public $campus = [];
+    public $campus;
 
     /**
      * @var State[]
