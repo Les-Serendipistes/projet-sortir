@@ -73,13 +73,9 @@
                     let valeur=selectedTown.value;
                     console.log(valeur);
                      fetch('{{ path('list_places') }}', {method:'POST', body:valeur} )
-                    .then(function (response){
-                        return response.json();
+                    .then(function (response){   return response.json();
                     }).then(function (datas){
-                        //console.log(datas);
-                        console.log(selectedCity);
                          for (let i = 0; i < datas.length; i++) {
-                             console.log(datas[i].name+ "le nom");
                              let el = document.createElement("option");
                              el.textContent = datas[i].name;
                              el.value = datas[i].id;
@@ -87,6 +83,28 @@
                          }
                      })
                 })
+
+
+                selectedCity.addEventListener('change',function(){
+                    let valeur=selectedCity.value;
+                    console.log(valeur);
+                    fetch('{{ path('list_places') }}', {method:'POST', body:valeur} )
+                        .then(function (response){   return response.json();
+                        }).then(function (datas){
+                        for (let i = 0; i < datas.length; i++) {
+                            let el = document.createElement("option");
+                            el.textContent = datas[i].name;
+                            el.value = datas[i].id;
+                            selectedCity.appendChild(el);
+                        }
+                    })
+                })
+
+
+
+
+
+
             }
         </script>
 {% endblock %}
