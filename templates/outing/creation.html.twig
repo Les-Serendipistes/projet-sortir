@@ -73,9 +73,16 @@
                     console.log(valeur);
                      fetch('{{ path('list_places') }}', {method:'POST', body:valeur} )
                     .then(function (response){
-                        return response;
+                        return response.json();
                     }).then(function (valeur){
-                        console.log(valeur);
+                        //console.log(valeur);
+                         for (let i = 0; i < valeur.length; i++) {
+                             let opt = options[i];
+                             let el = document.createElement("option");
+                             el.textContent = valeur[i].name;
+                             el.value = valeur[i].id;
+                             select.appendChild(el);
+                         }
                      })
                 })
             }

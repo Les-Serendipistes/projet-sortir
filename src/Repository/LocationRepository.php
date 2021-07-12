@@ -27,13 +27,13 @@ class LocationRepository extends ServiceEntityRepository
          {
              $entityManager = $this->getEntityManager();
              $query = $entityManager->createQuery(
-                 'SELECT p
+                 'SELECT l.id, l.name
                   FROM App\Entity\Location l
-                  WHERE l.city > :id '
+                  WHERE l.city =:id '
                   )->setParameter('id', $id);
 
              // returns an array of Product objects
-             return $query->getArrayResult();
+             return  $query->getArrayResult();
          }
 
 
