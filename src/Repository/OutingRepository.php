@@ -20,7 +20,7 @@ class OutingRepository extends ServiceEntityRepository
     /**
      * @var Security
      */
-    private $security;
+    private Security $security;
 
     public function __construct(ManagerRegistry $registry, Security $security) {
         parent::__construct($registry, Outing::class);
@@ -39,54 +39,57 @@ class OutingRepository extends ServiceEntityRepository
 
         $user = $this->security->getUser();
 
-        $query = $this->createQueryBuilder('o');
+        $queryBuilder  = $this->createQueryBuilder('o');
+        $query  = $this->createQueryBuilder('o');
+
 
         $userQuery = $this->createQueryBuilder('out')
             ->select('out.id')
-            ->innerJoin('out.registeredUsers', 'registeredUsers')
-            ->andWhere('registeredUsers.id = :user')
-            ->setParameter('user', $user);
+            ->innerJoin('out.registeredUsers', 'rg')
+            ->andWhere('rg.id = :userId')
+            ->setParameter('userId', $user);
 
         $excludedOutings = implode(",", array_map(function ($exclude) {
-            return $exclude['o.id'];
-        },
-            $userQuery->getQuery()->getResult()));
+            return $exclude['userId'];
+        }, $userQuery->getQuery()->getResult()));
 
-        if (!empty($search->campus)) {
+        if ($search->campus) {
             $query
-                ->leftJoin('o.campus', 'c')
+                ->join('o.campus', 'c')
                 ->andWhere('o.campus = :campusId')
                 ->setParameter('campusId', $search->campus);
         }
-        if (!empty($search->q)) {
+        if ($search->q) {
             $query
                 ->andWhere('o.name LIKE :q')
                 ->setParameter('q', '%'.$search->q.'%');
         }
-        if (!empty($search->startDate) && !empty($search->endDate)) {
+        if (($search->dateStart) || ($search->dateEnd)) {
             $query
-                ->andWhere('o.dateTimeStart BETWEEN :startDate AND :endDate')
-                ->setParameter('startDate', $search->startDate)
-                ->setParameter('endDate', $search->endDate);
+                ->andWhere('o.dateTimeStart >= :dateStart')
+                ->andWhere('o.dateTimeStart <= :dateEnd')
+                ->setParameter('dateStart', $search->dateStart)
+                ->setParameter('dateEnd', $search->dateEnd);
         }
-        if(!empty($search->organizer)) {
+        if ($search->organizer) {
             $query
                 ->andWhere('o.organizerUser = :org')
                 ->setParameter('org', $user);
         }
-        if(!empty($search->registered)) {
+        if ($search->registered) {
             $query
-                ->leftJoin('c.users', 'u')
-                ->leftJoin('o.registeredUsers', 'reg')
-                ->andWhere('u.outings = reg.outings')
-                ->andWhere('reg.outings = :userId')
+                ->select('o', 'ou', 'us')
+                ->join('o.registeredUsers', 'us')
+                ->leftJoin('us.outings', 'ou')
+                ->andWhere('us.outings = ou.registeredUsers')
+                ->andWhere('ou.id = :userId')
                 ->setParameter('userId', $user);
         }
-        if(!empty($search->unregistered)  && $excludedOutings) {
+        if ($search->unregistered && $excludedOutings) {
             $query
-                ->andWhere($query->expr()->notIn('o.id', $excludedOutings ));
+                ->andWhere($queryBuilder->expr()->notIn('o.id', $excludedOutings));
         }
-        if(!empty($search->olds)) {
+        if ($search->olds) {
             $query->andWhere('o.dateTimeStart < :now')
                 ->setParameter('now', $now);
         }
