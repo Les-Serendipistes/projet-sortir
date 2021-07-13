@@ -4,7 +4,6 @@ namespace App\Controller;
 
 use App\Data\SearchData;
 use App\Entity\Outing;
-use App\Entity\State;
 use App\Form\OutingModificationType;
 use App\Form\OutingType;
 use App\Form\SearchOutingFormType;
@@ -17,6 +16,7 @@ use Knp\Component\Pager\PaginatorInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -202,6 +202,32 @@ public function edit(outing $outing, request $request,  EntityManagerInterface $
         return $this->render('outing/modify.html.twig', [
             'outingForm' => $outingForm->createView()
         ]);
+    }
+
+    //Methode pour annuler une sortie
+
+
+
+    #[Route('/outing/subscribe/{id}', name: 'outing_subscribe')]
+    public function inscription(Security $security, OutingRepository $outingRepository, EntityManagerInterface $entityManager, int $id): RedirectResponse
+    {
+        $user = $security->getUser();
+        $outing = $outingRepository->find($id);
+        $outing->addRegisteredUser($user);
+        $entityManager->persist($outing);
+        $entityManager->flush();
+        return $this->redirectToRoute('outing_list');
+    }
+
+    #[Route('/outing/unsubscribe/{id}', name: 'outing_unsubscribe')]
+    public function unsubscribe(Security $security, OutingRepository $outingRepository, EntityManagerInterface $entityManager, int $id): RedirectResponse
+    {
+        $user = $security->getUser();
+        $outing = $outingRepository->find($id);
+        $outing->removeRegisteredUser($user);
+        $entityManager->persist($outing);
+        $entityManager->flush();
+        return $this->redirectToRoute('outing_list');
     }
 
 }

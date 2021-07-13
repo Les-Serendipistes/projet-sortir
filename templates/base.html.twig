@@ -2,7 +2,7 @@
 <html>
     <head>
         <meta charset="UTF-8">
-        <script type="text/javascript" src="{{ asset('js/jquery-3.6.0.min.js') }}"></script>
+
         <link rel="stylesheet" media="screen" type="text/css" href="{{ asset('css/foundation.css') }}"/>
         <link rel="stylesheet" media="screen" type="text/css" href="{{ asset('css/style.css') }}"/>
         <link rel="icon" href="{{ asset('img/site/Serendipistes.png') }}" />
@@ -14,7 +14,9 @@
         <img src="{{ asset('img/site/logo-sortir.png') }}" alt="Sortir">
         </div>
         {% include 'menu/nav.html.twig' %}
-        {% block extrajs %}{% endblock %}
+        {% block extrajs %}
+            <script type="text/javascript" src="{{ asset('js/jquery-3.6.0.min.js') }}"></script>
+        {% endblock %}
     </header>
     <span style="text-align:center">
     {# affiche les éventuels messages flash #}
@@ -29,7 +31,6 @@
 
     <main class="grid-container">{% block body %}{% endblock %}</main>
      <footer>© Les Serendipistes</footer>
-    </body>
 </html>
 
 

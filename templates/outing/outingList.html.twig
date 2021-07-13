@@ -5,7 +5,7 @@
 {% endblock %}
 
 {% block body %}
-    <article class="grid-container" >
+    <article class="grid-container">
         <h2>Lists des sorties</h2>
         <div class="grid-x grid-margin-x">
             <div class="grid-x grid-margin-x">
@@ -16,7 +16,7 @@
         </div>
         <section id="main-table">
             <div class="medium-12 cell small-order-2 medium-order-1" id="refresh-table">
-                <table class="ui celled table">
+                <table class="ui celled table" >
                     <tbody>
                     <thead>
                     <th>Nom</th>
@@ -47,5 +47,6 @@
 </article>
 {% endblock %}
 {% block extrajs %}
+    <script type="text/javascript"
     <script type="text/javascript" src="{{ asset('js/Filter.js') }}"></script>
 {% endblock %}
