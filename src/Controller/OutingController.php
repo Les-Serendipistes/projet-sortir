@@ -24,7 +24,7 @@ use Symfony\Component\Security\Core\Security;
 
 class OutingController extends AbstractController
 {
-    #[Route('/outingList', name: 'outing_list')]
+    #[Route('/outing/list', name: 'outing_list')]
     public function list(OutingRepository $outingRepository,
                          Request $request,
                          Security $security,
@@ -51,7 +51,7 @@ class OutingController extends AbstractController
     }
 
     //Methode pour annuler une sortie
-    #[Route('/outingCancel/{id}', name: 'outing_cancel')]
+    #[Route('/outing/cancel/{id}', name: 'outing_cancel')]
     /**
      * @ParamConverter ("State", options={"mapping":{"id": "id"}})
      */
@@ -67,7 +67,7 @@ class OutingController extends AbstractController
     }
 
 
-    #[Route('/outingCreate', name: 'outing_create')]
+    #[Route('/outing/create', name: 'outing_create')]
     /**
      * @ParamConverter ("State", options={"mapping":{"id": "id"}})
      * @ParamConverter ("Location", options={"mapping":{"id": "id"}})
@@ -129,7 +129,7 @@ class OutingController extends AbstractController
         ]);
     }
 
-    #[Route('/listPlaces', name: 'list_places')]
+    #[Route('/place/list', name: 'list_places')]
     public function listPlaces(Request $request,
                                LocationRepository $locationRepository ): Response
     {
@@ -139,7 +139,7 @@ class OutingController extends AbstractController
         return  $this->json($outings) ;
     }
 
-    #[Route('/detailLieu', name: 'detail_place')]
+    #[Route('/place/detail', name: 'detail_place')]
     public function detailLieu(Request $request,
                                LocationRepository $locationRepository ): Response
     {
@@ -149,7 +149,7 @@ class OutingController extends AbstractController
 
     }
 
-    #[Route('/outingDetail/{id}', name: 'outing_detail')]
+    #[Route('/outing/detail/{id}', name: 'outing_detail')]
     public function campus($id, Request $request, OutingRepository $outingRepository, EntityManagerInterface $entityManager): Response
     {
         $outing = $outingRepository->find($id);
@@ -159,7 +159,7 @@ class OutingController extends AbstractController
         return $this->render('outing/detail.html.twig', ['outing' => $outing]);
     }
 
-    #[Route('/outingModify/{id}', name: 'outing_modify')]
+    #[Route('/outing/modify/{id}', name: 'outing_modify')]
 public function edit(outing $outing, request $request,  EntityManagerInterface $entityManager,
                        OutingRepository $outingRepository, StateRepository $stateRepository) : Response
     {
