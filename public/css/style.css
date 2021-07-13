@@ -34,9 +34,9 @@ mise en forme ossature template ajout sortie
 
 .containersortie
 {
-    text-align: center;
     padding: 2px;
 }
+
 .left-div
 {
     display: inline-block;
@@ -115,8 +115,13 @@ mise en forme ossature template ajout sortie
 .pagination {
     display: inline-block;
 }
+
 .pagination-event {
     margin-top: 3rem;
     text-align: center;
-
 }
+
+
+
+
+

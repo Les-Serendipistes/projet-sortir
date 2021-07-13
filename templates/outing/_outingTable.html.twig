@@ -2,7 +2,7 @@
         <td>{{ outing.name }}</td>
         <td>{{ outing.dateTimeStart | date('d/m/Y à h\\H') }}</td>
         <td>{{ outing.limitDateInscription | date('d/m/Y à h\\H') }}</td>
-        <td>{{ outing.organizerUser.firstname }} {{ outing.organizerUser.lastname }}</td>
+        <td>{{ outing.location.city.name }}</td>
         <td>{{ outing.campus.name }}</td>
-        <td>{{ outing.registeredUsers.count }} / {{ outing.maxNbPart }}</td>
+        <td><a href="#">Détail</a></td>
 </tr>

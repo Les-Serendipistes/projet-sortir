@@ -1,62 +1,38 @@
 <h4>Outil de recherche</h4>
-<div class="fluid container">
-    {{ form_start(form) }}
-    <div class="grid-container">
-        <div class="grid-x grid-padding-x">
-            <div class="small-12 medium-6 columns">
-                <label>Selection du campus :
-                    {{ form_row(form.campus) }}
-                </label>
-            </div>
-        </div>
+<div class="containersortie grid-container">
+{{ form_start(form) }}
+
+<div class="small-12 medium-6 columns">
+    <div class="medium-6 cell">
+        <label>Selection du campus :
+            {{ form_row(form.campus) }}
+        </label>
     </div>
-    <div class="grid-container">
-        <div class="grid-x grid-padding-x">
-            <label>Le nom de la sortie contient :
-                {{ form_row(form.q) }}
-            </label>
-        </div>
+    <div class="medium-6 cell">
+        <label>Le nom de la sortie contient :
+            {{ form_row(form.q) }}
+        </label>
     </div>
-    <div class="grid-container">
-        <div class="grid-x grid-padding-x">
-            <label>Se déroulant entre le :
-                {{ form_row(form.dateStart) }}
-            </label>
-        </div>
-        <div class="grid-x grid-padding-x">
-            <label>et le :
-                {{ form_row(form.dateEnd) }}
-            </label>
-        </div>
+    <div class="medium-6 cell">
+        <label>Se déroulant entre le :
+            {{ form_row(form.dateStart) }}
+        </label>
     </div>
-    <div class="grid-container">
-        <div class="grid-x grid-padding-x">
-            <label>Sorties dont je suis l'organisateur.trice
-                {{ form_row(form.organizer) }}
-            </label>
-        </div>
+    <div class="medium-6 cell">
+        <label>et le :
+            {{ form_row(form.dateEnd) }}
+        </label>
     </div>
-    <div class="grid-container">
-        <div class="grid-x grid-padding-x">
-            <label>Sorties auxquelles je suis inscrit.e :
-                {{ form_row(form.registered) }}
-            </label>
-        </div>
-    </div>
-    <div class="grid-container">
-        <div class="grid-x grid-padding-x">
-            <label>Sorties auxquelles je ne suis pas inscrit.e :
-                {{ form_row(form.unregistered) }}
-            </label>
-        </div>
-    </div>
-    <div class="grid-container">
-        <div class="grid-x grid-padding-x">
-            <label>Sorties passées :
-                {{ form_row(form.olds) }}
-            </label>
-        </div>
-    </div>
-    <button type="submit" class="button secondary">Rechercher</button>
-    {{ form_end(form) }}
+</div>
+
+<fieldset class="small-12 large-6 columns float-left checkboxList">
+    <ul class="menu vertical">
+        <li>{{ form_row(form.organizer) }}</li>
+        <li>{{ form_row(form.registered) }}</li>
+        <li>{{ form_row(form.unregistered) }}</li>
+        <li>{{ form_row(form.olds) }}</li>
+    </ul>
+</fieldset>
+<button type="submit" class="button secondary">Rechercher</button>
+{{ form_end(form) }}
 </div>

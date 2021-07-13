@@ -15,33 +15,25 @@
             </div>
         </div>
         <div class="medium-12 cell small-order-2 medium-order-1">
-            <nav aria-label="Pagination">
-                {# {{ knp_pagination_render(pagination) }} #}
-
-            </nav>
-
-            <div>
-                <table class="ui celled table">
-                    <tbody>
-                    <thead>
-                    <th>nom</th>
-                    <th>Date de début</th>
-                    <th>Date limite d'inscription</th>
-                    <th>Organisateur.trice</th>
-                    <th>Campus</th>
-                    <th>Inscrit.e.s</th>
-                    </thead>
-                    {% for outing in outings %}
-                        {% include 'outing/_outingTable.html.twig' with {outing: outing} only %}
-                    {% endfor %}
-                    </tbody>
-                </table>
-                <div class="pagination-event">
-                    {% do outings.setPageRange(2) %}
-                    {{ knp_pagination_render(outings, 'pagination/pagination.html.twig') }}
-                </div>
+            <table class="ui celled table">
+                <tbody>
+                <thead>
+                <th>Noms</th>
+                <th>Dates de début</th>
+                <th>Dates limite d'inscription</th>
+                <th>Villes</th>
+                <th>Campus</th>
+                <th>Détails</th>
+                </thead>
+                {% for outing in outings %}
+                    {% include 'outing/_outingTable.html.twig' with {outing: outing} only %}
+                {% endfor %}
+                </tbody>
+            </table>
+            <div class="pagination-event">
+                {% do outings.setPageRange(2) %}
+                {{ knp_pagination_render(outings, 'pagination/pagination.html.twig') }}
             </div>
-        </div>
         </div>
     </article>
 {% endblock %}
