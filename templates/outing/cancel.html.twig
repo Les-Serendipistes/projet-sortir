@@ -1,0 +1,16 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}
+    {{ parent() }} | Créer une sortie
+{% endblock %}
+
+{%  block body %}
+    <div style="text-align:center" >
+    <h4>Nom : {{ user.firstname}}</h4>
+    <p>Téléphone : {{ user.phone }}</p>
+    <p>Email : {{ user.email }}</p>
+    <p class="title">Campus : {{ user.campus.name}}</p>
+
+    </div>
+
+{% endblock %}
