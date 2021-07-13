@@ -1,27 +1,110 @@
 {% extends 'base.html.twig' %}
+
 {% block title %}
     {{ parent() }} | Modifier une sortie
 {% endblock %}
 
-{% block body %}
-    <h1>Modifier une sortie</h1>
-
-    <section>
-        <div>
-            {{ form_start(outingForm) }}
-            {{ form_errors(outingForm) }}
-            <div class="div_button">
-
-                <button type="submit" name="submitAction"  value="enregistrer"  class="btn btn-primary">Enregistrer</button>
-                <button type="submit" name="submitAction"  value="publier" class="btn btn-primary">Publier la sortie</button>
-                <button type="submit" name="submitAction"  value="publier" class="btn btn-primary">Supprimer la sortie</button>
-                <button type="submit" name="submitAction"  value="annuler" class="btn btn-primary">Annuler</button>
-
+{%  block body %}
+    {# affiche les éventuels messages flash #}
+    {% for label, messages in app.flashes %}
+        {% for message in messages %}
+            <div class="alert alert-{{ label }}">
+                {{ message }}
             </div>
-            {{ form_end(outingForm) }}
+        {% endfor %}
+    {% endfor %}
+
+
+
+    <div class="containersortie">
+        {{ form_start(outingForm) }}
+        {{ form_errors(outingForm) }}
+        <div class="left-div1 left-text">
+
+            {{ form_row(outingForm.name)}}
+            {{ form_row(outingForm.dateTimeStart) }}
+            {{ form_row(outingForm.limitDateInscription) }}
+            {{ form_row(outingForm.maxNbPart) }}
+            {{ form_row(outingForm.duration) }}
+            {{ form_row(outingForm.outingReport) }}
         </div>
-    </section>
+
+        <div class="right-div1 right-text">
+            {{ form_row(outingForm.campus) }}
+            {{ form_row(outingForm.state) }}
+            <span>&nbsp;<button>+</button></span>
+            {{ form_row(outingForm.location) }}
+
+            {{ form_row(outingForm.street) }}
+
+
+            {{ form_row(outingForm.zipcode) }}
+
+            {{ form_row(outingForm.latitude) }}
+            {{ form_row(outingForm.longitude) }}
+
+        </div>
+        <div class="div_button">
+
+            <button type="submit" name="submitAction"  value="enregistrer">Enregistrer</button>
+            <button type="submit" name="submitAction"  value="publier">Publier la sortie</button>
+            <button type="submit" name="submitAction"  value="supprimer">Supprimer la sortie</button>
+            <button type="submit" name="submitAction"  value="annuler">Annuler</button>
+
+        </div>
+        {{ form_end(outingForm) }}
+    </div>
+
 {% endblock %}
+{% block extrajs %}
+    <script type="text/javascript">
+        window.onload = init;
+        function init(){
+            let selectedTown=  document.getElementById("state");
+            let selectedCity = document.getElementById("location");
+            selectedTown.addEventListener('change',function(){
+                selectedCity.length = 1;
+                resetfield();
+                let valeur=selectedTown.value;
+                console.log(valeur);
+                fetch('{{ path('list_places') }}', {method:'POST', body:valeur} )
+                    .then(function (response){   return response.json();
+                    }).then(function (datas){
+                    console.log(datas );
+                    for (let i = 0; i < datas.length; i++) {
+                        let el = document.createElement("option");
+                        el.textContent = datas[i].name;
+                        el.value = datas[i].id;
+                        selectedCity.appendChild(el);
+                    }
+                })
+            })
+
+
+            selectedCity.addEventListener('change',function(){
+                let data=selectedCity.value;
+                resetfield();
+                fetch('{{ path('detail_place') }}', {method:'POST', body:JSON.stringify(data)} )
+                    .then(function (response){   return response.json();
+                    }).then(function (detailsData){
+                    document.getElementById('street').value=detailsData[0].address;
+                    document.getElementById('zipcode').value=detailsData[0].postCode;
+                    document.getElementById('latitude').value= detailsData[0].latitude;
+                    document.getElementById('longitude').value= detailsData[0].longitude;
+
+                })
+            })
+
+            function resetfield(){
+                document.getElementById('street').value="";
+                document.getElementById('zipcode').value="";
+                document.getElementById('latitude').value= "";
+                document.getElementById('longitude').value= "";
+            }
 
 
 
+
+        }
+    </script>
+{% endblock %}

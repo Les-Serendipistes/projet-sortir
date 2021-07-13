@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Data\SearchData;
 use App\Entity\Outing;
 use App\Entity\State;
+use App\Form\OutingModificationType;
 use App\Form\OutingType;
 use App\Form\SearchOutingFormType;
 use App\Repository\LocationRepository;
@@ -139,35 +140,47 @@ class OutingController extends AbstractController
     }
 
     #[Route('/outingModify/{id}', name: 'outing_modify')]
-public function modify($id, request $request,  EntityManagerInterface $entityManager,
+public function edit(outing $outing, request $request,  EntityManagerInterface $em,
                        OutingRepository $outingRepository) : Response
     {
-        $outing = $outingRepository->find($id);
-        $outingForm = $this->createForm(OutingType::class,$outing);
+        //On passe l'objet outing en paramètre pour que le createform récupère et modifie la sortie
+        $outingForm = $this->createForm(OutingType::class, $outing);
         $outingForm->handleRequest($request);
+        if ($outingForm->isSubmitted() && $outingForm->isValid()) {
+            /** @var outing $outing */
+            $outing = $this->getData();
+            $em->persist($outing);
+            $em->flush();
+            $this->addFlash('success', 'Sortie modifiée avec succès !');
+            return $this->redirectToRoute('outing_detail',['id'=> $outing->getId(),]);
+        }
 
-        if ($typeSubmit === 'enregistrer' && $outingForm->isValid())
+        if ($typeSubmit === 'enregistrer' )
         {
-            $outing->setState(1);
-            //redirection vers la page d'accueil
-            dd("bouton enregistrer"  );
+            $outing->setState($stateRepository->find(1));
+            $entityManager->persist($outing);
+            $entityManager->flush();
+            $this->addFlash("Sortie","Sortie créée avec succès.");
+            return $this->redirectToRoute('outing_list' );
         }
         elseif ($typeSubmit=== 'publier')
         { $outing->setState(2);
-            //redirection vers la page d'accueil
             dd("bouton publier".$typeSubmit);
         }
 
-        elseif ($typeSubmit === 'supprimer sortie')
-        {   //redirection vers la page d'annulation de la sortie
-            dd("bouton annuler".$typeSubmit);
+        elseif ($typeSubmit=== 'supprimer')
+        { $outing->setMethod('DELETE');
+            dd("bouton supprimer".$typeSubmit);
         }
 
         elseif ($typeSubmit === 'annuler')
-        {   //redirection vers la page d'accueil
+        {   //redirection vers la page de sortie
             dd("bouton annuler".$typeSubmit);
         }
-        return $this->render('outing/modify.html.twig', ['outingForm'=>$outingForm->createView(),]);
+
+        return $this->render('outing/modify.html.twig', [
+            'outingForm' => $outingForm->createView()
+        ]);
     }
 
 }
