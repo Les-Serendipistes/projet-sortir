@@ -16,6 +16,7 @@ use Doctrine\ORM\EntityManagerInterface;
 use Knp\Component\Pager\PaginatorInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -58,32 +59,32 @@ class OutingController extends AbstractController
      * @ParamConverter ("User", options={"mapping":{"id": "id"}})
      */
     public function create(Request $request,  EntityManagerInterface $entityManager,
-                       StateRepository $stateRepository, LocationRepository $locationRepository,
-                       UserRepository $userRepository
+                           StateRepository $stateRepository, LocationRepository $locationRepository,
+                           UserRepository $userRepository
 
     ): Response
     {
-          if($this->getUser()){
-              $userConnectedCampus=$this->getUser()->getCampus()->getName();
-              $userId=$this->getUser()->getId();
-              $outing = New Outing();
-              $outingForm = $this->createForm(OutingType::class,$outing);
-              $outingForm->handleRequest($request);
-              $typeSubmit=$request->request->get('submitAction');
-              //Recuperation des données pour l'insertion
-              if( $outingForm->isSubmitted()){
-                  $userCampusId=$this->getUser()->getCampus();
-                  $outingLocationId1=$request->request->get('location');
-                  $outing->setCampus($userCampusId);
-                  $outing->setOrganizerUser($outing->getOrganizerUser());
-                  $outing->setLocation($locationRepository->find($outingLocationId1));
-                  $outing->setOrganizerUser($userRepository->find($userId));
-              }
+        if($this->getUser()){
+            $userConnectedCampus=$this->getUser()->getCampus()->getName();
+            $userId=$this->getUser()->getId();
+            $outing = New Outing();
+            $outingForm = $this->createForm(OutingType::class,$outing);
+            $outingForm->handleRequest($request);
+            $typeSubmit=$request->request->get('submitAction');
+            //Recuperation des données pour l'insertion
+            if( $outingForm->isSubmitted()){
+                $userCampusId=$this->getUser()->getCampus();
+                $outingLocationId1=$request->request->get('location');
+                $outing->setCampus($userCampusId);
+                $outing->setOrganizerUser($outing->getOrganizerUser());
+                $outing->setLocation($locationRepository->find($outingLocationId1));
+                $outing->setOrganizerUser($userRepository->find($userId));
+            }
 
-          }else{
-              $this->addFlash("Connexion","Veuillez vous connecter.");
-              return $this->redirectToRoute('outing_list' );
-          }
+        }else{
+            $this->addFlash("Connexion","Veuillez vous connecter.");
+            return $this->redirectToRoute('outing_list' );
+        }
         if ($typeSubmit === 'enregistrer' )
         {
             $outing->setState($stateRepository->find(1));
@@ -105,7 +106,7 @@ class OutingController extends AbstractController
             'submitType' => $typeSubmit,
             'outingForm'=>$outingForm->createView(),
             // 'campusName'=>$user->getCampus()->getName()
-             'campusName'=>$userConnectedCampus
+            'campusName'=>$userConnectedCampus
         ]);
     }
 
@@ -140,8 +141,8 @@ class OutingController extends AbstractController
     }
 
     #[Route('/outingModify/{id}', name: 'outing_modify')]
-public function edit(outing $outing, request $request,  EntityManagerInterface $em,
-                       OutingRepository $outingRepository) : Response
+    public function edit(outing $outing, request $request,  EntityManagerInterface $em,
+                         OutingRepository $outingRepository) : Response
     {
         //On passe l'objet outing en paramètre pour que le createform récupère et modifie la sortie
         $outingForm = $this->createForm(OutingType::class, $outing);
@@ -181,6 +182,28 @@ public function edit(outing $outing, request $request,  EntityManagerInterface $
         return $this->render('outing/modify.html.twig', [
             'outingForm' => $outingForm->createView()
         ]);
+    }
+
+    #[Route('/outing/subscribe/{id}', name: 'outing_subscribe')]
+    public function inscription(Security $security, OutingRepository $outingRepository, EntityManagerInterface $entityManager, int $id): RedirectResponse
+    {
+        $user = $security->getUser();
+        $outing = $outingRepository->find($id);
+        $outing->addRegisteredUser($user);
+        $entityManager->persist($outing);
+        $entityManager->flush();
+        return $this->redirectToRoute('outing_list');
+    }
+
+    #[Route('/outing/unsubscribe/{id}', name: 'outing_unsubscribe')]
+    public function unsubscribe(Security $security, OutingRepository $outingRepository, EntityManagerInterface $entityManager, int $id): RedirectResponse
+    {
+        $user = $security->getUser();
+        $outing = $outingRepository->find($id);
+        $outing->removeRegisteredUser($user);
+        $entityManager->persist($outing);
+        $entityManager->flush();
+        return $this->redirectToRoute('outing_list');
     }
 
 }

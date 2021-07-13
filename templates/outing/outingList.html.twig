@@ -5,7 +5,7 @@
 {% endblock %}
 
 {% block body %}
-    <article class="grid-container">
+    <article class="grid-container" >
         <h2>Lists des sorties</h2>
         <div class="grid-x grid-margin-x">
             <div class="grid-x grid-margin-x">
@@ -14,26 +14,39 @@
                 </div>
             </div>
         </div>
-        <div class="medium-12 cell small-order-2 medium-order-1">
-            <table class="ui celled table">
-                <tbody>
-                <thead>
-                <th>Noms</th>
-                <th>Dates de début</th>
-                <th>Dates limite d'inscription</th>
-                <th>Villes</th>
-                <th>Campus</th>
-                <th>Détails</th>
-                </thead>
-                {% for outing in outings %}
-                    {% include 'outing/_outingTable.html.twig' with {outing: outing} only %}
-                {% endfor %}
-                </tbody>
-            </table>
-            <div class="pagination-event">
-                {% do outings.setPageRange(2) %}
-                {{ knp_pagination_render(outings, 'pagination/pagination.html.twig') }}
+        <section id="main-table">
+            <div class="medium-12 cell small-order-2 medium-order-1" id="refresh-table">
+                <table class="ui celled table">
+                    <tbody>
+                    <thead>
+                    <th>Nom</th>
+                    <th>Date de début</th>
+                    <th>Clôture</th>
+                    <th>Inscrits/Places</th>
+                    <th>Etat</th>
+                    <th>Inscrit</th>
+                    <th>Orga.</th>
+                    <th>Actions</th>
+                    </thead>
+                    {% include 'outing/_outings.html.twig' %}
+                    </tbody>
+                </table>
+                <div class="pagination-event">
+                    {% do outings.setPageRange(2) %}
+                    {{ knp_pagination_render(outings, 'pagination/pagination.html.twig') }}
+                </div>
             </div>
-        </div>
+        </section>
     </article>
+<article class="grid-container" >
+    <div class="grid-x grid-margin-x">
+        <div class="grid-x grid-margin-x">
+            <a href="{{ path('outing_create') }}"><button class="button secondary">Créer une nouvelle Sortie</button></a>
+        </div>
+    </div>
+</article>
+{% endblock %}
+{% block extrajs %}
+
+    <script type="text/javascript" src="{{ asset('js/Filter.js') }}"></script>
 {% endblock %}

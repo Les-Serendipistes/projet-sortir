@@ -4,11 +4,11 @@ namespace App\Repository;
 
 use App\Data\SearchData;
 use App\Entity\Outing;
+use App\Entity\User;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 use DateTime;
 use Symfony\Component\Security\Core\Security;
-use Symfony\Component\Security\Core\User\UserInterface;
 use function Doctrine\ORM\QueryBuilder;
 
 /**
@@ -34,7 +34,7 @@ class OutingRepository extends ServiceEntityRepository
      * @param SearchData $search
      * @return array
      */
-    public function findSearch(SearchData $search, UserInterface $user): array
+    public function findSearch(SearchData $search): array
     {
 
         $now = new DateTime();
@@ -90,5 +90,11 @@ class OutingRepository extends ServiceEntityRepository
             ->orderBy('outing.dateTimeStart', 'DESC')
             ->getQuery()
             ->getResult();
+    }
+
+    public function unsubscribe(User $user) {
+        $user = $this->security->getUser();
+
+
     }
 }

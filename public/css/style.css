@@ -77,6 +77,9 @@ mise en forme ossature template ajout sortie
     border-radius: 3px;
     margin: 15px;
 }
+
+
+
 @media screen and (max-width: 600px)
 {
     .left-div, .right-div
@@ -98,6 +101,7 @@ mise en forme ossature template ajout sortie
     border-radius: 3px;
     margin:0 auto;
 }
+
 
 /********** Fin Style dev liste sorties ***********************/
 
