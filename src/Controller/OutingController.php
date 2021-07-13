@@ -51,20 +51,31 @@ class OutingController extends AbstractController
     }
 
     //Methode pour annuler une sortie
-    #[Route('/outing/cancel/{id}', name: 'outing_cancel')]
+    #[Route('/outingCancel/{id}', name: 'outing_cancel')]
     /**
      * @ParamConverter ("State", options={"mapping":{"id": "id"}})
      */
-    public function cancel($id, Request $request):Response
+    public function cancel($id, Request $request, OutingRepository $outingRepository):Response
     {
-        $defaultData = ['motif' => 'Type your message here'];
-        $form = $this->createFormBuilder($defaultData)
+        $outingToCancel = $outingRepository->find($id);
+        //$defaultData = ['motif' => ''];
+        $formCancel = $this->createFormBuilder()
             ->add('motif', TextareaType::class,[
-                   'label'=>'Motif'
+                'label'=>'Motif'
             ])
             ->getForm();
+        $formCancel->handleRequest($request);
+
+        if ($formCancel->isSubmitted() && $formCancel->isValid()) {
+            $data = $formCancel->getData();
+        }
+        return $this->render('outing/cancel.html.twig', [
+            'formCancel' => $formCancel->createView(),
+            'outingToCancel'=>$outingToCancel
+        ]);
 
     }
+
 
 
     #[Route('/outing/create', name: 'outing_create')]
