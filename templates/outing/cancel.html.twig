@@ -11,8 +11,9 @@
         <p>Campus : {{ outingToCancel.campus.name }}</p>
         <p>Lieu: {{ outingToCancel.location.address }}</p>
         {{ form_start(formCancel) }}
-        <button type="submit" name="submitAction"  value="publier" class="btn btn-primary">Publier la sortie</button>
-        <button type="submit" name="submitAction"  value="annuler" class="btn btn-primary">Annuler</button>
+        {{ form_row(formCancel.motif) }}
+            <button type="submit" name="submitAction"  value="Enregistrer" class="btn btn-primary">Enregistrer</button>
+            <button type="button" name="submitAction"  value="annuler" class="btn btn-primary">Annuler</button>
         {{ form_end(formCancel) }}
     </div>
 {% endblock %}

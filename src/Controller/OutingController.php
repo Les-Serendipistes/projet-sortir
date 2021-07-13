@@ -55,7 +55,9 @@ class OutingController extends AbstractController
     /**
      * @ParamConverter ("State", options={"mapping":{"id": "id"}})
      */
-    public function cancel($id, Request $request, OutingRepository $outingRepository):Response
+    public function cancel($id, Request $request,
+                           OutingRepository $outingRepository, EntityManagerInterface $entityManager,
+                           StateRepository $stateRepository):Response
     {
         $outingToCancel = $outingRepository->find($id);
         //$defaultData = ['motif' => ''];
@@ -67,7 +69,13 @@ class OutingController extends AbstractController
         $formCancel->handleRequest($request);
 
         if ($formCancel->isSubmitted() && $formCancel->isValid()) {
-            $data = $formCancel->getData();
+           $motif= $formCancel->get('motif')->getData();
+            $outingToCancel->setState($stateRepository->find(1));
+            $outingToCancel->setOutingReport($outingToCancel->getOutingReport().". Motif d'annulation : ".$motif);
+            $entityManager->persist($outingToCancel);
+            $entityManager->flush();
+            $this->addFlash("Sortie","Sortie annulée avec succès.");
+            return $this->redirectToRoute('outing_list' );
         }
         return $this->render('outing/cancel.html.twig', [
             'formCancel' => $formCancel->createView(),
