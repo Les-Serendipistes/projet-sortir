@@ -5,17 +5,16 @@
 {% endblock %}
 
 {% block body %}
-    <article class="grid-container">
-        <h2>Liste des sorties</h2>
+<h1 class="text-center">Liste des sorties</h1>
+    <section>
         <div class="grid-x grid-margin-x">
-            <div class="grid-x grid-margin-x">
                 <div class="medium-12 cell small-order-4 medium-order-1">
                     {% include 'outing/_filter.html.twig' with {form: form} only %}
                 </div>
             </div>
         </div>
         <section id="main-table">
-            <div class="medium-12 cell small-order-2 medium-order-1" id="refresh-table">
+            <div class="small-12 cell small-order-2 medium-order-1" id="refresh-table">
                 <table class="hover unstriped" >
                     <tbody>
                     <thead>
@@ -31,6 +30,7 @@
                     {% include 'outing/_outings.html.twig' %}
                     </tbody>
                 </table>
+                            <a href="{{ path('outing_create') }}"><button class="hollow button">Créer une nouvelle Sortie</button></a>
                 <div class="pagination-event">
                     {% do outings.setPageRange(2) %}
                     {{ knp_pagination_render(outings, 'pagination/pagination.html.twig') }}
@@ -38,13 +38,7 @@
             </div>
         </section>
     </article>
-<article class="grid-container" >
-    <div class="grid-x grid-margin-x">
-        <div class="grid-x grid-margin-x">
-            <a href="{{ path('outing_create') }}"><button class="hollow button">Créer une nouvelle Sortie</button></a>
-        </div>
-    </div>
-</article>
+
 {% endblock %}
 {% block extrajs %}
     <script type="text/javascript" src="{{ asset('js/jquery-3.6.0.min.js') }}"></script>

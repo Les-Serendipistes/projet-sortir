@@ -6,21 +6,29 @@
 {% block body %}
     <h1 class="text-center">Afficher une sortie</h1>
 
-    <section>
-    <ul class="no-bullet">
+    <section class="grid-x">
+
+    <div class="cell small-6">
+        <ul class="no-bullet">
     <li><strong>Nom de la sortie : </strong>{{ outing.name }}</li>
     <li><strong>Date et heure de la sortie : </strong>{{ outing.dateTimeStart | format_datetime('full', 'short', locale='fr') }}</li>
     <li><strong>Date limite d'inscription : </strong>{{ outing.limitDateInscription | format_datetime('full', 'none', locale='fr') }}</li>
     <li><strong>Nombre de places : </strong>{{ outing.maxNbPart }}</li>
     <li><strong>Durée : </strong>{{ outing.duration }} minutes</li>
     <li><strong>Description et infos : </strong>{{ outing.outingReport }}</li>
+        </ul>
+    </div>
+    <div class="cell small-6">
+        <ul class="no-bullet">
     <li><strong>Campus : </strong>{{ outing.campus }}</li>
     <li><strong>Lieu : </strong>{{ outing.location.name }}</li>
     <li><strong>Rue : </strong>{{ outing.location.address }}</li>
     <li><strong>Code postal : </strong>{{ outing.location.city.postCode }} {{ outing.location.city.name }}</li>
     <li><strong>Latitude : </strong>{{ outing.location.latitude }}</li>
     <li><strong>Longitude : </strong>{{ outing.location.longitude }}</li>
-    </ul>
+        </ul>
+    </div>
+
     </section>
 
     <section>

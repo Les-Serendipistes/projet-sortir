@@ -7,6 +7,7 @@
         <title>{% block title %}Sortir{% endblock %}</title>
     </head>
     <body>
+
     <header class="top-bar" id="responsive-menu">
         <div class="logo">
         <img src="{{ asset('img/site/logo-sortir.png') }}" alt="Sortir">
@@ -16,6 +17,7 @@
             <script type="text/javascript" src="{{ asset('js/jquery-3.6.0.min.js') }}"></script>
         {% endblock %}
     </header>
+
     <span style="text-align:center">
     {# affiche les éventuels messages flash #}
             {% for label, messages in app.flashes %}
