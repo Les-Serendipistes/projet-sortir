@@ -13,13 +13,14 @@
             </div>
         {% endfor %}
     {% endfor %}
-    <div class="div_sortie_top">Créer une sortie  {{ submitType }}</div>
 
+    <h1 class="text-center">Créer une sortie {{ submitType }}</h1>
 
-    <div class="containersortie">
+    <section>
         {{ form_start(outingForm) }}
         {{ form_errors(outingForm) }}
-        <div class="left-div1 left-text">
+
+        <div>
 
             {{ form_row(outingForm.name)}}
             {{ form_row(outingForm.dateTimeStart) }}
@@ -29,30 +30,24 @@
             {{ form_row(outingForm.outingReport) }}
         </div>
 
-        <div class="right-div1 right-text">
+        <div>
             {{ form_row(outingForm.campus, {'value': campusName}) }}
             {{ form_row(outingForm.state) }}
-            <span>&nbsp;<button>+</button></span>
             {{ form_row(outingForm.location) }}
-
             {{ form_row(outingForm.street) }}
-
-
             {{ form_row(outingForm.zipcode) }}
-
             {{ form_row(outingForm.latitude) }}
             {{ form_row(outingForm.longitude) }}
 
         </div>
-        <div class="div_button">
 
-            <button type="submit" name="submitAction"  value="enregistrer"  class="btn btn-primary">Enregistrer</button>
-            <button type="submit" name="submitAction"  value="publier" class="btn btn-primary">Publier la sortie</button>
-            <button type="submit" name="submitAction"  value="annuler" class="btn btn-primary">Annuler</button>
-
+        <div class="button-group">
+            <button type="submit" name="submitAction"  value="enregistrer"  class="hollow button">Enregistrer</button>
+            <button type="submit" name="submitAction"  value="publier" class="hollow button">Publier la sortie</button>
+            <button type="submit" name="submitAction"  value="annuler" class="hollow button secondary">Annuler</button>
         </div>
         {{ form_end(outingForm) }}
-    </div>
+    </section>
 
 {% endblock %}
 {% block extrajs %}
@@ -100,9 +95,6 @@
                 document.getElementById('latitude').value= "";
                 document.getElementById('longitude').value= "";
             }
-
-
-
 
             }
         </script>

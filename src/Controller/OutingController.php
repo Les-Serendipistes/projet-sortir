@@ -195,9 +195,10 @@ public function edit(outing $outing, request $request,  EntityManagerInterface $
             return $this->redirectToRoute('outing_detail',['id'=> $outing->getId(),]);
         }
 
+        //Les boutons
         if ($typeSubmit === 'enregistrer' )
         {
-            $outing->setState($stateRepository->find(1));
+            $outing->setState(1);
             $entityManager->persist($outing);
             $entityManager->flush();
             $this->addFlash("Sortie","Sortie créée avec succès.");
@@ -217,6 +218,7 @@ public function edit(outing $outing, request $request,  EntityManagerInterface $
         {   //redirection vers la page de sortie
             dd("bouton annuler".$typeSubmit);
         }
+
 
         return $this->render('outing/modify.html.twig', [
             'outingForm' => $outingForm->createView()

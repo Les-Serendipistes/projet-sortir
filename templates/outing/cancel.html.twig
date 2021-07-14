@@ -1,15 +1,16 @@
 {% extends 'base.html.twig' %}
 
 {% block title %}
-    {{ parent() }} | Créer une sortie
+    {{ parent() }} | Annuler une sortie
 {% endblock %}
 
 {%  block body %}
+    <h1>Annuler une sortie</h1>
     <div style="text-align:center" >
-        <h4>Nom de la sortie : {{ outingToCancel.name}}</h4>
-        <p>Date de la sortie : {{ outingToCancel.dateTimeStart|date }}</p>
-        <p>Campus : {{ outingToCancel.campus.name }}</p>
-        <p>Lieu: {{ outingToCancel.location.address }}</p>
+        <p><strong>Nom de la sortie :</strong> {{ outingToCancel.name}}</p>
+        <p><strong>Date de la sortie :</strong> {{ outingToCancel.dateTimeStart|date }}</p>
+        <p><strong>Campus :</strong> {{ outingToCancel.campus.name }}</p>
+        <p><strong>Lieu :</strong> {{ outingToCancel.location.address }}</p>
         {{ form_start(formCancel) }}
         {{ form_row(formCancel.motif) }}
             <button type="submit" name="submitAction"  value="Enregistrer" class="btn btn-primary">Enregistrer</button>

@@ -4,10 +4,10 @@
 {% endblock %}
 
 {% block body %}
-    <h1>Afficher une sortie</h1>
+    <h1 class="text-center">Afficher une sortie</h1>
 
     <section>
-    <ul>
+    <ul class="no-bullet">
     <li><strong>Nom de la sortie : </strong>{{ outing.name }}</li>
     <li><strong>Date et heure de la sortie : </strong>{{ outing.dateTimeStart | format_datetime('full', 'short', locale='fr') }}</li>
     <li><strong>Date limite d'inscription : </strong>{{ outing.limitDateInscription | format_datetime('full', 'none', locale='fr') }}</li>
@@ -24,11 +24,11 @@
     </section>
 
     <section>
-    <h2>Liste des participants inscrits ({{ outing.registeredUsers.count }} / {{ outing.maxNbPart }}) :</h2>
-        <table>
+        <h2><small>Liste des participants inscrits ({{ outing.registeredUsers.count }} / {{ outing.maxNbPart }}) :</small></h2>
+        <table class="hover unstriped">
             <thead>
-            <td>Pseudo</td>
-            <td>Nom</td>
+            <th>Pseudo</th>
+            <th>Nom</th>
             </thead>
             {# On affiche le pseudo et le prénom/nom pour chaque registeredUser dans la collection RegisteredUsers #}
             {% for registeredUser in outing.registeredUsers %}

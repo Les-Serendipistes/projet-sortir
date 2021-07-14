@@ -5,6 +5,7 @@
 {% endblock %}
 
 {%  block body %}
+    <h1 class="text-center">Modifier la sortie</h1>
     {# affiche les éventuels messages flash #}
     {% for label, messages in app.flashes %}
         {% for message in messages %}
@@ -16,10 +17,11 @@
 
 
 
-    <div class="containersortie">
+    <section>
         {{ form_start(outingForm) }}
         {{ form_errors(outingForm) }}
-        <div class="left-div1 left-text">
+        <fieldset>
+        <div>
 
             {{ form_row(outingForm.name)}}
             {{ form_row(outingForm.dateTimeStart) }}
@@ -29,31 +31,26 @@
             {{ form_row(outingForm.outingReport) }}
         </div>
 
-        <div class="right-div1 right-text">
+        <div>
             {{ form_row(outingForm.campus) }}
             {{ form_row(outingForm.state) }}
-            <span>&nbsp;<button>+</button></span>
             {{ form_row(outingForm.location) }}
-
             {{ form_row(outingForm.street) }}
-
-
             {{ form_row(outingForm.zipcode) }}
-
             {{ form_row(outingForm.latitude) }}
             {{ form_row(outingForm.longitude) }}
 
         </div>
-        <div class="div_button">
 
-            <button type="submit" name="submitAction"  value="enregistrer">Enregistrer</button>
-            <button type="submit" name="submitAction"  value="publier">Publier la sortie</button>
-            <button type="submit" name="submitAction"  value="supprimer">Supprimer la sortie</button>
-            <button type="submit" name="submitAction"  value="annuler">Annuler</button>
-
+        <div class="button-group">
+            <button type="submit" name="submitAction" class="hollow button" value="enregistrer">Enregistrer</button>
+            <button type="submit" name="submitAction" class="hollow button" value="publier">Publier la sortie</button>
+            <button type="submit" name="submitAction" class="hollow button alert" value="supprimer">Supprimer la sortie</button>
+            <button type="button" name="submitAction" class="hollow button secondary" value="annuler">Annuler</button>
         </div>
+        </fieldset>
         {{ form_end(outingForm) }}
-    </div>
+    </section>
 
 {% endblock %}
 {% block extrajs %}

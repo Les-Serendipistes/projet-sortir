@@ -24,34 +24,25 @@ class RegistrationFormType extends AbstractType
                 'label'=>'Pseudo :'
             ])
             ->add('firstname', TextType::class,[
-                'label'=>'Prenom :'
+                'label'=>'Prénom :'
             ])
             ->add('lastname', TextType::class, [
-                'label'=>'Nom: '
+                'label'=>'Nom : '
             ])
             ->add('Phone', TextType::class ,[
-                'label'=>'Telephone :'
+                'label'=>'Téléphone :'
             ])
             ->add('email',
                 EmailType::class ,[
                     'label'=>'Email :'
                 ])
-            /*
-                        ->add('agreeTerms', CheckboxType::class, [
-                            'mapped' => false,
-                            'constraints' => [
-                                new IsTrue([
-                                    'message' => 'You should agree to our terms.',
-                                ]),
-                            ],
-                        ])
-                        */
+
             ->add('plainPassword', RepeatedType::class, [
                 'mapped'=>false,
                 'type' => PasswordType::class,
                 'required' => false,
                 'first_options'  => ['label' => 'Mot de passe :'],
-                'second_options' => ['label' => 'Confirmer :'],
+                'second_options' => ['label' => 'Confirmation :'],
                 'invalid_message' => 'Les deux mots de passe doivent être identiques.',
             ])
             ->add('Campus', EntityType::class, [
@@ -61,6 +52,7 @@ class RegistrationFormType extends AbstractType
             ->add('picture', FileType::class,[
                 'mapped'=>false,
                 'required' => false,
+                'label'=>'Ma photo :',
                 'constraints'=>[
                     new Image([
                         'maxSize'=>'7000k',

@@ -44,10 +44,10 @@ class OutingType extends AbstractType
                 'html5' => true,
             ])
             ->add('maxNbPart', NumberType::class,[
-                'label'=>'Nombre de places : ',
+                'label'=>'Nombre de places :',
             ])
             ->add('duration',NumberType::class,[
-                'label'=>'Durée (minutes): ',
+                'label'=>'Durée (minutes) :',
             ])
             ->add('outingReport', TextareaType::class, [
                 'label'=>'Description et infos : ',
@@ -78,14 +78,14 @@ class OutingType extends AbstractType
             ])
             ->add('street', TextType::class,[
                 'mapped'=>false,
-                'label'=>'Rue: ',
+                'label'=>'Rue :',
                 'attr' => array(
                     'disabled' => 'disabled'
                 ),
             ])
             ->add('zipcode', TextType::class,[
                 'mapped'=>false,
-                'label'=>'Code postal: ',
+                'label'=>'Code postal :',
                 'attr' => array(
                     'disabled' => 'disabled'
                 ),
@@ -105,7 +105,7 @@ class OutingType extends AbstractType
             */
             ->add('longitude',NumberType::class,[
                 'mapped'=>false,
-                'label'=>'Longitude : ',
+                'label'=>'Longitude :',
                 'attr' => array(
                     'disabled' => 'disabled'
                 ),

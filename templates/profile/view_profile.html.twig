@@ -5,17 +5,19 @@
 {% endblock %}
 
 {%  block body %}
-    <h2 style="text-align:center">{{ user.pseudo }}</h2>
+    <h1 class="text-center">{{ user.pseudo }}</h1>
 
-    <div class="card">
-        <img src="{{ asset('img/profile/'~ user.picture) }}"  >
-        <h4>Nom : {{ user.firstname}}</h4>
-        <p>Téléphone : {{ user.phone }}</p>
-        <p>Email : {{ user.email }}</p>
-        <p class="title">Campus : {{ user.campus.name}}</p>
+    <section>
+        <img class="thumbnail" src="{{ asset('img/profile/'~ user.picture) }}" alt="Photo de profil" >
+        <ul class="no-bullet">
+            <li><strong>Nom :</strong> {{ user.firstname}}</li>
+            <li><strong>Téléphone :</strong> {{ user.phone }}</li>
+            <li><strong>Email :</strong> {{ user.email }}</li>
+            <li><strong>Campus :</strong> {{ user.campus.name}}</li>
+    </ul>
+    </section>
 
-    </div>
-    <div style="text-align:center"><a href="{{ path('outing_list') }}" ><button>Retour</button></a></div>
+<a href="{{ path('outing_list') }}"><button type="button" class="hollow button secondary">Retour</button></a>
 
 
 {% endblock %}
