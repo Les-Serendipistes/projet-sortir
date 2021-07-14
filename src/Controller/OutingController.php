@@ -8,6 +8,7 @@ use App\Form\OutingModificationType;
 use App\Form\OutingType;
 use App\Form\SearchOutingFormType;
 use App\Repository\CampusRepository;
+use App\Repository\CityRepository;
 use App\Repository\LocationRepository;
 use App\Repository\OutingRepository;
 use App\Repository\StateRepository;
@@ -199,7 +200,6 @@ class OutingController extends AbstractController
 
     #[Route('/outing/modify/{id}', name: 'outing_modify')]
     public function edit(int $id, request $request,
-                         LocationRepository $locationRepository,
                          StateRepository $stateRepository,
                          CampusRepository $campusRepository,
                          EntityManagerInterface $entityManager)
@@ -207,11 +207,11 @@ class OutingController extends AbstractController
     {
         $user = $this->getUser();
         $outing = $entityManager->getRepository(Outing::class)->find($id);
-        $outingForm = $this->createForm(OutingModificationType::class, $outing);
-        $outingForm->handleRequest($request);
+        $modifyForm = $this->createForm(OutingModificationType::class, $outing);
+        $modifyForm->handleRequest($request);
         $submit =$request->request->get('submitAction');
 
-        if ($outingForm->isSubmitted() && $outingForm->isValid()) {
+        if ($modifyForm->isSubmitted() && $modifyForm->isValid()) {
             $currentUser = $this->getUser();
 
             if ($currentUser == null || $currentUser->getId() != $outing->getOrganizerUser()->getId()) {
@@ -247,7 +247,7 @@ class OutingController extends AbstractController
         }
 
         return $this->render('outing/modify.html.twig', [
-            'modifyForm' => $outingForm->createView(),
+            'modifyForm' => $modifyForm->createView(),
             'user' => $this->security->getUser(),
             'campus' => $this->getUser()->getCampus()->getName(),
             'outing' => $outing

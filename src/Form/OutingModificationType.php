@@ -4,6 +4,7 @@ namespace App\Form;
 
 use App\Entity\Campus;
 use App\Entity\City;
+use App\Entity\Location;
 use App\Entity\Outing;
 use App\Entity\State;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
@@ -66,7 +67,6 @@ class OutingModificationType extends AbstractType
             ->add('city',EntityType::class, [
                 'class'             => City::class,
                 'mapped'            => false,
-                'placeholder'       => ' ',
                 'label'             =>'Ville :',
                 'choice_label'      =>'name',
             ])
