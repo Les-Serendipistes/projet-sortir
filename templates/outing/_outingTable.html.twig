@@ -1,36 +1,38 @@
 <tr>
-        <td>{{ outing.name }}</td>
-        <td>{{ outing.dateTimeStart | date('d/m/Y à h\\H', 'Europe/Paris') }}</td>
-        <td>{{ outing.limitDateInscription | date('d/m/Y', 'Europe/Paris') }}</td>
-        <td>{{ outing.registeredUsers.count }} / {{ outing.maxNbPart }}</td>
-        <td>{{ outing.state.label }}</td>
-        <td>
-                {% if user in outing.registeredUsers %}
-                        X
-                {% endif %}
-        </td>
-        <td><a href="{{ path('profileView', {'id' : outing.organizerUser.id }) }}">{{ outing.organizerUser.firstname }} {{ outing.organizerUser.lastname[:1] }}.</a></td>
-        <td>
-                {% if user == outing.organizerUser %}
-                        {% if outing.state.label == 'Créée' or outing.state.label == 'Ouverte' %}
-                                <a href="{{ path('outing_modify', {'id' : outing.id }) }}">Modifier</a>
-                        {% else %}
-                                <a href="{{ path('outing_detail', {'id' : outing.id }) }}">Afficher</a>
-                        {% endif %}
+
+    <td>{{ outing.name }}</td>
+    <td>{{ outing.dateTimeStart | date('d/m/Y à h\\H', 'Europe/Paris') }}</td>
+    <td>{{ outing.limitDateInscription | date('d/m/Y', 'Europe/Paris') }}</td>
+    <td>{{ outing.registeredUsers.count }} / {{ outing.maxNbPart }}</td>
+    <td>{{ outing.state.label }}</td>
+    <td>
+        {% if user in outing.registeredUsers %}
+            X
+        {% endif %}
+    </td>
+    <td><a href="{{ path('profileView', {'id' : outing.organizerUser.id }) }}">{{ outing.organizerUser.firstname }} {{ outing.organizerUser.lastname[:1] }}.</a></td>
+    <td>
+        {% if user == outing.organizerUser %}
+            {% if outing.state.label == 'Créée' or outing.state.label == 'Ouverte' %}
+                <a href="{{ path('outing_modify', {'id' : outing.id }) }}">Modifier</a>
+            {% else %}
+                <a href="{{ path('outing_detail', {'id' : outing.id }) }}">Afficher</a>
+            {% endif %}
+        {% else %}
+            <a href="{{ path('outing_detail', {'id' : outing.id }) }}">Afficher</a>
+            {% if user in outing.registeredUsers%}
+                {% if outing.state.label == 'Activité en cours' %}
                 {% else %}
-                        <a href="{{ path('outing_detail', {'id' : outing.id }) }}">Afficher</a>
-                        {% if user in outing.registeredUsers%}
-                                {% if outing.state.label == 'Activité en cours' %}
-                                {% else %}
-                                        {% if outing.state.label == 'Créée' or outing.state.label == 'Ouverte' %}
-                                                <a href="{{ path('outing_unsubscribe', {'id' : outing.id }) }}">Se désister</a>
-                                        {% endif %}
-                                {% endif %}
-                        {% else %}
-                                {% if outing.state.label == 'Créée' or outing.state.label == 'Ouverte' %}
-                                        <a href="{{ path('outing_subscribe', {'id' : outing.id }) }}">S'inscrire</a>
-                                {% endif %}
-                        {% endif %}
+                    {% if outing.state.label == 'Créée' or outing.state.label == 'Ouverte' %}
+                        <a href="{{ path('outing_unsubscribe', {'id' : outing.id }) }}">Se désister</a>
+                    {% endif %}
                 {% endif %}
-        </td>
+            {% else %}
+                {% if outing.state.label == 'Créée' or outing.state.label == 'Ouverte' %}
+                    <a href="{{ path('outing_subscribe', {'id' : outing.id }) }}">S'inscrire</a>
+                {% endif %}
+            {% endif %}
+        {% endif %}
+    </td>
+
 </tr>

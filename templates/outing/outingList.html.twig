@@ -5,48 +5,67 @@
 {% endblock %}
 
 {% block body %}
-    <article class="grid-container">
-        <h2>Liste des sorties</h2>
-        <div class="grid-x grid-margin-x">
-            <div class="grid-x grid-margin-x">
-                <div class="medium-12 cell small-order-4 medium-order-1">
-                    {% include 'outing/_filter.html.twig' with {form: form} only %}
-                </div>
-            </div>
+    <article class="grid-container main-content">
+        <hr>
+        <div class="text-center">
+            <h2>Liste des sorties</h2>
         </div>
-        <section id="main-table">
-            <div class="medium-12 cell small-order-2 medium-order-1" id="refresh-table">
-                <table class="hover unstriped" >
-                    <tbody>
-                    <thead>
-                    <th>Nom de la sortie</th>
-                    <th>Date de la sortie</th>
-                    <th>Clôture</th>
-                    <th>Inscrits/places</th>
-                    <th>Etat</th>
-                    <th>Inscrit</th>
-                    <th>Organisateur</th>
-                    <th>Actions</th>
-                    </thead>
-                    {% include 'outing/_outings.html.twig' %}
-                    </tbody>
+        <hr>
+        <div class="grid-x grid-margin-x sidebar">
+            <div class="large-2 cell sidebar__inner">
+                <div class="cell">
+                    <h4>Recherche</h4>
+                </div>
+                {% include 'outing/_filter.html.twig' with {form: form} only %}
+            </div>
+            <hr>
+            <section class="grid-x large-10 cell">
+                <table class="hover" >
+                    {% if outings is empty %}
+                        <div class="text-center">
+                            <h4 style="color: #cc8b00; text-align: center">Aucune données à afficher</h4>
+                        </div>
+                    {% else %}
+                        <thead>
+                        <tr>
+                            <th>Nom</th>
+                            <th>Date</th>
+                            <th>Clôture</th>
+                            <th>Inscrits</th>
+                            <th>Etat</th>
+                            <th>Inscrit</th>
+                            <th>Organisateur</th>
+                            <th>Actions</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        {% include 'outing/_outings.html.twig' %}
+                        </tbody>
+                    {% endif %}
                 </table>
+
                 <div class="pagination-event">
                     {% do outings.setPageRange(2) %}
                     {{ knp_pagination_render(outings, 'pagination/pagination.html.twig') }}
                 </div>
-            </div>
-        </section>
-    </article>
-<article class="grid-container" >
-    <div class="grid-x grid-margin-x">
-        <div class="grid-x grid-margin-x">
-            <a href="{{ path('outing_create') }}"><button class="hollow button">Créer une nouvelle Sortie</button></a>
+
+            </section>
         </div>
-    </div>
-</article>
+    </article>
+    <hr>
+    <article class="grid-container" >
+        <div class="text-center">
+            <a href="{{ path('outing_create') }}"><button class="button success">Créer une nouvelle Sortie</button></a>
+        </div>
+    </article>
 {% endblock %}
 {% block extrajs %}
-    <script type="text/javascript" src="{{ asset('js/jquery-3.6.0.min.js') }}"></script>
     <script type="text/javascript" src="{{ asset('js/Filter.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('js/jquery.sticky-sidebar.js') }}"></script>
+    <script type="text/javascript">
+        $('#sidebar').stickySidebar({
+            topSpacing: 60,
+            bottomSpacing: 60
+        });
+    </script>
 {% endblock %}
