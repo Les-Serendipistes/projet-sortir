@@ -183,7 +183,8 @@ public function edit(outing $outing, request $request,  EntityManagerInterface $
                        OutingRepository $outingRepository, StateRepository $stateRepository) : Response
     {
         //On passe l'objet outing en paramètre pour que le createform récupère et modifie la sortie
-        $outingForm = $this->createForm(OutingType::class, $outing);
+        $outingForm = $this->createForm(OutingModificationType::class, $outing);
+        //$userConnectedCampus=$this->getUser()->getCampus()->getName();
         $typeSubmit=$request->request->get('submitAction');
         $outingForm->handleRequest($request);
         if ($outingForm->isSubmitted() && $outingForm->isValid()) {
@@ -198,15 +199,19 @@ public function edit(outing $outing, request $request,  EntityManagerInterface $
         //Les boutons
         if ($typeSubmit === 'enregistrer' )
         {
-            $outing->setState(1);
+            $outing->setState($stateRepository->find(1));
             $entityManager->persist($outing);
             $entityManager->flush();
             $this->addFlash("Sortie","Sortie créée avec succès.");
             return $this->redirectToRoute('outing_list' );
         }
         elseif ($typeSubmit=== 'publier')
-        { $outing->setState(2);
-            dd("bouton publier".$typeSubmit);
+        {
+            $outing->setState($stateRepository->find(2));
+            $entityManager->persist($outing);
+            $entityManager->flush();
+            $this->addFlash("Sortie","Sortie publiée avec succès.");
+            return $this->redirectToRoute('outing_list' );
         }
 
         elseif ($typeSubmit=== 'supprimer')
@@ -221,7 +226,8 @@ public function edit(outing $outing, request $request,  EntityManagerInterface $
 
 
         return $this->render('outing/modify.html.twig', [
-            'outingForm' => $outingForm->createView()
+            'outingForm' => $outingForm->createView(),
+            //'campusName'=>$userConnectedCampus
         ]);
     }
 
