@@ -42,10 +42,10 @@
             {{ form_row(modifyForm.longitude, {'value': detailLieu[0].longitude}) }}
         </div>
 
-        <div class="button-group">
+        <div class="button-group align-center">
             <button type="submit" name="submitAction" class="hollow button" value="enregistrer">Enregistrer</button>
             <button type="submit" name="submitAction" class="hollow button" value="publier">Publier la sortie</button>
-            <p><button type="submit" name="submitAction" class="hollow button alert" value="supprimer" data-open="exampleModal2">Supprimer la sortie</button></p>
+            <button type="submit" name="submitAction" class="hollow button alert" value="supprimer" data-open="exampleModal2">Supprimer la sortie</button>
             <a href="{{ path('outing_list') }}" ><button type="button" value="annuler" class="hollow button secondary" >Annuler</button></a>
 
 

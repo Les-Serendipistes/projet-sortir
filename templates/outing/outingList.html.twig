@@ -36,7 +36,7 @@
                     {% else %}
 
                         <div id="refresh-table">
-                            <table class="responsive-card-table hover unstriped" >
+                            <table class="responsive-card-table hover unstriped">
                                 <tbody>
                                 <thead>
                                 <th>Nom de la sortie</th>
@@ -51,11 +51,11 @@
                                 {% include 'outing/_outings.html.twig' %}
                                 </tbody>
                             </table>
-                            <a href="{{ path('outing_create') }}"><button class="hollow button">Créer une nouvelle Sortie</button></a>
+                            <a href="{{ path('outing_create') }}">
+                                <button class="hollow button">Créer une nouvelle Sortie</button>
+                            </a>
                         </div>
                     {% endif %}
-
-                    <hr/>
                     <div class="pagination-event">
                         {% do outings.setPageRange(2) %}
                         {{ knp_pagination_render(outings, 'pagination/pagination.html.twig') }}

@@ -5,34 +5,48 @@
 {% endblock %}
 
 {% block body %}
-<form method="post" action="{{ path('app_login') }}">
-    {% if error %}
-        <div class="alert alert-danger">{{ error.messageKey|trans(error.messageData, 'security') }}</div>
-    {% endif %}
+    <h1 class="text-center">Se Connecter</h1>
+    <form method="post" action="{{ path('app_login') }}">
 
-    {% if app.user %}
-        <div class="mb-3">
-            Vous êtes déjà connecté.e en tant que {{ app.user.username }}, <a href="{{ path('app_logout') }}">Se déconnecter</a>
+
+        <div class="grid-x grid-padding-x">
+
+            {% if error %}
+                <div class="alert alert-danger">{{ error.messageKey|trans(error.messageData, 'security') }}</div>
+            {% endif %}
+
+            {% if app.user %}
+                <div>
+                    Vous êtes déjà connecté.e en tant que {{ app.user.username }}, <a href="{{ path('app_logout') }}">Se
+                        déconnecter</a>
+                </div>
+            {% endif %}
+
+                <div class="small-3 cell ">
+                    <label for="inputEmail">Email</label>
+                </div>
+                <div class="small-9 cell">
+                    <input type="email" value="{{ last_username }}" name="email" id="inputEmail" class="form-control"
+                           autocomplete="email" required autofocus>
+                </div>
+                <br/>
+                <div class="small-3 cell">
+                    <label for="inputPassword">Mot de passe</label>
+                </div>
+                <div class="small-9 cell">
+                    <input type="password" name="password" id="middle-label" class="form-control"
+                           autocomplete="current-password" required>
+                </div>
+                <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
+                <br/>
+
+                <div>
+                    <input type="checkbox" id="remember_me" name="_remember_me" checked>
+                    <label for="remember_me">Rester connecté</label>
+                </div>
+                <div class="button-group align-center">
+                    <button class="button hollow" type="submit">Se connecter</button>
+                </div>
         </div>
-    {% endif %}
-
-    <fieldset>
-        <legend>Se connecter</legend>
-    <label for="inputEmail">Email</label>
-    <input type="email" value="{{ last_username }}" name="email" id="inputEmail" class="form-control" autocomplete="email" required autofocus>
-    <br/>
-    <label for="inputPassword">Password</label>
-    <input type="password" name="password" id="inputPassword" class="form-control" autocomplete="current-password" required>
-
-    <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
-    <br/>
-
-        <div class="checkbox mb-3">
-            <input type="checkbox" id="remember_me" name="_remember_me" checked/>
-            <label for="remember_me">Rester connecté</label>
-        </div>
-
-    <button class="button hollow" type="submit">Se connecter</button>
-        </fieldset>
-</form>
+    </form>
 {% endblock %}
