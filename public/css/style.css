@@ -70,6 +70,10 @@ tbody th, tbody td {
     border: inherit;
 }
 
+.media-object img {
+    max-width: 4rem;
+}
+
 @media screen and (max-width: 640px) {
     .responsive-card-table {
 

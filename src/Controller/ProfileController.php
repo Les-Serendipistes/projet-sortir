@@ -37,6 +37,7 @@ class ProfileController extends AbstractController
          */
         if($userForm->isSubmitted() && $userForm->isValid()){
             $file=$userForm->get('picture')->getData();
+
             $firstPasswordField=$userForm->get('plainPassword')->getData();
             if($firstPasswordField){
                 $user->setPassword( $passwordEncoder->encodePassword( $user,  $firstPasswordField ));}

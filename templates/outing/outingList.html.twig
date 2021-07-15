@@ -8,6 +8,19 @@
     <div class="grid-y medium-grid-frame">
         <h1 class="text-center">Liste des sorties</h1>
         <hr/>
+        <div class="grid-x grid-padding-x align-center">
+            <div class="media-object">
+                <div class="media-object-section">
+                    <div class="thumbnail">
+                        <img src="{{ asset('img/profile/'~ app.user.picture) }}">
+                    </div>
+                </div>
+                <div class="media-object-section main-section">
+                    <h4>Bonjour {{ app.user.firstname }} {{ app.user.lastname }}</h4>
+                    <p>Nous sommes le {{ 'now' | format_date('full',  locale='fr') }}</p>
+                </div>
+            </div>
+        </div>
         <div class="cell medium-auto medium-cell-block-container">
             <div class="grid-x grid-padding-x">
                 <div class="cell medium-3 medium-cell-block-y">

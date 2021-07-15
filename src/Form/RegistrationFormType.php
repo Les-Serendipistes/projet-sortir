@@ -50,7 +50,7 @@ class RegistrationFormType extends AbstractType
                 'choice_label'=>'name'
             ])
             ->add('picture', FileType::class,[
-                'mapped'=>false,
+                'mapped'=> false,
                 'required' => false,
                 'label'=>'Ma photo :',
                 'constraints'=>[

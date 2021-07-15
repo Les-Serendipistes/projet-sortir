@@ -87,6 +87,13 @@ class OutingRepository extends ServiceEntityRepository
                 ->setParameter('now', $now);
         }
         return $query
+            ->leftJoin('outing.state', 'state')
+            ->orWhere('state.label LIKE :ouverte')
+            ->orWhere('state.label LIKE :activite')
+            ->orWhere('state.label LIKE :passee')
+            ->setParameter('ouverte', "Ouverte")
+            ->setParameter('activite', "Activité en cours")
+            ->setParameter('passee', "Passée")
             ->orderBy('outing.dateTimeStart', 'DESC')
             ->getQuery()
             ->getResult();
