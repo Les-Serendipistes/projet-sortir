@@ -42,17 +42,13 @@ class OutingController extends AbstractController
         $user = $this->security->getToken()->getUser();
         $data = new SearchData();
         $form = $this->createForm(SearchOutingFormType::class, $data);
-
         $form->handleRequest($request);
         $page = $outingRepository->findSearch($data);
-
         $outings = $paginator->paginate(
             $page,
             $request->query->getInt('page', 1),
             8
         );
-
-
         // Gestion du rafraichissement automatique de la liste des sortie et de la pagination.
         if ($request->get('ajax')) {
             return new JsonResponse([
@@ -112,18 +108,12 @@ class OutingController extends AbstractController
     }
 
     #[Route('/outing/create', name: 'outing_create')]
-    /**
-     * @ParamConverter ("State", options={"mapping":{"id": "id"}})
-     * @ParamConverter ("Location", options={"mapping":{"id": "id"}})
-     * @ParamConverter ("User", options={"mapping":{"id": "id"}})
-     */
+    //Méthode pour la création de Sortie
     public function create(Request $request,  EntityManagerInterface $entityManager,
-                       StateRepository $stateRepository, LocationRepository $locationRepository,
-                       UserRepository $userRepository
-
+              StateRepository $stateRepository, LocationRepository $locationRepository,
+              UserRepository $userRepository
     ): Response
-    {
-          if($this->getUser()){
+    {        if($this->getUser()){
               $userConnectedCampus = $this->getUser()->getCampus()->getName();
               $userId=$this->getUser()->getId();
               $outing = New Outing();
@@ -139,7 +129,6 @@ class OutingController extends AbstractController
                   $outing->setLocation($locationRepository->find($outingLocationId1));
                   $outing->setOrganizerUser($userRepository->find($userId));
               }
-
           }else{
               $this->addFlash("Connexion","Veuillez vous connecter.");
               return $this->redirectToRoute('outing_list' );
@@ -160,7 +149,6 @@ class OutingController extends AbstractController
             $this->addFlash("Sortie","Sortie publiée avec succès.");
             return $this->redirectToRoute('outing_list' );
         }
-
         return $this->render('outing/creation.html.twig', [
             'submitType' => $typeSubmit,
             'outingForm'=>$outingForm->createView(),
@@ -168,7 +156,7 @@ class OutingController extends AbstractController
              'campusName'=>$userConnectedCampus
         ]);
     }
-
+//Methode utilisée par Ajax
     #[Route('/place/list', name: 'list_places')]
     public function listPlaces(Request $request,
                                LocationRepository $locationRepository ): Response
@@ -208,7 +196,9 @@ class OutingController extends AbstractController
     {
         $user = $this->getUser();
         $outing = $entityManager->getRepository(Outing::class)->find($id);
-        //dd($outing);
+          $monId=$outing->getLocation()->getId();
+
+         $outing->setLocation($locationRepository->find($monId));
         $modifyForm = $this->createForm(OutingModificationType::class, $outing);
         $modifyForm->handleRequest($request);
         $submit =$request->request->get('submitAction');

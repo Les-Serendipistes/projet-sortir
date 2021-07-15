@@ -15,9 +15,6 @@
         {% endfor %}
     {% endfor %}
 
-
-
-
     <section>
         {{ form_start(modifyForm) }}
         {{ form_errors(modifyForm) }}
@@ -85,7 +82,6 @@
                 selectedCity.length = 1;
                 resetfield();
                 let valeur=selectedTown.value;
-                console.log(valeur);
                 fetch('{{ path('list_places') }}', {method:'POST', body:valeur} )
                     .then(function (response){   return response.json();
                     }).then(function (datas){
@@ -119,6 +115,7 @@
                 document.getElementById('zipcode').value="";
                 document.getElementById('latitude').value= "";
                 document.getElementById('longitude').value= "";
+                document.getElementById("location").length = 1;
             }
 
         }

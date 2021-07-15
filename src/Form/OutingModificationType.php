@@ -65,14 +65,15 @@ class OutingModificationType extends AbstractType
                 'mapped'            => false,
                 'label'             =>'Ville :',
                 'choice_label'      =>'name',
+                'placeholder'   => ' '
             ])
-            ->add('location', ChoiceType::class,[
-                'mapped'            => false,
-                'label'             => 'Lieu :',
-                'choices'           => [
-                    ''              => ''
-                ]
-            ])
+            ->add('location', EntityType::class,
+                [ 'class' => 'App\Entity\Location',
+                    'choice_label' => function(Location $location) {
+                   return sprintf(' %s',  $location->getName());
+                              },
+                ])
+
             ->add('street', TextType::class,[
                 'mapped'            => false,
                 'label'             => 'Rue :',

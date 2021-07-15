@@ -5,12 +5,13 @@
 {% endblock %}
 
 {%  block body %}
-    <h1>Annuler une sortie</h1>
+    <h1 class="text-center">Annuler une sortie</h1>
     {# affiche les éventuels messages flash #}
     {% for label, messages in app.flashes %}
         {% for message in messages %}
             <div class="alert alert-{{ label }}">
-                {{ message }}
+                 {{ message }}
+
             </div>
         {% endfor %}
     {% endfor %}
