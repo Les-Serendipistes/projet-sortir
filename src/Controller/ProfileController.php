@@ -54,18 +54,18 @@ class ProfileController extends AbstractController
             ]);
         }
         else{
-            return $this->render('profile/editProfile.html.twig', [
+            return $this->render('edit.html.twig', [
                 'userForm'=>$userForm->createView(),
                 'user'=>$user
             ]);
         }
     }
 
-    #[Route('/profileView/{id}', name: 'profileView')]
+    #[Route('/profile/view/{id}', name: 'profileView')]
     public function viewProfile($id, UserRepository $userRepository)
     {
         $userProfileView=$userRepository->find($id);
-        return  $this->render('profile/view_profile.html.twig', [ 'user'=>$userProfileView ]);
+        return  $this->render('view.html.twig', [ 'user'=>$userProfileView ]);
     }
 
 }
