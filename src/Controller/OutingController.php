@@ -251,7 +251,7 @@ class OutingController extends AbstractController
             return $this->redirectToRoute('outing_list' );
         }
         $detailLieu=$locationRepository->findLocationDetail($outing->getLocation()->getId());
-        //dd($detailLieu);
+         //dd($detailLieu);
         // dd($outing);
         return $this->render('outing/modify.html.twig', [
             'modifyForm' => $modifyForm->createView(),

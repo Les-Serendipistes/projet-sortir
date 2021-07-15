@@ -32,15 +32,15 @@
             {{ form_row(modifyForm.duration) }}
             {{ form_row(modifyForm.outingReport) }}
         </div>
-
+            detailLieu
         <div>
-            {{ form_row(modifyForm.campus) }}
+            {{ form_row(modifyForm.campus, {'value': outing.campus.name}) }}
             {{ form_row(modifyForm.city) }}
             {{ form_row(modifyForm.location) }}
-            {{ form_row(modifyForm.street) }}
-            {{ form_row(modifyForm.zipcode) }}
-            {{ form_row(modifyForm.latitude) }}
-            {{ form_row(modifyForm.longitude) }}
+            {{ form_row(modifyForm.street, {'value': detailLieu[0].address}) }}
+            {{ form_row(modifyForm.zipcode, {'value': detailLieu[0].postCode}) }}
+            {{ form_row(modifyForm.latitude, {'value': detailLieu[0].latitude}) }}
+            {{ form_row(modifyForm.longitude, {'value': detailLieu[0].longitude}) }}
         </div>
 
         <div class="button-group">
