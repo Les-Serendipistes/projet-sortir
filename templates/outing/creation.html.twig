@@ -20,7 +20,7 @@
 
     <h1 class="text-center">Créer une sortie {{ submitType }}</h1>
 
-    <section>
+    <article>
         {{ form_start(outingForm) }}
         {{ form_errors(outingForm) }}
 
@@ -45,13 +45,13 @@
 
         </div>
 
-        <div class="button-group">
+        <div class="button-group align-center">
             <button type="submit" name="submitAction"  value="enregistrer"  class="hollow button">Enregistrer</button>
             <button type="submit" name="submitAction"  value="publier" class="hollow button">Publier la sortie</button>
             <button type="submit" name="submitAction"  value="annuler" class="hollow button secondary">Annuler</button>
         </div>
         {{ form_end(outingForm) }}
-    </section>
+    </article>
 
 {% endblock %}
 {% block javascript %}

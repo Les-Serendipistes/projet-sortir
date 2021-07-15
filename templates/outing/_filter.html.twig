@@ -1,5 +1,5 @@
 {{ form_start(form) }}
-    <fieldset class="fieldset">
+    <fieldset class="fieldset" id="filtres">
         <legend>
             <strong>Filtrer les sorties</strong>
         </legend>
@@ -14,6 +14,7 @@
         </label>
         <label>et le :
             {{ form_row(form.dateEnd) }}
+        </label>
     <ul class="menu vertical">
         <li>{{ form_row(form.organizer) }}</li>
         <li>{{ form_row(form.registered) }}</li>
