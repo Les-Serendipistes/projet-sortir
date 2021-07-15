@@ -17,6 +17,7 @@
 
 
 
+
     <section>
         {{ form_start(modifyForm) }}
         {{ form_errors(modifyForm) }}
@@ -24,14 +25,8 @@
         <div>
 
             {{ form_row(modifyForm.name)}}
+
             {{ form_row(modifyForm.dateTimeStart) }}
-            <script type="text/javascript">
-                $(function(){
-                    2
-                    $('*[name=dateTimeStart]').appendDtpicker();
-                    3
-                });
-            </script>
             {{ form_row(modifyForm.limitDateInscription) }}
             {{ form_row(modifyForm.maxNbPart) }}
             {{ form_row(modifyForm.duration) }}
@@ -81,6 +76,7 @@
 
 {% endblock %}
 {% block extrajs %}
+
     <script type="text/javascript">
         window.onload = init;
         function init(){
@@ -129,8 +125,9 @@
         }
     </script>
     <script type="text/javascript">
-        $(function () {
-            $('#dateTimeStart').datetimepicker();
-        });
+        $(document).ready( function () {
+            $('#picker').dateTimePicker();
+            $('#picker-no-time').dateTimePicker({ showTime: false, dateFormat: 'DD/MM/YYYY', title: 'Select Date'});
+        })
     </script>
 {% endblock %}
