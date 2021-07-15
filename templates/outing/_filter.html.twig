@@ -1,5 +1,5 @@
 {{ form_start(form) }}
-    <fieldset>
+    <fieldset class="fieldset">
         <legend>
             <strong>Filtrer les sorties</strong>
         </legend>
@@ -20,7 +20,7 @@
         <li>{{ form_row(form.unregistered) }}</li>
         <li>{{ form_row(form.olds) }}</li>
     </ul>
-<input type="button" value="Rechercher" class="hollow button" id="button-list" onclick="refreshContenu()">
+<input type="submit" value="Rechercher" class="hollow button" id="button-list" onclick="refreshContenu()">
     </fieldset>
 {{ form_end(form) }}
 
