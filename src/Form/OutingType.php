@@ -30,11 +30,10 @@ class OutingType extends AbstractType
                 'label'=>'Nom de la sortie :',
             ])
             ->add('dateTimeStart',DateTimeType::class, [
-                'attr'=>['class'=>'js-datepicker'],
-                'label'=>'Date et heure de la sortie :',
-                'widget' => "single_text",
-                'html5' => false,
-
+                'label'             => "Date et heure de la sortie",
+                'date_widget'            => 'single_text',
+                'time_widget'            => 'single_text',
+                'html5'             => true,
             ])
             ->add('limitDateInscription',DateType::class, [
 

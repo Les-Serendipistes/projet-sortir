@@ -265,9 +265,6 @@ class OutingController extends AbstractController
 
 
     //Methode pour annuler une sortie
-
-
-
     #[Route('/outing/subscribe/{id}', name: 'outing_subscribe')]
     public function inscription(OutingRepository $outingRepository, EntityManagerInterface $entityManager, int $id): RedirectResponse
     {
