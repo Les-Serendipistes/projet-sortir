@@ -16,7 +16,7 @@
             {% if outing.state.label == 'Créée' or outing.state.label == 'Ouverte' %}
                 <a href="{{ path('outing_modify', {'id' : outing.id }) }}">Modifier</a>
             {% else %}
-                <a href="{{ path('outing_detail', {'id' : outing.id }) }}">Afficher</a>
+               - <a href="{{ path('outing_detail', {'id' : outing.id }) }}">Afficher</a>
             {% endif %}
         {% else %}
             <a href="{{ path('outing_detail', {'id' : outing.id }) }}">Afficher</a>
@@ -24,12 +24,12 @@
                 {% if outing.state.label == 'Activité en cours' %}
                 {% else %}
                     {% if outing.state.label == 'Créée' or outing.state.label == 'Ouverte' %}
-                        <a href="{{ path('outing_unsubscribe', {'id' : outing.id }) }}">Se désister</a>
+                        - <a href="{{ path('outing_unsubscribe', {'id' : outing.id }) }}">Se désister</a>
                     {% endif %}
                 {% endif %}
             {% else %}
                 {% if outing.state.label == 'Créée' or outing.state.label == 'Ouverte' %}
-                    <a href="{{ path('outing_subscribe', {'id' : outing.id }) }}">S'inscrire</a>
+                    - <a href="{{ path('outing_subscribe', {'id' : outing.id }) }}">S'inscrire</a>
                 {% endif %}
             {% endif %}
         {% endif %}

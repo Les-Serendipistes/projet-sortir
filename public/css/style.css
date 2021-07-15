@@ -3,6 +3,10 @@ h1{
     border-bottom: lightgray 1px solid;
 }
 
+.fieldset {
+    margin: 0;
+}
+
 .top-bar, .top-bar ul{
     background-color: unset;
 }
