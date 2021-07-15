@@ -8,6 +8,7 @@ use DateTimeInterface;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity(repositoryClass=OutingRepository::class)
@@ -38,7 +39,13 @@ class Outing
 
     /**
      * @ORM\Column(type="integer")
+     * * @Assert\NotBlank(message="Fournissez le nombre de place.")
+     * @Assert\Length(
+     *     min=5,
+     *     minMessage="Minimum 2 places",
+     *     )
      */
+
     private $maxNbPart;
 
     /**

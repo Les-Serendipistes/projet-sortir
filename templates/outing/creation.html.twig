@@ -1,4 +1,8 @@
 {% extends 'base.html.twig' %}
+{% block stylesheets %}
+ <link  rel="stylesheet" href="{{ asset('css/jquery.datetimepicker.css')}}"
+{% endblock %}
+
 
 {% block title %}
     {{ parent() }} | Créer une sortie
@@ -50,6 +54,10 @@
     </section>
 
 {% endblock %}
+{% block javascript %}
+<script src="{{ asset('js/datepicker/jquery.datetimepicker.js') }}" ></script>
+<script src="{{ asset('js/jquery.datetimepicker.full.min.js') }}" ></script>
+{% endblock %}
 {% block extrajs %}
         <script type="text/javascript">
             window.onload = init;
@@ -95,7 +103,11 @@
                 document.getElementById('latitude').value= "";
                 document.getElementById('longitude').value= "";
             }
-
             }
         </script>
+         <script src="{{ asset('js/datepicker/jquery.js') }}"></script>
+ <script src="{{ asset('js/datepicker/jquery.datetimepicker.js') }}"></script>
+<script type="text/javascript">
+   jQuery('#dateTimeStart').datetimepicker();
+</script>
 {% endblock %}

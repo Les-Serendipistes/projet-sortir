@@ -30,8 +30,6 @@ class OutingController extends AbstractController
 {
 
     private $security;
-
-
     public function __construct(Security $security)
     {
         $this->security = $security;

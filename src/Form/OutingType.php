@@ -17,6 +17,7 @@ use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Validator\Constraints as Assert;
 
 class OutingType extends AbstractType
 {
@@ -28,27 +29,24 @@ class OutingType extends AbstractType
                 'label'=>'Nom de la sortie :',
             ])
             ->add('dateTimeStart',DateTimeType::class, [
+                'attr'=>['class'=>'js-datepicker'],
                 'label'=>'Date et heure de la sortie :',
                 'widget' => "single_text",
-                'html5' => true,
-                'placeholder' => [
-                    'year' => 'Year', 'month' => 'Month', 'day' => 'Day',
-                    'hour' => 'Hour', 'minute' => 'Minute', 'second' => 'Second',
-                ]
+                'html5' => false,
+
             ])
             ->add('limitDateInscription',DateType::class, [
+
                 'label'=>"Date limite d'inscription :",
                 'widget' => 'single_text',
                 // this is actually the default format for single_text
                 'format' => 'yyyy-MM-dd',
                 'html5' => true,
+
             ])
-            ->add('maxNbPart', NumberType::class,[
-                'label'=>'Nombre de places :',
-            ])
-            ->add('duration',NumberType::class,[
-                'label'=>'Durée (minutes) :',
-            ])
+            ->add('maxNbPart')
+            ->add('duration'
+            )
             ->add('outingReport', TextareaType::class, [
                 'label'=>'Description et infos : ',
                 'attr' => array(

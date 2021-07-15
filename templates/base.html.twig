@@ -11,7 +11,7 @@
 
     <header class="top-bar" id="responsive-menu">
         <div class="logo">
-        <img src="{{ asset('img/site/logo-sortir.png') }}" alt="Sortir">
+            <a href="{{ path('outing_list') }}"><img src="{{ asset('img/site/logo-sortir.png') }}" alt="Sortir"></button></a>
         </div>
         {% include 'menu/nav.html.twig' %}
         {% block extrajs %}
@@ -33,6 +33,11 @@
     <main class="grid-container">{% block body %}{% endblock %}</main>
      <footer class="cell shrink footer">© Les Serendipistes</footer>
     </body>
+{% block stylesheets %}
+{% endblock %}
+
+    {% block javascript %}
+     {% endblock %}
 </html>
 
 
