@@ -1,13 +1,26 @@
 /* Personalisation de foundation */
-h1{
+body {
+    line-height: 1.1em;
+    font-size: small;
+}
+
+h1 {
     border-bottom: lightgray 1px solid;
+}
+
+#profile-pic {
+    width: 150px;
+    height: 150px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    padding: 5px;
 }
 
 .fieldset {
     margin: 0;
 }
 
-.top-bar, .top-bar ul{
+.top-bar, .top-bar ul {
     background-color: unset;
 }
 
@@ -15,12 +28,26 @@ h1{
     border-bottom: lightgray 1px solid;
 }
 
-.grid-container{
+.grid-container {
     max-width: 90rem;
 }
 
-footer{
+.grid-container-small {
+    max-width: 50rem;
+}
+
+footer {
     border-top: lightgray 1px solid;
+}
+
+/* */
+tbody th, tbody td {
+    padding: 0.4rem 0.4rem 0.4rem;
+}
+
+#filtres label {
+    font-size: small;
+    line-height: 1.2em;
 }
 
 /* Tableau responsive */
@@ -47,18 +74,22 @@ footer{
     .responsive-card-table {
 
     }
+
     .responsive-card-table thead tr {
         position: absolute;
         top: -9999em;
         left: -9999em;
     }
+
     .responsive-card-table tr {
         border: inherit;
         display: block;
     }
+
     .responsive-card-table tr + tr {
         margin-top: 1.5rem;
     }
+
     .responsive-card-table td {
         border: none;
         display: -webkit-flex;
@@ -74,6 +105,7 @@ footer{
         padding-left: 50%;
         position: relative;
     }
+
     .responsive-card-table td:before {
         content: attr(data-label);
         display: inline-block;
@@ -84,6 +116,7 @@ footer{
         position: relative;
         z-index: 1;
     }
+
     .responsive-card-table td:after {
         content: '';
         position: absolute;
