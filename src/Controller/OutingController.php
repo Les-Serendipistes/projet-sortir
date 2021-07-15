@@ -198,18 +198,18 @@ class OutingController extends AbstractController
     public function edit(int $id, request $request,
                          StateRepository $stateRepository,
                          CampusRepository $campusRepository,
-                         EntityManagerInterface $entityManager)
+                         EntityManagerInterface $entityManager, LocationRepository $locationRepository)
     : Response
     {
         $user = $this->getUser();
         $outing = $entityManager->getRepository(Outing::class)->find($id);
+        //dd($outing);
         $modifyForm = $this->createForm(OutingModificationType::class, $outing);
         $modifyForm->handleRequest($request);
         $submit =$request->request->get('submitAction');
 
         if ($modifyForm->isSubmitted() && $modifyForm->isValid()) {
             $currentUser = $this->getUser();
-
             if ($currentUser == null || $currentUser->getId() != $outing->getOrganizerUser()->getId()) {
                 return $this->redirectToRoute("outing_list");
             }
@@ -250,14 +250,18 @@ class OutingController extends AbstractController
         {   //redirection vers la page de sortie
             return $this->redirectToRoute('outing_list' );
         }
-
+        $detailLieu=$locationRepository->findLocationDetail($outing->getLocation()->getId());
+        //dd($detailLieu);
+        // dd($outing);
         return $this->render('outing/modify.html.twig', [
             'modifyForm' => $modifyForm->createView(),
             'user' => $this->security->getUser(),
             'campus' => $this->getUser()->getCampus()->getName(),
-            'outing' => $outing
+            'outing' => $outing,
+            'detailLieu'=>$detailLieu
         ]);
     }
+
 
 
     //Methode pour annuler une sortie

@@ -6,6 +6,7 @@ use App\Entity\Campus;
 use App\Entity\City;
 use App\Entity\Outing;
 use App\Entity\State;
+use App\Repository\CityRepository;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
@@ -62,10 +63,14 @@ class OutingType extends AbstractType
             ] )
             ->add('state',EntityType::class, [
                 'class'=>City::class,
+                'query_builder' => function(CityRepository $repository) {
+                    return $repository->createQueryBuilder('c')->orderBy('c.name', 'ASC');
+                },
                 'mapped'=>false,
                 'placeholder' => ' ',
                 'label'=>'Ville :',
                 'choice_label'=>'name',
+
             ])
             ->add('location', ChoiceType::class,[
                 'mapped'=>false,

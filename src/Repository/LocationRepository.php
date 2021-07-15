@@ -20,6 +20,9 @@ class LocationRepository extends ServiceEntityRepository
     }
 
 
+
+
+
     public function findLocation($id)
     {
         $entityManager = $this->getEntityManager();
@@ -45,6 +48,11 @@ class LocationRepository extends ServiceEntityRepository
         // returns an array of Product objects
         return  $query->getArrayResult();
     }
+
+
+
+
+
 
 
     // /**
