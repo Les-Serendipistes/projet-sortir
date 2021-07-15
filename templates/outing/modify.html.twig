@@ -25,6 +25,13 @@
 
             {{ form_row(modifyForm.name)}}
             {{ form_row(modifyForm.dateTimeStart) }}
+            <script type="text/javascript">
+                $(function(){
+                    2
+                    $('*[name=dateTimeStart]').appendDtpicker();
+                    3
+                });
+            </script>
             {{ form_row(modifyForm.limitDateInscription) }}
             {{ form_row(modifyForm.maxNbPart) }}
             {{ form_row(modifyForm.duration) }}
@@ -39,14 +46,34 @@
             {{ form_row(modifyForm.zipcode) }}
             {{ form_row(modifyForm.latitude) }}
             {{ form_row(modifyForm.longitude) }}
-
         </div>
 
         <div class="button-group">
             <button type="submit" name="submitAction" class="hollow button" value="enregistrer">Enregistrer</button>
             <button type="submit" name="submitAction" class="hollow button" value="publier">Publier la sortie</button>
-            <button type="submit" name="submitAction" class="hollow button alert" value="supprimer">Supprimer la sortie</button>
-            <button type="button" name="submitAction" class="hollow button secondary" value="annuler">Annuler</button>
+            <p><button type="submit" name="submitAction" class="hollow button alert" value="supprimer" data-open="exampleModal2">Supprimer la sortie</button></p>
+            <a href="{{ path('outing_list') }}" ><button type="button" value="annuler" class="hollow button secondary" >Annuler</button></a>
+
+
+            <!-- This is the first modal -->
+            <div class="reveal" id="exampleModal2" data-reveal>
+                <h1>Supprimer une sortie</h1>
+                <p class="lead">Etes-vous certain de vouloir suprimer la sortie {{ outing.name }} du {{ outing.dateTimeStart | date('d/m/Y') }} ?</p>
+                <button class="button" data-open="exampleModal3">Oui</button>
+                <button class="button alert" data-open="exampleModal3">Annuler</button>
+                <button class="button" data-close aria-label="Close reveal" type="button">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+
+            <!-- This is the nested modal -->
+            <div class="reveal" id="exampleModal3" data-reveal>
+                <h2>La sortie à été correctement supprimé !</h2>
+                <button class="button" data-close aria-label="Close reveal" type="button">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                <a href="{{ path('outing_list') }}" ><button type="button" class="hollow button secondary" >OK</button></a>
+            </div>
         </div>
         </fieldset>
         {{ form_end(modifyForm) }}
@@ -100,5 +127,10 @@
             }
 
         }
+    </script>
+    <script type="text/javascript">
+        $(function () {
+            $('#dateTimeStart').datetimepicker();
+        });
     </script>
 {% endblock %}

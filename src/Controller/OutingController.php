@@ -8,7 +8,6 @@ use App\Form\OutingModificationType;
 use App\Form\OutingType;
 use App\Form\SearchOutingFormType;
 use App\Repository\CampusRepository;
-use App\Repository\CityRepository;
 use App\Repository\LocationRepository;
 use App\Repository\OutingRepository;
 use App\Repository\StateRepository;
@@ -24,7 +23,6 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Core\Security;
-use Symfony\Component\Security\Core\User\UserInterface;
 
 class OutingController extends AbstractController
 {
@@ -38,7 +36,7 @@ class OutingController extends AbstractController
     #[Route('/outing/list', name: 'outing_list')]
     public function list(OutingRepository $outingRepository,
                          Request $request,
-                         PaginatorInterface $paginator
+                         PaginatorInterface $paginator,
     ): Response
     {
         $user = $this->security->getToken()->getUser();
@@ -46,14 +44,14 @@ class OutingController extends AbstractController
         $form = $this->createForm(SearchOutingFormType::class, $data);
 
         $form->handleRequest($request);
-
         $page = $outingRepository->findSearch($data);
 
         $outings = $paginator->paginate(
             $page,
             $request->query->getInt('page', 1),
-            10
+            8
         );
+
 
         // Gestion du rafraichissement automatique de la liste des sortie et de la pagination.
         if ($request->get('ajax')) {
@@ -64,9 +62,9 @@ class OutingController extends AbstractController
             ]);
         }
         return $this->render('outing/outingList.html.twig', [
-            'outings'   => $outings,
-            'user'      => $user,
-            'form'      => $form->createView()
+            'outings'           => $outings,
+            'user'              => $user,
+            'form'              => $form->createView()
         ]);
     }
 
@@ -239,6 +237,15 @@ class OutingController extends AbstractController
             $this->addFlash("Sortie","Sortie publiée avec succès.");
             return $this->redirectToRoute('outing_list' );
         }
+
+        elseif ($submit === 'supprimer')
+        {
+            //redirection vers la page de suppression de la sortie
+            $entityManager->remove($outing);
+            $entityManager->flush();
+            return $this->redirectToRoute('outing_list' );
+        }
+
         elseif ($submit === 'annuler')
         {   //redirection vers la page de sortie
             return $this->redirectToRoute('outing_list' );

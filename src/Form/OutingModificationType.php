@@ -30,13 +30,12 @@ class OutingModificationType extends AbstractType
             ])
             ->add('dateTimeStart',DateTimeType::class, [
                 'label'             =>'Date et heure de la sortie :',
-                'date_widget' => 'single_text',
-                'time_widget' => 'single_text',
+                'widget'            => 'single_text',
                 'html5'             => true,
                 'placeholder'       => [
                     'year'          => 'Year', 'month' => 'Month', 'day' => 'Day',
                     'hour'          => 'Hour', 'minute' => 'Minute', 'second' => 'Second',
-                ]
+                ],
             ])
             ->add('limitDateInscription',DateType::class, [
                 'label'             => "Date limite d'inscription :",

@@ -4,12 +4,13 @@ namespace App\Repository;
 
 use App\Data\SearchData;
 use App\Entity\Outing;
-use App\Entity\User;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\ORM\EntityManagerInterface;
+use Doctrine\ORM\NonUniqueResultException;
+use Doctrine\ORM\NoResultException;
 use Doctrine\Persistence\ManagerRegistry;
 use DateTime;
 use Symfony\Component\Security\Core\Security;
-use function Doctrine\ORM\QueryBuilder;
 
 /**
  * @method Outing|null find($id, $lockMode = null, $lockVersion = null)
@@ -23,6 +24,7 @@ class OutingRepository extends ServiceEntityRepository
      * @var Security
      */
     private Security $security;
+    private EntityManagerInterface $entityManager;
 
     public function __construct(ManagerRegistry $registry, Security $security) {
         parent::__construct($registry, Outing::class);
@@ -41,11 +43,10 @@ class OutingRepository extends ServiceEntityRepository
 
         $user = $this->security->getUser();
 
-        $queryBuilder  = $this->createQueryBuilder('outing');
         $query  = $this->createQueryBuilder('outing')
                 ->select('outing', 'campus', 'registered_users')
                 ->join('outing.campus', 'campus')
-                ->join('outing.registeredUsers', 'registered_users');
+                ->leftJoin('outing.registeredUsers', 'registered_users');
 
         if ($search->campus) {
             $query
@@ -78,7 +79,6 @@ class OutingRepository extends ServiceEntityRepository
         if ($search->unregistered ) {
             $query
                 ->leftJoin('registered_users.outings', 'ot')
-                ->leftJoin('outing.registeredUsers', 'reg')
                 ->andWhere(':user NOT MEMBER OF outing.registeredUsers')
                 ->setParameter('user', $user);
         }
@@ -92,9 +92,15 @@ class OutingRepository extends ServiceEntityRepository
             ->getResult();
     }
 
-    public function unsubscribe(User $user) {
-        $user = $this->security->getUser();
-
-
+    public function nbSubscribers(Outing $outing)
+    {
+        $registeredUsers = $this->createQueryBuilder('o')
+            ->leftJoin('o.registeredUsers', 'r')
+            ->select('COUNT(r.id)')
+            ->andWhere('r.id = :outingId')
+            ->setParameter('outingId', $outing->getId())
+            ->getQuery()
+            ->getSingleScalarResult();
+        return $registeredUsers;
     }
 }

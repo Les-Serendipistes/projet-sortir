@@ -2,8 +2,12 @@
 <html>
     <head>
         <meta charset="UTF-8">
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" />
+        <link rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.10.0/css/fontawesome.css" />
+
         <link rel="stylesheet" media="screen" type="text/css" href="{{ asset('css/foundation.css') }}"/>
-        <link rel="stylesheet" media="screen" type="text/css" href="{{ asset('css/style.css') }}"/>
+        <link rel="stylesheet" media="screen" type="text/css" href="{{ asset('css/bootstrap-datetimepicker.min.css') }}"/>
+        <link rel="stylesheet" type="text/css" href="{{ asset('css/style.css') }}"/>
         <link rel="icon" href="{{ asset('img/site/Serendipistes.png') }}" />
         <title>{% block title %}Sortir{% endblock %}</title>
     </head>
@@ -14,9 +18,7 @@
             <a href="{{ path('outing_list') }}"><img src="{{ asset('img/site/logo-sortir.png') }}" alt="Sortir"></a>
         </div>
         {% include 'menu/nav.html.twig' %}
-        {% block extrajs %}
-            <script type="text/javascript" src="{{ asset('js/jquery-3.6.0.min.js') }}"></script>
-        {% endblock %}
+
     </header>
 
     <span style="text-align:center">
@@ -38,6 +40,12 @@
 
     {% block javascript %}
      {% endblock %}
+    {% block extrajs %}
+        <script type="text/javascript" src="{{ asset('js/jquery-3.6.0.min.js') }}"></script>
+        <script type="text/javascript" src="{{ asset('js/bootstrap-datetimepicker.min.js') }}"></script>
+        <script type="text/javascript" src="{{ asset('js/popper.min.js') }}" ></script>
+        <script type="text/javascript" src="{{ asset('js/moment.js') }}"
+    {% endblock %}
 </html>
 
 
