@@ -43,9 +43,9 @@ class OutingRepository extends ServiceEntityRepository
 
         $queryBuilder  = $this->createQueryBuilder('outing');
         $query  = $this->createQueryBuilder('outing')
-            ->select('outing', 'campus', 'registered_users')
-        ->join('outing.campus', 'campus')
-        ->join('outing.registeredUsers', 'registered_users');
+                ->select('outing', 'campus', 'registered_users')
+                ->join('outing.campus', 'campus')
+                ->join('outing.registeredUsers', 'registered_users');
 
         if ($search->campus) {
             $query

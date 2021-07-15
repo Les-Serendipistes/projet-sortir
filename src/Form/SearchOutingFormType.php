@@ -39,32 +39,20 @@ class SearchOutingFormType extends AbstractType
                 'widget'            => 'single_text',
             ])
             ->add('organizer', CheckboxType::class, [
-                'label'             => 'Sorties dont je suis l\'organisateur/trice',
+                'label'             => false,
                 'required'          => false,
-                'attr'              => [
-                    'class'         => 'filters'
-                ]
             ])
             ->add('registered', CheckboxType::class, [
-                'label'             => 'Sorties auxquelles je suis inscrit/e',
+                'label'             => false,
                 'required'          => false,
-                'attr'              => [
-                    'class'         => 'filters'
-                ]
             ])
             ->add('unregistered', CheckboxType::class, [
-                'label'             => 'Sorties auxquelles je ne suis pas inscrit/e',
+                'label'             => false,
                 'required'          => false,
-                'attr'              => [
-                    'class'         => 'filters'
-                ]
             ])
             ->add('olds',CheckboxType::class, [
-                'label'             => 'Sorties passées',
+                'label'             => false,
                 'required'          => false,
-                'attr'              => [
-                    'class'         => 'filters'
-                ]
             ])
         ;
     }

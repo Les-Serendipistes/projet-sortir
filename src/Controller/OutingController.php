@@ -7,6 +7,8 @@ use App\Entity\Outing;
 use App\Form\OutingModificationType;
 use App\Form\OutingType;
 use App\Form\SearchOutingFormType;
+use App\Repository\CampusRepository;
+use App\Repository\CityRepository;
 use App\Repository\LocationRepository;
 use App\Repository\OutingRepository;
 use App\Repository\StateRepository;
@@ -16,33 +18,53 @@ use Knp\Component\Pager\PaginatorInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Core\Security;
+use Symfony\Component\Security\Core\User\UserInterface;
 
 class OutingController extends AbstractController
 {
+
+    private $security;
+
+
+    public function __construct(Security $security)
+    {
+        $this->security = $security;
+    }
+
     #[Route('/outing/list', name: 'outing_list')]
     public function list(OutingRepository $outingRepository,
                          Request $request,
-                         Security $security,
                          PaginatorInterface $paginator
     ): Response
     {
-        $user = $security->getToken()->getUser();
+        $user = $this->security->getToken()->getUser();
         $data = new SearchData();
         $form = $this->createForm(SearchOutingFormType::class, $data);
 
         $form->handleRequest($request);
 
-        $page = $outingRepository->findSearch($data, $this->getUser());
+        $page = $outingRepository->findSearch($data);
+
         $outings = $paginator->paginate(
             $page,
             $request->query->getInt('page', 1),
-            6
+            10
         );
+
+        // Gestion du rafraichissement automatique de la liste des sortie et de la pagination.
+        if ($request->get('ajax')) {
+            return new JsonResponse([
+                'content' => $this->renderView('outing/_outingTable.html.twig', ['outings' => $outings]),
+                'pagination' => $this->renderView('outing/_pagination.html.twig', ['outings' => $outings]),
+                'pages' => ceil($outings->getTotalItemCount() / $outings->getItemNumberPerPage()),
+            ]);
+        }
         return $this->render('outing/outingList.html.twig', [
             'outings'   => $outings,
             'user'      => $user,
@@ -84,8 +106,6 @@ class OutingController extends AbstractController
 
     }
 
-
-
     #[Route('/outing/create', name: 'outing_create')]
     /**
      * @ParamConverter ("State", options={"mapping":{"id": "id"}})
@@ -99,7 +119,7 @@ class OutingController extends AbstractController
     ): Response
     {
           if($this->getUser()){
-              $userConnectedCampus=$this->getUser()->getCampus()->getName();
+              $userConnectedCampus = $this->getUser()->getCampus()->getName();
               $userId=$this->getUser()->getId();
               $outing = New Outing();
               $outingForm = $this->createForm(OutingType::class,$outing);
@@ -179,66 +199,70 @@ class OutingController extends AbstractController
     }
 
     #[Route('/outing/modify/{id}', name: 'outing_modify')]
-public function edit(outing $outing, request $request,  EntityManagerInterface $entityManager,
-                       OutingRepository $outingRepository, StateRepository $stateRepository) : Response
+    public function edit(int $id, request $request,
+                         StateRepository $stateRepository,
+                         CampusRepository $campusRepository,
+                         EntityManagerInterface $entityManager)
+    : Response
     {
-        //On passe l'objet outing en paramètre pour que le createform récupère et modifie la sortie
-        $outingForm = $this->createForm(OutingModificationType::class, $outing);
-        //$userConnectedCampus=$this->getUser()->getCampus()->getName();
-        $typeSubmit=$request->request->get('submitAction');
-        $outingForm->handleRequest($request);
-        if ($outingForm->isSubmitted() && $outingForm->isValid()) {
-            /** @var outing $outing */
-            $outing = $this->getData();
+        $user = $this->getUser();
+        $outing = $entityManager->getRepository(Outing::class)->find($id);
+        $modifyForm = $this->createForm(OutingModificationType::class, $outing);
+        $modifyForm->handleRequest($request);
+        $submit =$request->request->get('submitAction');
+
+        if ($modifyForm->isSubmitted() && $modifyForm->isValid()) {
+            $currentUser = $this->getUser();
+
+            if ($currentUser == null || $currentUser->getId() != $outing->getOrganizerUser()->getId()) {
+                return $this->redirectToRoute("outing_list");
+            }
             $entityManager->persist($outing);
             $entityManager->flush();
-            $this->addFlash('success', 'Sortie modifiée avec succès !');
-            return $this->redirectToRoute('outing_detail',['id'=> $outing->getId(),]);
+            $this->addFlash('success', "La sortie a été modifié");
+
         }
 
-        //Les boutons
-        if ($typeSubmit === 'enregistrer' )
+        if ($submit === 'enregistrer' )
         {
+            $outing->setCampus($campusRepository->find($user->getCampus()->getId()));
             $outing->setState($stateRepository->find(1));
             $entityManager->persist($outing);
             $entityManager->flush();
-            $this->addFlash("Sortie","Sortie créée avec succès.");
+            $this->addFlash("Sortie","Sortie modifiée avec succès.");
             return $this->redirectToRoute('outing_list' );
         }
-        elseif ($typeSubmit=== 'publier')
+        elseif ($submit=== 'publier')
         {
+            $outing->setCampus($campusRepository->find($user->getCampus()->getId()));
             $outing->setState($stateRepository->find(2));
             $entityManager->persist($outing);
             $entityManager->flush();
             $this->addFlash("Sortie","Sortie publiée avec succès.");
             return $this->redirectToRoute('outing_list' );
         }
-
-        elseif ($typeSubmit=== 'supprimer')
-        { $outing->setMethod('DELETE');
-            dd("bouton supprimer".$typeSubmit);
-        }
-
-        elseif ($typeSubmit === 'annuler')
+        elseif ($submit === 'annuler')
         {   //redirection vers la page de sortie
-            dd("bouton annuler".$typeSubmit);
+            return $this->redirectToRoute('outing_list' );
         }
-
 
         return $this->render('outing/modify.html.twig', [
-            'outingForm' => $outingForm->createView(),
-            //'campusName'=>$userConnectedCampus
+            'modifyForm' => $modifyForm->createView(),
+            'user' => $this->security->getUser(),
+            'campus' => $this->getUser()->getCampus()->getName(),
+            'outing' => $outing
         ]);
     }
+
 
     //Methode pour annuler une sortie
 
 
 
     #[Route('/outing/subscribe/{id}', name: 'outing_subscribe')]
-    public function inscription(Security $security, OutingRepository $outingRepository, EntityManagerInterface $entityManager, int $id): RedirectResponse
+    public function inscription(OutingRepository $outingRepository, EntityManagerInterface $entityManager, int $id): RedirectResponse
     {
-        $user = $security->getUser();
+        $user = $this->security->getUser();
         $outing = $outingRepository->find($id);
         $outing->addRegisteredUser($user);
         $entityManager->persist($outing);
@@ -247,9 +271,9 @@ public function edit(outing $outing, request $request,  EntityManagerInterface $
     }
 
     #[Route('/outing/unsubscribe/{id}', name: 'outing_unsubscribe')]
-    public function unsubscribe(Security $security, OutingRepository $outingRepository, EntityManagerInterface $entityManager, int $id): RedirectResponse
+    public function unsubscribe(OutingRepository $outingRepository, EntityManagerInterface $entityManager, int $id): RedirectResponse
     {
-        $user = $security->getUser();
+        $user = $this->security->getUser();
         $outing = $outingRepository->find($id);
         $outing->removeRegisteredUser($user);
         $entityManager->persist($outing);

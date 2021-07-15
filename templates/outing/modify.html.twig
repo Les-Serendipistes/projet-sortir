@@ -18,27 +18,27 @@
 
 
     <section>
-        {{ form_start(outingForm) }}
-        {{ form_errors(outingForm) }}
+        {{ form_start(modifyForm) }}
+        {{ form_errors(modifyForm) }}
         <fieldset>
         <div>
 
-            {{ form_row(outingForm.name)}}
-            {{ form_row(outingForm.dateTimeStart) }}
-            {{ form_row(outingForm.limitDateInscription) }}
-            {{ form_row(outingForm.maxNbPart) }}
-            {{ form_row(outingForm.duration) }}
-            {{ form_row(outingForm.outingReport) }}
+            {{ form_row(modifyForm.name)}}
+            {{ form_row(modifyForm.dateTimeStart) }}
+            {{ form_row(modifyForm.limitDateInscription) }}
+            {{ form_row(modifyForm.maxNbPart) }}
+            {{ form_row(modifyForm.duration) }}
+            {{ form_row(modifyForm.outingReport) }}
         </div>
 
         <div>
-{{ form_row(outing.) }}
-            {{ form_row(outingForm.state) }}
-            {{ form_row(outingForm.location) }}
-            {{ form_row(outingForm.street) }}
-            {{ form_row(outingForm.zipcode) }}
-            {{ form_row(outingForm.latitude) }}
-            {{ form_row(outingForm.longitude) }}
+            {{ form_row(modifyForm.campus) }}
+            {{ form_row(modifyForm.city) }}
+            {{ form_row(modifyForm.location) }}
+            {{ form_row(modifyForm.street) }}
+            {{ form_row(modifyForm.zipcode) }}
+            {{ form_row(modifyForm.latitude) }}
+            {{ form_row(modifyForm.longitude) }}
 
         </div>
 
@@ -49,7 +49,7 @@
             <button type="button" name="submitAction" class="hollow button secondary" value="annuler">Annuler</button>
         </div>
         </fieldset>
-        {{ form_end(outingForm) }}
+        {{ form_end(modifyForm) }}
     </section>
 
 {% endblock %}
@@ -57,7 +57,7 @@
     <script type="text/javascript">
         window.onload = init;
         function init(){
-            let selectedTown=  document.getElementById("state");
+            let selectedTown=  document.getElementById("city");
             let selectedCity = document.getElementById("location");
             selectedTown.addEventListener('change',function(){
                 selectedCity.length = 1;
@@ -98,9 +98,6 @@
                 document.getElementById('latitude').value= "";
                 document.getElementById('longitude').value= "";
             }
-
-
-
 
         }
     </script>
