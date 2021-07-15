@@ -44,13 +44,22 @@ class OutingRepository extends ServiceEntityRepository
         $user = $this->security->getUser();
 
         $query  = $this->createQueryBuilder('outing')
-                ->select('outing', 'campus', 'registered_users')
+                ->select('outing', 'campus', 'registered_users', 'state')
+                ->innerJoin('outing.state', 'state')
+                ->orWhere('state.label LIKE :ouverte')
+                ->orWhere('state.label LIKE :activite')
+                ->orWhere('state.label LIKE :passee')
+                ->setParameter('ouverte', '%Créee%')
+                ->setParameter('activite', '%Activité en cours%')
+                ->setParameter('passee', '%Passée%')
                 ->join('outing.campus', 'campus')
-                ->leftJoin('outing.registeredUsers', 'registered_users');
+                ->leftJoin('outing.registeredUsers', 'registered_users')
+                ->leftJoin('registered_users.outings', 'ot')
+            ;
 
         if ($search->campus) {
             $query
-                ->join('outing.campus', 'c')
+
                 ->andWhere('outing.campus = :campusId')
                 ->setParameter('campusId', $search->campus);
         }
@@ -78,7 +87,7 @@ class OutingRepository extends ServiceEntityRepository
         }
         if ($search->unregistered ) {
             $query
-                ->leftJoin('registered_users.outings', 'ot')
+
                 ->andWhere(':user NOT MEMBER OF outing.registeredUsers')
                 ->setParameter('user', $user);
         }
@@ -87,27 +96,10 @@ class OutingRepository extends ServiceEntityRepository
                 ->setParameter('now', $now);
         }
         return $query
-            ->leftJoin('outing.state', 'state')
-            ->orWhere('state.label LIKE :ouverte')
-            ->orWhere('state.label LIKE :activite')
-            ->orWhere('state.label LIKE :passee')
-            ->setParameter('ouverte', "Ouverte")
-            ->setParameter('activite', "Activité en cours")
-            ->setParameter('passee', "Passée")
+
             ->orderBy('outing.dateTimeStart', 'DESC')
             ->getQuery()
             ->getResult();
     }
 
-    public function nbSubscribers(Outing $outing)
-    {
-        $registeredUsers = $this->createQueryBuilder('o')
-            ->leftJoin('o.registeredUsers', 'r')
-            ->select('COUNT(r.id)')
-            ->andWhere('r.id = :outingId')
-            ->setParameter('outingId', $outing->getId())
-            ->getQuery()
-            ->getSingleScalarResult();
-        return $registeredUsers;
-    }
 }
