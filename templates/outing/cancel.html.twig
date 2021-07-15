@@ -6,6 +6,14 @@
 
 {%  block body %}
     <h1>Annuler une sortie</h1>
+    {# affiche les éventuels messages flash #}
+    {% for label, messages in app.flashes %}
+        {% for message in messages %}
+            <div class="alert alert-{{ label }}">
+                {{ message }}
+            </div>
+        {% endfor %}
+    {% endfor %}
     <div style="text-align:center" >
         <p><strong>Nom de la sortie :</strong> {{ outingToCancel.name}}</p>
         <p><strong>Date de la sortie :</strong> {{ outingToCancel.dateTimeStart|date }}</p>
@@ -13,8 +21,8 @@
         <p><strong>Lieu :</strong> {{ outingToCancel.location.address }}</p>
         {{ form_start(formCancel) }}
         {{ form_row(formCancel.motif) }}
-            <button type="submit" name="submitAction"  value="Enregistrer" class="btn btn-primary">Enregistrer</button>
-            <button type="button" name="submitAction"  value="annuler" class="btn btn-primary">Annuler</button>
+            <button type="submit" name="submitAction"  value="Enregistrer" class="hollow button"">Enregistrer</button>
+        <button class="hollow button secondary"><a href="{{ path('outing_list') }}">Annuler</a></button>
         {{ form_end(formCancel) }}
     </div>
 {% endblock %}

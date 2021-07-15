@@ -78,6 +78,9 @@ class OutingController extends AbstractController
                            StateRepository $stateRepository):Response
     {
         $outingToCancel = $outingRepository->find($id);
+        $datenow = new \DateTime("now");
+        //dd($outingToCancel);
+        //dd($datenow < $outingToCancel->getDateTimeStart());
         //$defaultData = ['motif' => ''];
         $formCancel = $this->createFormBuilder()
             ->add('motif', TextareaType::class,[
@@ -86,7 +89,7 @@ class OutingController extends AbstractController
             ->getForm();
         $formCancel->handleRequest($request);
 
-        if ($formCancel->isSubmitted() && $formCancel->isValid()) {
+        if ($formCancel->isSubmitted() && $formCancel->isValid() && $datenow < $outingToCancel->getDateTimeStart()  ) {
            $motif= $formCancel->get('motif')->getData();
             $outingToCancel->setState($stateRepository->find(1));
             $outingToCancel->setOutingReport($outingToCancel->getOutingReport().". Motif d'annulation : ".$motif);
@@ -94,6 +97,12 @@ class OutingController extends AbstractController
             $entityManager->flush();
             $this->addFlash("Sortie","Sortie annulée avec succès.");
             return $this->redirectToRoute('outing_list' );
+        }elseif ($formCancel->isSubmitted() && $formCancel->isValid() && $datenow > $outingToCancel->getDateTimeStart() ){
+            $this->addFlash("Sortie","Sortie en cours. Impossible d'annulée.");
+            return $this->render('outing/cancel.html.twig', [
+                'formCancel' => $formCancel->createView(),
+                'outingToCancel'=>$outingToCancel
+            ]);
         }
         return $this->render('outing/cancel.html.twig', [
             'formCancel' => $formCancel->createView(),
