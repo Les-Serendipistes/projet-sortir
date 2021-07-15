@@ -151,10 +151,6 @@ class OutingController extends AbstractController
             $this->addFlash("Sortie","Sortie publiée avec succès.");
             return $this->redirectToRoute('outing_list' );
         }
-        elseif ($typeSubmit === 'annuler')
-        {   //redirection vers la page de sortie
-            return $this->redirectToRoute('outing_list' );
-        }
 
         return $this->render('outing/creation.html.twig', [
             'submitType' => $typeSubmit,
@@ -245,7 +241,6 @@ class OutingController extends AbstractController
             $entityManager->flush();
             return $this->redirectToRoute('outing_list' );
         }
-
         elseif ($submit === 'annuler')
         {   //redirection vers la page de sortie
             return $this->redirectToRoute('outing_list' );
