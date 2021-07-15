@@ -1,28 +1,19 @@
 {{ form_start(form) }}
-    <fieldset class="small-12 large-6 columns float-left checkboxList">
-        <legend><strong>Filtrer les sorties</strong></legend>
-<div class="small-12 medium-6 columns">
-    <div class="medium-6 cell">
+    <fieldset>
+        <legend>
+            <strong>Filtrer les sorties</strong>
+        </legend>
         <label>Sélection du campus :
             {{ form_row(form.campus) }}
         </label>
-    </div>
-    <div class="medium-6 cell">
         <label>Le nom de la sortie contient :
             {{ form_row(form.q) }}
         </label>
-    </div>
-    <div class="medium-6 cell">
         <label>Se déroulant entre le :
             {{ form_row(form.dateStart) }}
         </label>
-    </div>
-    <div class="medium-6 cell">
         <label>et le :
             {{ form_row(form.dateEnd) }}
-        </label>
-    </div>
-</div>
     <ul class="menu vertical">
         <li>{{ form_row(form.organizer) }}</li>
         <li>{{ form_row(form.registered) }}</li>

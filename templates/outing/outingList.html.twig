@@ -5,39 +5,52 @@
 {% endblock %}
 
 {% block body %}
-<h1 class="text-center">Liste des sorties</h1>
-    <section>
-        <div class="grid-x grid-margin-x">
-                <div class="medium-12 cell small-order-4 medium-order-1">
+    <div class="grid-y medium-grid-frame">
+        <h1 class="text-center">Liste des sorties</h1>
+        <hr/>
+        <div class="cell medium-auto medium-cell-block-container">
+            <div class="grid-x grid-padding-x">
+                <div class="cell medium-4 medium-cell-block-y">
                     {% include 'outing/_filter.html.twig' with {form: form} only %}
+                </div>
+                <div class="cell medium-8 medium-cell-block-y">
+                    {% if outings is empty %}
+                        <div class="callout warning large">
+                            <h5>Aucune sortie à afficher</h5>
+                            <p>Il semblerait qu'il n'y ait pas de sortie de prévue dans aucun des campus.</p>
+                            <a href="{{ path('outing_create') }}">Souhaitez-vous en créer une ?</a>
+                        </div>
+                    {% else %}
+
+                        <div id="refresh-table">
+                            <table class="responsive-card-table hover unstriped" >
+                                <tbody>
+                                <thead>
+                                <th>Nom de la sortie</th>
+                                <th>Date de la sortie</th>
+                                <th>Clôture</th>
+                                <th>Inscrits/places</th>
+                                <th>Etat</th>
+                                <th>Inscrit</th>
+                                <th>Organisateur</th>
+                                <th>Actions</th>
+                                </thead>
+                                {% include 'outing/_outings.html.twig' %}
+                                </tbody>
+                            </table>
+                            <a href="{{ path('outing_create') }}"><button class="hollow button">Créer une nouvelle Sortie</button></a>
+                        </div>
+                    {% endif %}
+
+                    <hr/>
+                    <div class="pagination-event">
+                        {% do outings.setPageRange(2) %}
+                        {{ knp_pagination_render(outings, 'pagination/pagination.html.twig') }}
+                    </div>
                 </div>
             </div>
         </div>
-        <section id="main-table">
-            <div class="small-12 cell small-order-2 medium-order-1" id="refresh-table">
-                <table class="hover unstriped" >
-                    <tbody>
-                    <thead>
-                    <th>Nom de la sortie</th>
-                    <th>Date de la sortie</th>
-                    <th>Clôture</th>
-                    <th>Inscrits/places</th>
-                    <th>Etat</th>
-                    <th>Inscrit</th>
-                    <th>Organisateur</th>
-                    <th>Actions</th>
-                    </thead>
-                    {% include 'outing/_outings.html.twig' %}
-                    </tbody>
-                </table>
-                            <a href="{{ path('outing_create') }}"><button class="hollow button">Créer une nouvelle Sortie</button></a>
-                <div class="pagination-event">
-                    {% do outings.setPageRange(2) %}
-                    {{ knp_pagination_render(outings, 'pagination/pagination.html.twig') }}
-                </div>
-            </div>
-        </section>
-    </article>
+    </div>
 
 {% endblock %}
 {% block extrajs %}

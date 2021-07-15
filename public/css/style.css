@@ -1,377 +1,94 @@
-/****************** Begin NAVBAR ****************/
-
-
-.topbar-responsive {
-    background: #2c3840;
-    padding: 1rem 1.5rem;
+/* Personalisation de foundation */
+h1{
+    border-bottom: lightgray 1px solid;
 }
 
-.topbar-responsive .topbar-responsive-logo {
-    color: #fefefe;
-    vertical-align: middle;
+.top-bar, .top-bar ul{
+    background-color: unset;
 }
 
-.topbar-responsive .menu {
-    background: #2c3840;
+.top-bar {
+    border-bottom: lightgray 1px solid;
 }
 
-.topbar-responsive .menu li:last-of-type {
-    margin-right: 0;
+.grid-container{
+    max-width: 90rem;
 }
 
-.topbar-responsive .menu a {
-    color: #fefefe;
-    transition: color 0.15s ease-in;
+footer{
+    border-top: lightgray 1px solid;
 }
 
-.topbar-responsive .menu a:hover {
-    color: #c6d1d8;
+/* Tableau responsive */
+
+.responsive-card-table {
+    border-collapse: collapse;
 }
 
-@media screen and (max-width: 39.9375em) {
-    .topbar-responsive .menu a {
-        padding: 0.875rem 0;
+.responsive-card-table.unstriped tbody {
+    background-color: transparent;
+}
+
+.responsive-card-table th {
+    background-color: inherit;
+}
+
+.responsive-card-table tr,
+.responsive-card-table th,
+.responsive-card-table td {
+    border: inherit;
+}
+
+@media screen and (max-width: 640px) {
+    .responsive-card-table {
+
     }
-}
-
-.topbar-responsive .menu .topbar-responsive-button {
-    color: #fefefe;
-    border-color: #fefefe;
-    border-radius: 5000px;
-    transition: color 0.15s ease-in, border-color 0.15s ease-in;
-}
-
-.topbar-responsive .menu .topbar-responsive-button:hover {
-    color: #c6d1d8;
-    border-color: #c6d1d8;
-}
-
-@media screen and (max-width: 39.9375em) {
-    .topbar-responsive .menu .topbar-responsive-button {
-        width: 100%;
-        margin: 0.875rem 0;
-    }
-}
-
-@media screen and (max-width: 39.9375em) {
-    .topbar-responsive {
-        padding: 0.75rem;
-    }
-    .topbar-responsive .top-bar-title {
-        position: relative;
-        width: 100%;
-    }
-    .topbar-responsive .top-bar-title span {
+    .responsive-card-table thead tr {
         position: absolute;
-        right: 0;
-        border: 1px solid #fefefe;
-        border-radius: 5px;
-        padding: 0.25rem 0.45rem;
-        top: 50%;
-        -webkit-transform: translateY(-50%);
-        -ms-transform: translateY(-50%);
-        transform: translateY(-50%);
+        top: -9999em;
+        left: -9999em;
     }
-    .topbar-responsive .top-bar-title span .menu-icon {
-        margin-bottom: 4px;
+    .responsive-card-table tr {
+        border: inherit;
+        display: block;
     }
-}
-
-@-webkit-keyframes fadeIn {
-    from {
-        opacity: 0;
+    .responsive-card-table tr + tr {
+        margin-top: 1.5rem;
     }
-    to {
-        opacity: 1;
-    }
-}
-
-@keyframes fadeIn {
-    from {
-        opacity: 0;
-    }
-    to {
-        opacity: 1;
-    }
-}
-
-@-webkit-keyframes slideDown {
-    0% {
-        -webkit-transform: translateY(-100%);
-        transform: translateY(-100%);
-    }
-    100% {
-        -webkit-transform: translateY(0%);
-        transform: translateY(0%);
-    }
-}
-
-@keyframes slideDown {
-    0% {
-        -webkit-transform: translateY(-100%);
-        transform: translateY(-100%);
-    }
-    100% {
-        -webkit-transform: translateY(0%);
-        transform: translateY(0%);
-    }
-}
-
-@media screen and (max-width: 39.9375em) {
-    .topbar-responsive-links {
-        -webkit-animation-fill-mode: both;
-        animation-fill-mode: both;
-        -webkit-animation-duration: 0.5s;
-        animation-duration: 0.5s;
-        width: 100%;
-        -webkit-animation: fadeIn 1s ease-in;
-        animation: fadeIn 1s ease-in;
-    }
-}
-
-/************* END NavBar *******************/
-
-img{
-    display: block;
-    margin-left: auto;
-    margin-right: auto;
-    width: 170px;
-    height:170px;
-    box-shadow: 0 0 2px 1px rgba(88, 100, 104, 0.5);
-    border: 2px solid #555;
-    border-radius: 14px;
-    background: #5eb5e0;
-}
-label
-{
-    display: block;
-    width: 210px;
-    float: left;
-}
-legend {
-    width: auto;
-    margin-left: auto;
-    margin-right: auto;
-    text-align : center ;
-}
-
-fieldset {
-    margin: 0 auto;
-    width: 30%;
-}
-
-
-@media screen and (max-width: 39.9375em) {
-    .topbar-responsive .menu a {
-        padding: 0.875rem 0;
-    }
-}
-
-.topbar-responsive .menu .topbar-responsive-button {
-    color: #fefefe;
-    border-color: #fefefe;
-    border-radius: 5000px;
-    transition: color 0.15s ease-in, border-color 0.15s ease-in;
-}
-
-.topbar-responsive .menu .topbar-responsive-button:hover {
-    color: #c6d1d8;
-    border-color: #c6d1d8;
-}
-
-@media screen and (max-width: 39.9375em) {
-    .topbar-responsive .menu .topbar-responsive-button {
-        width: 100%;
-        margin: 0.875rem 0;
-    }
-}
-
-@media screen and (max-width: 39.9375em) {
-    .topbar-responsive {
-        padding: 0.75rem;
-    }
-    .topbar-responsive .top-bar-title {
+    .responsive-card-table td {
+        border: none;
+        display: -webkit-flex;
+        display: -ms-flexbox;
+        display: flex;
+        -webkit-justify-content: flex-start;
+        -ms-flex-pack: start;
+        justify-content: flex-start;
+        -webkit-align-items: center;
+        -ms-flex-align: center;
+        align-items: center;
+        border-bottom: inherit;
+        padding-left: 50%;
         position: relative;
-        width: 100%;
     }
-    .topbar-responsive .top-bar-title span {
+    .responsive-card-table td:before {
+        content: attr(data-label);
+        display: inline-block;
+        font-weight: bold;
+        /*line-height: 1.5;*/
+        margin-left: -100%;
+        width: 100%;
+        position: relative;
+        z-index: 1;
+    }
+    .responsive-card-table td:after {
+        content: '';
         position: absolute;
-        right: 0;
-        border: 1px solid #fefefe;
-        border-radius: 5px;
-        padding: 0.25rem 0.45rem;
-        top: 50%;
-        -webkit-transform: translateY(-50%);
-        -ms-transform: translateY(-50%);
-        transform: translateY(-50%);
-    }
-    .topbar-responsive .top-bar-title span .menu-icon {
-        margin-bottom: 4px;
+        background: #e6e6e6;
+        width: 45%;
+        height: 95%;
+        left: 1px;
+        top: 1px;
+        z-index: 0;
     }
 }
-
-@-webkit-keyframes fadeIn {
-    from {
-        opacity: 0;
-    }
-    to {
-        opacity: 1;
-    }
-}
-
-@keyframes fadeIn {
-    from {
-        opacity: 0;
-    }
-    to {
-        opacity: 1;
-    }
-}
-
-@-webkit-keyframes slideDown {
-    0% {
-        -webkit-transform: translateY(-100%);
-        transform: translateY(-100%);
-    }
-    100% {
-        -webkit-transform: translateY(0%);
-        transform: translateY(0%);
-    }
-}
-
-@keyframes slideDown {
-    0% {
-        -webkit-transform: translateY(-100%);
-        transform: translateY(-100%);
-    }
-    100% {
-        -webkit-transform: translateY(0%);
-        transform: translateY(0%);
-    }
-}
-
-@media screen and (max-width: 39.9375em) {
-    .topbar-responsive-links {
-        -webkit-animation-fill-mode: both;
-        animation-fill-mode: both;
-        -webkit-animation-duration: 0.5s;
-        animation-duration: 0.5s;
-        width: 100%;
-        -webkit-animation: fadeIn 1s ease-in;
-        animation: fadeIn 1s ease-in;
-    }
-}
-
-
-/*
-mise en forme ossature template ajout sortie
- */
-
-.containersortie
-{
-    padding: 2px;
-}
-
-.left-div
-{
-    display: inline-block;
-    max-width: 640px;
-    text-align: left;
-    padding: 10px;
-    /* background-color: #ddd;*/
-    border-radius: 3px;
-    margin: 15px;
-    vertical-align: top;
-}
-.left-div1
-{
-    display: inline-block;
-    max-width: 440px;
-    text-align: left;
-    padding: 10px;
-    /* background-color: #ddd;*/
-    border-radius: 3px;
-    margin: 15px;
-    vertical-align: top;
-}
-.right-div
-{
-    display: inline-block;
-    max-width: 600px;
-    text-align: left;
-    padding: 10px;
-    border-radius: 3px;
-    margin: 15px;
-}
-.right-div1
-{
-    display: inline-block;
-    max-width: 400px;
-    text-align: left;
-    padding: 10px;
-    border-radius: 3px;
-    margin: 15px;
-}
-
-
-
-@media screen and (max-width: 600px)
-{
-    .left-div, .right-div
-    {
-        max-width: 100%;
-    }
-}
-.div_sortie_top{
-    width: 600px;
-    margin:0 auto;
-    text-align: center;
-    color: #B0413E;
-    font-size: 18px;
-    font-weight: bold;
-}
-.div_button
-{
-    width: 600px;
-    border-radius: 3px;
-    margin:0 auto;
-}
-
-
-/********** Fin Style dev liste sorties ***********************/
-
-.card {
-    box-shadow: 0 0 2px 1px rgba(88, 100, 104, 0.5);
-    max-width: 250px;
-    margin: auto;
-    text-align: center;
-    border-radius: 3px;
-    padding-top: 5px;
-    padding-bottom: 5px;
-    margin-bottom: 10px;
-}
-
-.pagination {
-    display: inline-block;
-}
-
-.pagination-event {
-    margin-top: 3rem;
-    text-align: center;
-}
-
-.filters {
-    margin-top: 0.5rem;
-    float: right;
-}
-
-.check-filtres {
-    list-style: none;
-}
-
-
-
-
-
-
 

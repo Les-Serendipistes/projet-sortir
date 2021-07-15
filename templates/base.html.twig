@@ -3,6 +3,7 @@
     <head>
         <meta charset="UTF-8">
         <link rel="stylesheet" media="screen" type="text/css" href="{{ asset('css/foundation.css') }}"/>
+        <link rel="stylesheet" media="screen" type="text/css" href="{{ asset('css/style.css') }}"/>
         <link rel="icon" href="{{ asset('img/site/Serendipistes.png') }}" />
         <title>{% block title %}Sortir{% endblock %}</title>
     </head>
@@ -30,7 +31,7 @@
     </span>
 
     <main class="grid-container">{% block body %}{% endblock %}</main>
-     <footer>© Les Serendipistes</footer>
+     <footer class="cell shrink footer">© Les Serendipistes</footer>
     </body>
 </html>
 
