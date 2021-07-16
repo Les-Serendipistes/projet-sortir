@@ -4,12 +4,9 @@ namespace App\Repository;
 
 use App\Data\SearchData;
 use App\Entity\Outing;
-use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
-use Doctrine\ORM\EntityManagerInterface;
-use Doctrine\ORM\NonUniqueResultException;
-use Doctrine\ORM\NoResultException;
-use Doctrine\Persistence\ManagerRegistry;
 use DateTime;
+use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Component\Security\Core\Security;
 
 /**
@@ -24,7 +21,6 @@ class OutingRepository extends ServiceEntityRepository
      * @var Security
      */
     private Security $security;
-    private EntityManagerInterface $entityManager;
 
     public function __construct(ManagerRegistry $registry, Security $security) {
         parent::__construct($registry, Outing::class);
@@ -40,7 +36,6 @@ class OutingRepository extends ServiceEntityRepository
     {
 
         $now = new DateTime();
-
         $user = $this->security->getUser();
 
         $query  = $this->createQueryBuilder('outing')
@@ -48,11 +43,17 @@ class OutingRepository extends ServiceEntityRepository
                 ->innerJoin('outing.state', 'state')
                 ->orWhere('state.label LIKE :ouverte')
                 ->orWhere('state.label LIKE :activite')
+                ->orWhere('state.label LIKE :creee')
+                ->orWhere('state.label LIKE :cloture')
                 ->orWhere('state.label LIKE :passee')
-                ->setParameter('ouverte', '%Créee%')
+                ->setParameter('ouverte', '%Ouverte%')
                 ->setParameter('activite', '%Activité en cours%')
+                ->setParameter('creee', '%Créée%')
+                ->setParameter('cloture', '%Cloturée%')
                 ->setParameter('passee', '%Passée%')
-                ->join('outing.campus', 'campus')
+                ->andWhere('outing.dateTimeStart > :now')
+                ->setParameter('now', $now)
+                ->innerJoin('outing.campus', 'campus')
                 ->leftJoin('outing.registeredUsers', 'registered_users')
                 ->leftJoin('registered_users.outings', 'ot')
             ;
@@ -77,8 +78,11 @@ class OutingRepository extends ServiceEntityRepository
         }
         if ($search->organizer) {
             $query
+                ->orWhere('state.label LIKE :creee')
+                ->setParameter('creee', 'Créée')
                 ->andWhere('outing.organizerUser = :org')
                 ->setParameter('org', $user);
+
         }
         if ($search->registered) {
             $query
@@ -87,16 +91,19 @@ class OutingRepository extends ServiceEntityRepository
         }
         if ($search->unregistered ) {
             $query
-
                 ->andWhere(':user NOT MEMBER OF outing.registeredUsers')
                 ->setParameter('user', $user);
         }
         if ($search->olds) {
-            $query->andWhere('outing.dateTimeStart < :now')
+            $query
+                ->andWhere('state.label LIKE :passee')
+                ->setParameter('passee', '%Passée%')
+                ->orWhere('outing.dateTimeStart < :now')
                 ->setParameter('now', $now);
         }
         return $query
-
+            ->andWhere('outing.dateTimeStart > :now')
+            ->setParameter('now', $now)
             ->orderBy('outing.dateTimeStart', 'DESC')
             ->getQuery()
             ->getResult();

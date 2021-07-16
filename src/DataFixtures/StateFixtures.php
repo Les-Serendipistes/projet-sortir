@@ -56,6 +56,12 @@ class StateFixtures extends Fixture
         $this->addReference(self::STATE_REFERENCE.'_'.'6',$state);
         $this->entityManager->persist($state);
 
+        $state = new State();
+        $state->setLabel('Archivée');
+        $this->addReference(self::STATE_REFERENCE.'_'.'7',$state);
+        $this->entityManager->persist($state);
+
+
         $this->entityManager->flush();
     }
 

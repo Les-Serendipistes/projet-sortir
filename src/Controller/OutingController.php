@@ -39,6 +39,7 @@ class OutingController extends AbstractController
                          PaginatorInterface $paginator,
     ): Response
     {
+        // recupération id user
         $user = $this->security->getToken()->getUser();
         $data = new SearchData();
         $form = $this->createForm(SearchOutingFormType::class, $data);
@@ -49,14 +50,8 @@ class OutingController extends AbstractController
             $request->query->getInt('page', 1),
             8
         );
-        // Gestion du rafraichissement automatique de la liste des sortie et de la pagination.
-        if ($request->get('ajax')) {
-            return new JsonResponse([
-                'content' => $this->renderView('outing/_outingTable.html.twig', ['outings' => $outings]),
-                'pagination' => $this->renderView('outing/_pagination.html.twig', ['outings' => $outings]),
-                'pages' => ceil($outings->getTotalItemCount() / $outings->getItemNumberPerPage()),
-            ]);
-        }
+
+        // Envois des données à la vue
         return $this->render('outing/outingList.html.twig', [
             'outings'           => $outings,
             'user'              => $user,

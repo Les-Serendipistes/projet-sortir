@@ -19,39 +19,42 @@ class StateService
         $this->stateRepository = $stateRepository;
     }
 
+    /**
+     * @throws \Exception
+     */
     public function checkState($open)
     {
         $now = new \DateTime();
         $nowDay = new \DateTime($now->format('Y-M-d'). "00:00:00");
         $nowHour = new \DateTime($now->format('Y-M-d H:i:s'));
 
-        $closeState = $this->etatRepository->find(['id' => 3]);
-        $currentState = $this->etatRepository->find(['id' => 4]);
-        $pastState = $this->etatRepository->find(['id' => 5]);
-        $activeState = $this->etatRepository->find(['id' => 7]);
+        $closeState = $this->stateRepository->find(['label' => 'Cloturée']);
+        $currentState = $this->stateRepository->find(['label' => 'Activité en cours']);
+        $pastState = $this->stateRepository->find(['label' => 'Passée']);
+        $activeState = $this->stateRepository->find(['label' => 'Ouverte']);
 
 
         if($open instanceof Outing)
         {
             $buffer = $open;
-            $open [] = $buffer;
+            $open = [] ;
+            $open = $buffer;
         }
-
 
         foreach ($open as $outings)
         {
-            if($outings->getDateLimiteInscription() <=  $nowDay)
+            if($outings->getLimitDateInscription()<=  $nowDay)
             {
                 $outings->setEtat($closeState);
             }
 
-            if($outings->getDateHeureDebut() <=  $nowHour)
+            if($outings->getDateTimeStart() <=  $nowHour)
             {
                 $outings->setEtat($currentState);
             }
 
             $activeDuration = $outings->getDuration();
-            $starDateTimeActive = clone $outings->getDateHeureDebut();
+            $starDateTimeActive = clone $outings->getDateTimeStart();
             $endDateTimeActive = $starDateTimeActive->add(new \DateInterval('P0Y0M0DT0H'. $activeDuration . 'M0S'));
 
             if($endDateTimeActive <=  $nowHour)
@@ -65,10 +68,7 @@ class StateService
             {
                 $outings->setState($archive);
             }
-
         }
-
         return $open;
-
     }
 }

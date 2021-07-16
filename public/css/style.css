@@ -82,7 +82,7 @@ tbody th, tbody td {
 }
 
 .media-object img {
-    max-width: 4rem;
+    max-width: 5rem;
 }
 
 @media screen and (max-width: 640px) {
