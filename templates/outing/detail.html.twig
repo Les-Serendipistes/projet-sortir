@@ -1,0 +1,54 @@
+{% extends 'base.html.twig' %}
+{% block title %}
+    {{ parent() }} | Afficher une sortie
+{% endblock %}
+
+{% block body %}
+    <h1 class="text-center">Afficher une sortie</h1>
+
+    <section class="grid-x">
+
+    <div class="cell small-6">
+        <ul class="no-bullet">
+    <li><strong>Nom de la sortie : </strong>{{ outing.name }}</li>
+    <li><strong>Date et heure de la sortie : </strong>{{ outing.dateTimeStart | format_datetime('full', 'short', locale='fr') }}</li>
+    <li><strong>Date limite d'inscription : </strong>{{ outing.limitDateInscription | format_datetime('full', 'none', locale='fr') }}</li>
+    <li><strong>Nombre de places : </strong>{{ outing.maxNbPart }}</li>
+    <li><strong>Durée : </strong>{{ outing.duration }} minutes</li>
+    <li><strong>Description et infos : </strong>{{ outing.outingReport }}</li>
+        </ul>
+    </div>
+    <div class="cell small-6">
+        <ul class="no-bullet">
+    <li><strong>Campus : </strong>{{ outing.campus }}</li>
+    <li><strong>Lieu : </strong>{{ outing.location.name }}</li>
+    <li><strong>Rue : </strong>{{ outing.location.address }}</li>
+    <li><strong>Code postal : </strong>{{ outing.location.city.postCode }} {{ outing.location.city.name }}</li>
+    <li><strong>Latitude : </strong>{{ outing.location.latitude }}</li>
+    <li><strong>Longitude : </strong>{{ outing.location.longitude }}</li>
+        </ul>
+    </div>
+
+    </section>
+
+    <section>
+        <h2><small>Liste des participants inscrits ({{ outing.registeredUsers.count }} / {{ outing.maxNbPart }}) :</small></h2>
+        <table class="hover unstriped">
+            <thead>
+            <th>Pseudo</th>
+            <th>Nom</th>
+            </thead>
+            {# On affiche le pseudo et le prénom/nom pour chaque registeredUser dans la collection RegisteredUsers #}
+            {% for registeredUser in outing.registeredUsers %}
+            <tr>
+                <td>{{ registeredUser.pseudo }}</td>
+                <td>{{ registeredUser.firstname }} {{ registeredUser.lastname }}</td>
+            </tr>
+            {% endfor %}
+        </table>
+    </section>
+
+{% endblock %}
+
+
+

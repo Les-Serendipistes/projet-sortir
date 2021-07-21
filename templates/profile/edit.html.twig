@@ -1,0 +1,34 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}
+    {{ parent() }} | Modifier son profil
+{% endblock %}
+
+{% block body %}
+
+    <h1 class="text-center">Mon profil</h1>
+
+    <section>
+        <div>
+            {% if user  is  null %}
+                <img src="{{ asset('img/profile/'~ default.png) }}" id="profile-pic">
+            {% else %}
+                <img src="{{ asset('img/profile/'~ user.picture) }}" id="profile-pic">
+            {% endif %}
+        </div>
+
+        <div>
+            {% if app.user() %}{% endif %}
+            {{ form_errors(userForm) }}
+            {{ form_start(userForm) }}
+            {{ form_widget(userForm) }}
+            {% if app.user %} {% endif %}
+        </div>
+
+        <div class="button-group align-center">
+            <button class="hollow button">Enregistrer</button>
+            <button type="submit" name="submitAction" value="Retour" class="hollow button secondary">Retour</button>
+        </div>
+        {{ form_end(userForm) }}
+    </section>
+{% endblock %}

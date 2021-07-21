@@ -1,0 +1,114 @@
+{% extends 'base.html.twig' %}
+{% block stylesheets %}
+ <link  rel="stylesheet" href="{{ asset('css/jquery.datetimepicker.css')}}"
+{% endblock %}
+
+
+{% block title %}
+    {{ parent() }} | Créer une sortie
+{% endblock %}
+
+{%  block body %}
+    {# affiche les éventuels messages flash #}
+    {% for label, messages in app.flashes %}
+        {% for message in messages %}
+            <div class="alert alert-{{ label }}">
+                {{ message }}
+            </div>
+        {% endfor %}
+    {% endfor %}
+
+    <h1 class="text-center">Créer une sortie {{ submitType }}</h1>
+
+    <article>
+        {{ form_start(outingForm) }}
+        {{ form_errors(outingForm) }}
+
+        <div>
+
+            {{ form_row(outingForm.name)}}
+            {{ form_row(outingForm.dateTimeStart) }}
+            {{ form_row(outingForm.limitDateInscription) }}
+            {{ form_row(outingForm.maxNbPart) }}
+            {{ form_row(outingForm.duration) }}
+            {{ form_row(outingForm.outingReport) }}
+        </div>
+
+        <div>
+            {{ form_row(outingForm.campus, {'value': campusName}) }}
+            {{ form_row(outingForm.state) }}
+            {{ form_row(outingForm.location) }}
+            {{ form_row(outingForm.street) }}
+            {{ form_row(outingForm.zipcode) }}
+            {{ form_row(outingForm.latitude) }}
+            {{ form_row(outingForm.longitude) }}
+
+        </div>
+
+        <div class="button-group align-center">
+            <button type="submit" name="submitAction"  value="enregistrer"  class="hollow button">Enregistrer</button>
+            <button type="submit" name="submitAction"  value="publier" class="hollow button">Publier la sortie</button>
+
+            <button class="hollow button secondary"><a href="{{ path('outing_list') }}">Annuler</a></button>
+        </div>
+        {{ form_end(outingForm) }}
+    </article>
+
+{% endblock %}
+{% block javascript %}
+<script src="{{ asset('js/datepicker/jquery.datetimepicker.js') }}" ></script>
+<script src="{{ asset('js/jquery.datetimepicker.full.min.js') }}" ></script>
+{% endblock %}
+{% block extrajs %}
+        <script type="text/javascript">
+            window.onload = init;
+            function init(){
+                let selectedTown=  document.getElementById("state");
+                let selectedCity = document.getElementById("location");
+                selectedTown.addEventListener('change',function(){
+                    selectedCity.length = 1;
+                    resetfield();
+                    let valeur=selectedTown.value;
+                    console.log(valeur);
+                     fetch('{{ path('list_places') }}', {method:'POST', body:valeur} )
+                    .then(function (response){   return response.json();
+                    }).then(function (datas){
+                         console.log(datas );
+                         for (let i = 0; i < datas.length; i++) {
+                             let el = document.createElement("option");
+                             el.textContent = datas[i].name;
+                             el.value = datas[i].id;
+                             selectedCity.appendChild(el);
+                         }
+                     })
+                })
+
+
+                selectedCity.addEventListener('change',function(){
+                    let data=selectedCity.value;
+                    resetfield();
+                    fetch('{{ path('detail_place') }}', {method:'POST', body:JSON.stringify(data)} )
+                        .then(function (response){   return response.json();
+                        }).then(function (detailsData){
+                        document.getElementById('street').value=detailsData[0].address;
+                        document.getElementById('zipcode').value=detailsData[0].postCode;
+                        document.getElementById('latitude').value= detailsData[0].latitude;
+                        document.getElementById('longitude').value= detailsData[0].longitude;
+
+                    })
+                })
+
+            function resetfield(){
+                document.getElementById('street').value="";
+                document.getElementById('zipcode').value="";
+                document.getElementById('latitude').value= "";
+                document.getElementById('longitude').value= "";
+            }
+            }
+        </script>
+         <script src="{{ asset('js/datepicker/jquery.js') }}"></script>
+ <script src="{{ asset('js/datepicker/jquery.datetimepicker.js') }}"></script>
+<script type="text/javascript">
+   jQuery('#dateTimeStart').datetimepicker();
+</script>
+{% endblock %}

@@ -1,0 +1,129 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}
+    {{ parent() }} | Modifier une sortie
+{% endblock %}
+
+{%  block body %}
+    <h1 class="text-center">Modifier la sortie</h1>
+    {# affiche les éventuels messages flash #}
+    {% for label, messages in app.flashes %}
+        {% for message in messages %}
+            <div class="alert alert-{{ label }}">
+                {{ message }}
+            </div>
+        {% endfor %}
+    {% endfor %}
+
+    <section>
+        {{ form_start(modifyForm) }}
+        {{ form_errors(modifyForm) }}
+        <fieldset>
+        <div>
+
+            {{ form_row(modifyForm.name)}}
+
+            {{ form_row(modifyForm.dateTimeStart) }}
+            {{ form_row(modifyForm.limitDateInscription) }}
+            {{ form_row(modifyForm.maxNbPart) }}
+            {{ form_row(modifyForm.duration) }}
+            {{ form_row(modifyForm.outingReport) }}
+        </div>
+        <div>
+            {{ form_row(modifyForm.campus, {'value': outing.campus.name}) }}
+            {{ form_row(modifyForm.city) }}
+            {{ form_row(modifyForm.location) }}
+            {{ form_row(modifyForm.street, {'value': detailLieu[0].address}) }}
+            {{ form_row(modifyForm.zipcode, {'value': detailLieu[0].postCode}) }}
+            {{ form_row(modifyForm.latitude, {'value': detailLieu[0].latitude}) }}
+            {{ form_row(modifyForm.longitude, {'value': detailLieu[0].longitude}) }}
+        </div>
+
+        <div class="button-group align-center">
+            <button type="submit" name="submitAction" class="hollow button" value="enregistrer">Enregistrer</button>
+            <button type="submit" name="submitAction" class="hollow button" value="publier">Publier la sortie</button>
+            <button type="submit" name="submitAction" class="hollow button alert" value="supprimer" data-open="exampleModal2">Supprimer la sortie</button>
+            <a href="{{ path('outing_list') }}" ><button type="button" value="annuler" class="hollow button secondary" >Annuler</button></a>
+
+
+            <!-- This is the first modal -->
+            <div class="reveal" id="exampleModal2" data-reveal>
+                <h1>Supprimer une sortie</h1>
+                <p class="lead">Etes-vous certain de vouloir suprimer la sortie {{ outing.name }} du {{ outing.dateTimeStart | date('d/m/Y') }} ?</p>
+                <button class="button" data-open="exampleModal3">Oui</button>
+                <button class="button alert" data-open="exampleModal3">Annuler</button>
+                <button class="button" data-close aria-label="Close reveal" type="button">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+
+            <!-- This is the nested modal -->
+            <div class="reveal" id="exampleModal3" data-reveal>
+                <h2>La sortie à été correctement supprimé !</h2>
+                <button class="button" data-close aria-label="Close reveal" type="button">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                <a href="{{ path('outing_list') }}" ><button type="button" class="hollow button secondary" >OK</button></a>
+            </div>
+        </div>
+        </fieldset>
+        {{ form_end(modifyForm) }}
+    </section>
+
+{% endblock %}
+{% block extrajs %}
+
+    <script type="text/javascript">
+        window.onload = init;
+        function init(){
+            let selectedTown=  document.getElementById("city");
+            let selectedCity = document.getElementById("location");
+            selectedTown.addEventListener('change',function(){
+                selectedCity.length = 1;
+                resetfield();
+                let valeur=selectedTown.value;
+                fetch('{{ path('list_places') }}', {method:'POST', body:valeur} )
+                    .then(function (response){   return response.json();
+                    }).then(function (datas){
+                    console.log(datas );
+                    for (let i = 0; i < datas.length; i++) {
+                        let el = document.createElement("option");
+                        el.textContent = datas[i].name;
+                        el.value = datas[i].id;
+                        selectedCity.appendChild(el);
+                    }
+                })
+            })
+
+
+            selectedCity.addEventListener('change',function(){
+                let data=selectedCity.value;
+                resetfield();
+                fetch('{{ path('detail_place') }}', {method:'POST', body:JSON.stringify(data)} )
+                    .then(function (response){   return response.json();
+                    }).then(function (detailsData){
+                    document.getElementById('street').value=detailsData[0].address;
+                    document.getElementById('zipcode').value=detailsData[0].postCode;
+                    document.getElementById('latitude').value= detailsData[0].latitude;
+                    document.getElementById('longitude').value= detailsData[0].longitude;
+
+                })
+            })
+
+            function resetfield(){
+                document.getElementById('street').value="";
+                document.getElementById('zipcode').value="";
+                document.getElementById('latitude').value= "";
+                document.getElementById('longitude').value= "";
+                document.getElementById("location").length = 1;
+            }
+
+        }
+    </script>
+    <script type="text/javascript">
+        $(document).ready( function () {
+            $('#picker').dateTimePicker();
+            $('#picker-no-time').dateTimePicker({ showTime: false, dateFormat: 'DD/MM/YYYY', title: 'Select Date'});
+        })
+    </script>
+{% endblock %}

@@ -1,0 +1,28 @@
+{{ form_start(form) }}
+    <fieldset class="fieldset" id="filtres">
+        <legend>
+            <strong>Filtrer les sorties</strong>
+        </legend>
+        <label>Sélection du campus :
+            {{ form_row(form.campus) }}
+        </label>
+        <label>Le nom de la sortie contient :
+            {{ form_row(form.q) }}
+        </label>
+        <label>Se déroulant entre le :
+            {{ form_row(form.dateStart) }}
+        </label>
+        <label>et le :
+            {{ form_row(form.dateEnd) }}
+        </label>
+    <ul class="menu vertical">
+        <li>{{ form_row(form.organizer) }}</li>
+        <li>{{ form_row(form.registered) }}</li>
+        <li>{{ form_row(form.unregistered) }}</li>
+        <li>{{ form_row(form.olds) }}</li>
+    </ul>
+<input type="submit" value="Rechercher" class="hollow button" id="button-list" onclick="refreshContenu()">
+    </fieldset>
+{{ form_end(form) }}
+
+

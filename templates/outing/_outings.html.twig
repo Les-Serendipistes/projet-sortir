@@ -1,0 +1,4 @@
+{% for outing in outings %}
+    {% include 'outing/_outingTable.html.twig' with {outing: outing, user: user} only %}
+{% endfor %}
+

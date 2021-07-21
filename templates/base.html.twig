@@ -2,18 +2,46 @@
 <html>
     <head>
         <meta charset="UTF-8">
-        <title>{% block title %}Welcome!{% endblock %}</title>
-        {# Run `composer require symfony/webpack-encore-bundle`
-           and uncomment the following Encore helpers to start using Symfony UX #}
-        {% block stylesheets %}
-            {#{{ encore_entry_link_tags('app') }}#}
-        {% endblock %}
-
-        {% block javascripts %}
-            {#{{ encore_entry_script_tags('app') }}#}
-        {% endblock %}
+        <link rel="stylesheet" type="text/css" href="{{ asset('css/datetimepicker.css') }}"/>
+        <link rel="stylesheet" media="screen" type="text/css" href="{{ asset('css/foundation.css') }}"/>
+        <link rel="stylesheet" media="screen" type="text/css" href="{{ asset('css/style.css') }}"/>
+        <link rel="icon" href="{{ asset('img/site/Serendipistes.png') }}" />
+        <title>{% block title %}Sortir{% endblock %}</title>
     </head>
     <body>
-        {% block body %}{% endblock %}
+
+    <header class="top-bar" id="responsive-menu">
+        <div class="logo">
+            <a href="{{ path('outing_list') }}"><img src="{{ asset('img/site/logo-sortir.png') }}" alt="Sortir"></a>
+        </div>
+        {% include 'menu/nav.html.twig' %}
+
+    </header>
+
+    <span style="text-align:center">
+    {# affiche les éventuels messages flash #}
+            {% for label, messages in app.flashes %}
+                {% for message in messages %}
+                    <div class="alert alert-{{ label }}">
+                        {{ message }}
+                    </div>
+                {% endfor %}
+            {% endfor %}
+    </span>
+
+    <main class="grid-container">{% block body %}{% endblock %}</main>
     </body>
+{% block stylesheets %}
+{% endblock %}
+
+    {% block javascript %}
+     {% endblock %}
+    {% block extrajs %}
+        <script type="text/javascript" src="{{ asset('js/jquery-3.6.0.min.js') }}"></script>
+        <script type="text/javascript" src="{{ asset('js/jquery.sticky-sidebar.js') }}"></script>
+        <script type="text/javascript" src="{{ asset('js/datetimepicker.js') }}"></script>
+        <script type="text/javascript" src="{{ asset('js/moment-with-locales.js') }}"></script>
+    {% endblock %}
 </html>
+
+

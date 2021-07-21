@@ -1,0 +1,74 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}
+    {{ parent() }} | Liste des sorties
+{% endblock %}
+
+{% block body %}
+    <div class="grid-y medium-grid-frame">
+        <h1 class="text-center">Liste des sorties</h1>
+        <hr/>
+        <div class="grid-x grid-padding-x align-center margin-bottom-3">
+            <div class="media-object">
+                <div class="media-object-section">
+                    <div class="thumbnail">
+                        <img src="{{ asset('img/profile/'~ app.user.picture) }}">
+                    </div>
+                </div>
+
+                <div class="media-object-section main-section">
+                    <h4>Bonjour {{ app.user.firstname }} {{ app.user.lastname }}</h4>
+                    <p>Nous sommes le {{ 'now' | format_date('full',  locale='fr') }}</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="cell medium-auto medium-cell-block-container">
+            <div class="grid-x grid-padding-x">
+                <div class="cell medium-3 medium-cell-block-y">
+                    {% include 'outing/_filter.html.twig' with {form: form} only %}
+                </div>
+                <div class="cell medium-9 medium-cell-block-y">
+                    {% if outings is empty %}
+                        <div class="callout warning large">
+                            <h5>Aucune sortie à afficher</h5>
+                            <p>Il semblerait qu'il n'y ait pas de sortie de prévue dans aucun des campus.</p>
+                            <a href="{{ path('outing_create') }}">Souhaitez-vous en créer une ?</a>
+                        </div>
+                    {% else %}
+
+                        <div id="refresh-table">
+                            <table class="responsive-card-table hover unstriped">
+                                <tbody>
+                                <thead>
+                                <th>Nom de la sortie</th>
+                                <th>Date de la sortie</th>
+                                <th>Clôture</th>
+                                <th>Inscrits/places</th>
+                                <th>Etat</th>
+                                <th>Inscrit</th>
+                                <th>Organisateur</th>
+                                <th>Actions</th>
+                                </thead>
+                                {% include 'outing/_outings.html.twig' %}
+                                </tbody>
+                            </table>
+                            <a href="{{ path('outing_create') }}">
+                                <button class="hollow button">Créer une nouvelle Sortie</button>
+                            </a>
+                        </div>
+                    {% endif %}
+                    <div class="pagination-event">
+                        {% do outings.setPageRange(2) %}
+                        {{ knp_pagination_render(outings, 'pagination/pagination.html.twig') }}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+{% endblock %}
+{% block extrajs %}
+    <script type="text/javascript" src="{{ asset('js/jquery-3.6.0.min.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('js/Filter.js') }}"></script>
+{% endblock %}

@@ -1,0 +1,146 @@
+/* Personalisation de foundation */
+body {
+    line-height: 1.1em;
+    font-size: small;
+}
+
+h1 {
+    border-bottom: lightgray 1px solid;
+}
+
+#profile-pic {
+    max-width: 150px;
+    max-height: 150px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    padding: 5px;
+}
+
+.fieldset {
+    margin: 0;
+}
+label {
+    display: inline-block;
+    margin-right: 5px;
+}
+.top-bar, .top-bar ul {
+    background-color: unset;
+}
+
+.top-bar {
+    border-bottom: lightgray 1px solid;
+}
+
+.grid-container {
+    max-width: 90rem;
+}
+
+.grid-container-small {
+    max-width: 50rem;
+}
+
+footer {
+    border-top: lightgray 1px solid;
+    bottom: 0;
+    padding-top: 1em;
+
+    position: absolute;
+    width: 100%;
+}
+footer p{
+    margin-left: 1em;
+}
+
+/* */
+tbody th, tbody td {
+    padding: 0.4rem 0.4rem 0.4rem;
+}
+
+#filtres label {
+    font-size: small;
+    line-height: 1.2em;
+}
+
+/* Tableau responsive */
+
+.responsive-card-table {
+    border-collapse: collapse;
+}
+
+.responsive-card-table.unstriped tbody {
+    background-color: transparent;
+}
+
+.responsive-card-table th {
+    background-color: inherit;
+}
+
+.responsive-card-table tr,
+.responsive-card-table th,
+.responsive-card-table td {
+    border: inherit;
+}
+
+.media-object img {
+    max-width: 5rem;
+}
+
+@media screen and (max-width: 640px) {
+    .responsive-card-table {
+
+    }
+
+    .responsive-card-table thead tr {
+        position: absolute;
+        top: -9999em;
+        left: -9999em;
+    }
+
+    .responsive-card-table tr {
+        border: inherit;
+        display: block;
+    }
+
+    .responsive-card-table tr + tr {
+        margin-top: 1.5rem;
+    }
+
+    .responsive-card-table td {
+        border: none;
+        display: -webkit-flex;
+        display: -ms-flexbox;
+        display: flex;
+        -webkit-justify-content: flex-start;
+        -ms-flex-pack: start;
+        justify-content: flex-start;
+        -webkit-align-items: center;
+        -ms-flex-align: center;
+        align-items: center;
+        border-bottom: inherit;
+        padding-left: 50%;
+        position: relative;
+    }
+
+    .responsive-card-table td:before {
+        content: attr(data-label);
+        display: inline-block;
+        font-weight: bold;
+        /*line-height: 1.5;*/
+        margin-left: -100%;
+        width: 100%;
+        position: relative;
+        z-index: 1;
+    }
+
+    .responsive-card-table td:after {
+        content: '';
+        position: absolute;
+        background: #e6e6e6;
+        width: 45%;
+        height: 95%;
+        left: 1px;
+        top: 1px;
+        z-index: 0;
+    }
+}
+

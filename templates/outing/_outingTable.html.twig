@@ -1,0 +1,38 @@
+<tr>
+    <!-- data-label obligatoires pour afficher les th quand le tableau se transforme en cards ! -->
+    <td data-label="Nom">{{ outing.name }}</td>
+    <td data-label="First Name">{{ outing.dateTimeStart | date('d/m/Y à h\\H', 'Europe/Paris') }}</td>
+    <td data-label="Date de la sortie">{{ outing.limitDateInscription | date('d/m/Y', 'Europe/Paris') }}</td>
+    <td data-label="Inscrits/places">{{ outing.registeredUsers | length }} / {{ outing.maxNbPart }}</td>
+    <td data-label="Etat">{{ outing.state.label }}</td>
+    <td data-label="Inscrit">
+        {% if user in outing.registeredUsers %}
+            X
+        {% endif %}
+    </td>
+    <td data-label="Organisateur"><a href="{{ path('profileView', {'id' : outing.organizerUser.id }) }}">{{ outing.organizerUser.firstname }} {{ outing.organizerUser.lastname[:1] }}.</a></td>
+    <td data-label="Actions">
+        {% if user == outing.organizerUser %}
+            {% if outing.state.label == 'Créée' or outing.state.label == 'Ouverte' %}
+                <a href="{{ path('outing_modify', {'id' : outing.id }) }}">Modifier</a>
+            {% else %}
+               - <a href="{{ path('outing_detail', {'id' : outing.id }) }}">Afficher</a>
+            {% endif %}
+        {% else %}
+            <a href="{{ path('outing_detail', {'id' : outing.id }) }}">Afficher</a>
+            {% if user in outing.registeredUsers%}
+                {% if outing.state.label == 'Activité en cours' %}
+                {% else %}
+                    {% if outing.state.label == 'Créée' or outing.state.label == 'Ouverte' %}
+                        - <a href="{{ path('outing_unsubscribe', {'id' : outing.id }) }}">Se désister</a>
+                    {% endif %}
+                {% endif %}
+            {% else %}
+                {% if outing.state.label == 'Créée' or outing.state.label == 'Ouverte' %}
+                    - <a href="{{ path('outing_subscribe', {'id' : outing.id }) }}">S'inscrire</a>
+                {% endif %}
+            {% endif %}
+        {% endif %}
+    </td>
+
+</tr>
